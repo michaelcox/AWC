@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AWC.WebUI", "AWC.WebUI\AWC.WebUI.csproj", "{B7E2DDE5-0047-494C-B659-6B9F70BFD6DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AWC.Domain", "AWC.Domain\AWC.Domain.csproj", "{EE2A5B24-2333-4937-8BFE-809EF9E99B9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AWC.WebUI.Tests.Unit", "AWC.WebUI.Tests.Unit\AWC.WebUI.Tests.Unit.csproj", "{1696D78D-02A3-460B-AB16-7BB3232D495A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +17,14 @@ Global
 		{B7E2DDE5-0047-494C-B659-6B9F70BFD6DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7E2DDE5-0047-494C-B659-6B9F70BFD6DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7E2DDE5-0047-494C-B659-6B9F70BFD6DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE2A5B24-2333-4937-8BFE-809EF9E99B9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE2A5B24-2333-4937-8BFE-809EF9E99B9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE2A5B24-2333-4937-8BFE-809EF9E99B9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE2A5B24-2333-4937-8BFE-809EF9E99B9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1696D78D-02A3-460B-AB16-7BB3232D495A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1696D78D-02A3-460B-AB16-7BB3232D495A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1696D78D-02A3-460B-AB16-7BB3232D495A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1696D78D-02A3-460B-AB16-7BB3232D495A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
