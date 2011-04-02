@@ -66,3 +66,33 @@ textarea
 {
     display: none;
 }
+
+/* Styles for top flash messages
+-----------------------------------------------------------*/
+
+div.flashmessage
+{
+    background-image:url(/public/images/jbar-bg.png);
+    font-size: large;
+    padding: 10px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    display: none;
+}
+
+div.success
+{
+    background-color: #008800;
+}
+
+div.error
+{
+    background-color: #CC0000;
+}
+
+div.info
+{
+    background-color: #0000CC;
+}

@@ -1,0 +1,23 @@
+﻿@if (TempData["success"] != null || TempData["info"] != null || TempData["error"] != null)
+{
+    string message = string.Empty;
+    string style = string.Empty;
+    string[] messageTypes = new string[3]{"success", "info", "error"};
+    
+    foreach (string messageType in messageTypes)
+    {
+        if (TempData[messageType] != null)
+        {
+            message = TempData[messageType].ToString();
+            style = messageType;
+            break;
+        }
+    }
+    
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            $('#flashmessage').slideDown(1000).delay(3000).slideUp(1000);
+        });
+    </script>
+    <div id="flashmessage" class="flashmessage @style">@message</div>
+}

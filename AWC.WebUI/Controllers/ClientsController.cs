@@ -33,14 +33,17 @@ namespace AWC.WebUI.Controllers
                     client.InjectFrom(clientEditViewModel);
                     _repository.Add(client);
                     _repository.CommitChanges();
-                    // TODO: Add a message confirming that the add was made
-                    return RedirectToAction("Edit", new {id = client.ClientId});
+                    TempData["success"] = string.Format("A new client record for {0} {1} has been created successfully.", client.FirstName, client.LastName);
+                    return RedirectToAction("Edit", new { id = client.ClientId });
                 }
             }
             catch
             {
+                TempData["error"] = "There was an error while trying to create the client record.";
                 return View(clientEditViewModel);
             }
+
+            TempData["error"] = "There were validation errors while trying to create the client record.";
             return View(clientEditViewModel);
         }
         
@@ -67,14 +70,18 @@ namespace AWC.WebUI.Controllers
                     Client client = _repository.Single<Client>(c => c.ClientId == clientEditViewModel.ClientId);
                     client.InjectFrom(clientEditViewModel);
                     _repository.CommitChanges();
-                    // TODO: Add a message confirming that the update was made
+
+                    TempData["success"] = string.Format("The client record for {0} {1} has been updated successfully.", client.FirstName, client.LastName);
                     return RedirectToAction("Edit", new { id = client.ClientId });
                 }
             }
             catch
             {
+                TempData["error"] = "There was an error while trying to edit the client record.";
                 return View(clientEditViewModel);
             }
+
+            TempData["error"] = "There were validation errors while trying to edit the client record.";
             return View(clientEditViewModel);
         }
 
@@ -86,12 +93,13 @@ namespace AWC.WebUI.Controllers
                 Client client = _repository.Single<Client>(c => c.ClientId == id);
                 _repository.Delete(client);
                 _repository.CommitChanges();
+                TempData["success"] = string.Format("The client record for {0} {1} has been deleted.", client.FirstName, client.LastName);
                 return RedirectToAction("Create");
             }
             catch
             {
-                // TODO: Add a message explaining we were unable to delete
-                return RedirectToAction("Edit", new { id = id});
+                TempData["error"] = "There was an error while trying to delete the client record.";
+                return RedirectToAction("Edit", new { id });
             }
         }
     }

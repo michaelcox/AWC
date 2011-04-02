@@ -87,12 +87,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="Public\css\jbar.css" />
     <Content Include="Public\css\Site.css" />
     <Content Include="Public\images\jbar-bg.png" />
-    <Content Include="Public\images\jbar-cross.png" />
-    <Content Include="Public\images\jbar-cross_hover.png" />
-    <Content Include="Public\js\jquery.bar.js" />
     <Content Include="Public\js\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Public\js\jquery.validate.min.js" />
     <Content Include="Public\js\jquery.validate.unobtrusive.min.js" />
@@ -126,7 +122,9 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\Shared\FlashMessage.cshtml" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
