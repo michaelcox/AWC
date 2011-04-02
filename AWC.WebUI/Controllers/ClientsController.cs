@@ -1,109 +1,97 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using AWC.Domain.Abstract;
 using AWC.Domain.Entities;
+using AWC.WebUI.Models;
+using Omu.ValueInjecter;
 
 namespace AWC.WebUI.Controllers
 {
     public class ClientsController : Controller
     {
-        private IRepository _repo;
+        private readonly IRepository _repository;
 
         public ClientsController(IRepository repository)
         {
-            _repo = repository;
+            _repository = repository;
         }
-
-        //
-        // GET: /Clients/
-
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        //
-        // GET: /Clients/Create
 
         public ActionResult Create()
         {
-            return View();
+            ClientEditViewModel clientEditViewModel = new ClientEditViewModel();
+            clientEditViewModel.UsStates = new SelectList(_repository.All<UsState>(), "StateCode", "StateName");
+            return View(clientEditViewModel);
         } 
 
-        //
-        // POST: /Clients/Create
-
         [HttpPost]
-        public ActionResult Create(Client client)
+        public ActionResult Create(ClientEditViewModel clientEditViewModel)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _repo.Add(client);
-                    _repo.CommitChanges();
-                    return RedirectToAction("Create");
+                    Client client = new Client();
+                    client.InjectFrom(clientEditViewModel);
+                    _repository.Add(client);
+                    _repository.CommitChanges();
+                    // TODO: Add a message confirming that the add was made
+                    return RedirectToAction("Edit", new {id = client.ClientId});
                 }
-                return View(client);
             }
             catch
             {
-                return View();
+                return View(clientEditViewModel);
             }
+            return View(clientEditViewModel);
         }
         
-        //
-        // GET: /Clients/Edit/5
- 
         public ActionResult Edit(int id)
         {
-            return View();
+            Client client = _repository.Single<Client>(c => c.ClientId == id);
+            ClientEditViewModel clientEditViewModel = new ClientEditViewModel
+                                                          {
+                                                              UsStates = new SelectList(_repository.All<UsState>(), "StateCode","StateName")
+                                                          };
+
+            clientEditViewModel.InjectFrom(client);
+
+            return View(clientEditViewModel);
         }
 
-        //
-        // POST: /Clients/Edit/5
-
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(ClientEditViewModel clientEditViewModel)
         {
             try
             {
-                // TODO: Add update logic here
- 
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    Client client = _repository.Single<Client>(c => c.ClientId == clientEditViewModel.ClientId);
+                    client.InjectFrom(clientEditViewModel);
+                    _repository.CommitChanges();
+                    // TODO: Add a message confirming that the update was made
+                    return RedirectToAction("Edit", new { id = client.ClientId });
+                }
             }
             catch
             {
-                return View();
+                return View(clientEditViewModel);
             }
+            return View(clientEditViewModel);
         }
 
-        //
-        // GET: /Clients/Delete/5
- 
+        [HttpPost]
         public ActionResult Delete(int id)
         {
-            return View();
-        }
-
-        //
-        // POST: /Clients/Delete/5
-
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
             try
             {
-                // TODO: Add delete logic here
- 
-                return RedirectToAction("Index");
+                Client client = _repository.Single<Client>(c => c.ClientId == id);
+                _repository.Delete(client);
+                _repository.CommitChanges();
+                return RedirectToAction("Create");
             }
             catch
             {
-                return View();
+                // TODO: Add a message explaining we were unable to delete
+                return RedirectToAction("Edit", new { id = id});
             }
         }
     }

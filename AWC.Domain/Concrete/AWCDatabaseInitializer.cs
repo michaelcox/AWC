@@ -7,11 +7,7 @@ namespace AWC.Domain.Concrete
     public class AWCDatabase : DbContext
     {
         public DbSet<Client> Clients { get; set; }
-
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            
-        }
+        public DbSet<UsState> UsStates { get; set; }
     }
 
     public static class Initialize
@@ -23,11 +19,14 @@ namespace AWC.Domain.Concrete
         }
     }
 
-    /// <summary>
-    /// Creates or recreates the database if the schema changes.  Should not be run against production.
-    /// </summary>
     public class AWCDatabaseInitializer : DropCreateDatabaseIfModelChanges<AWCDatabase>
     {
-
+        protected override void Seed(AWCDatabase context)
+        {
+            context.UsStates.Add(new UsState { StateCode = "MA", StateName = "Massachusetts"});
+            context.UsStates.Add(new UsState { StateCode = "VT", StateName = "Vermont" });
+            context.SaveChanges();
+            base.Seed(context);
+        }
     }
 }

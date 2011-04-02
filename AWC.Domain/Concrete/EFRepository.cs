@@ -7,7 +7,7 @@ namespace AWC.Domain.Concrete
 {
     public class EFRepository : IRepository
     {
-        AWCDatabase _context = new AWCDatabase();
+        readonly AWCDatabase _context = new AWCDatabase();
 
         public void CommitChanges() {
             _context.SaveChanges();

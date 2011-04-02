@@ -1,0 +1,110 @@
+﻿@model AWC.WebUI.Models.ClientEditViewModel
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Client</legend>
+
+        @Html.EditorFor(model => model.ClientId)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FirstName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FirstName)
+            @Html.ValidationMessageFor(model => model.FirstName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LastName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.LastName)
+            @Html.ValidationMessageFor(model => model.LastName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EmailAddress)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EmailAddress)
+            @Html.ValidationMessageFor(model => model.EmailAddress)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AddressLine1)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.AddressLine1)
+            @Html.ValidationMessageFor(model => model.AddressLine1)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AddressLine2)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.AddressLine2)
+            @Html.ValidationMessageFor(model => model.AddressLine2)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.City)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.City)
+            @Html.ValidationMessageFor(model => model.City)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StateCode)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.StateCode, Model.UsStates)
+            @Html.ValidationMessageFor(model => model.StateCode)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CountyCode)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.CountyCode, Model.Counties)
+            @Html.ValidationMessageFor(model => model.CountyCode)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IsPreviousClient)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.IsPreviousClient)
+            @Html.ValidationMessageFor(model => model.IsPreviousClient)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.NumberOfAdults)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.NumberOfAdults)
+            @Html.ValidationMessageFor(model => model.NumberOfAdults)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.NumberOfChildren)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.NumberOfChildren)
+            @Html.ValidationMessageFor(model => model.NumberOfChildren)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ReferredFrom)
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.ReferredFrom)
+            @Html.ValidationMessageFor(model => model.ReferredFrom)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
