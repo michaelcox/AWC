@@ -72,27 +72,32 @@ textarea
 
 div.flashmessage
 {
-    background-image:url(/public/images/jbar-bg.png);
-    font-size: large;
+    width: 100%;
+    font-size: 14pt;
     padding: 10px;
     position: fixed;
     top: 0px;
     left: 0px;
-    width: 100%;
     display: none;
 }
 
 div.success
 {
-    background-color: #008800;
+    background-color: #8FFF6F;
 }
 
 div.error
 {
-    background-color: #CC0000;
+    background-color: #FF7575;
 }
 
 div.info
 {
-    background-color: #0000CC;
+    background-color: #86BCFF;
+}
+
+img#close-button
+{
+    float:right;
+    margin-right: 20px;
 }

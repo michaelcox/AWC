@@ -1,6 +1,8 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using AWC.Domain.Abstract;
 using AWC.Domain.Entities;
+using AWC.WebUI.Infrastructure.Logging;
 using AWC.WebUI.Models;
 using Omu.ValueInjecter;
 
@@ -9,16 +11,20 @@ namespace AWC.WebUI.Controllers
     public class ClientsController : Controller
     {
         private readonly IRepository _repository;
+        private readonly ILogger _logger;
 
-        public ClientsController(IRepository repository)
+        public ClientsController(IRepository repository, ILogger logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         public ActionResult Create()
         {
-            ClientEditViewModel clientEditViewModel = new ClientEditViewModel();
-            clientEditViewModel.UsStates = new SelectList(_repository.All<UsState>(), "StateCode", "StateName");
+            ClientEditViewModel clientEditViewModel = new ClientEditViewModel
+                                                          {
+                                                              UsStates = new SelectList(_repository.All<UsState>(), "StateCode","StateName")
+                                                          };
             return View(clientEditViewModel);
         } 
 
@@ -33,31 +39,40 @@ namespace AWC.WebUI.Controllers
                     client.InjectFrom(clientEditViewModel);
                     _repository.Add(client);
                     _repository.CommitChanges();
-                    TempData["success"] = string.Format("A new client record for {0} {1} has been created successfully.", client.FirstName, client.LastName);
+                    this.FlashSuccess(string.Format("A new client record for {0} {1} has been created successfully.", client.FirstName, client.LastName));
                     return RedirectToAction("Edit", new { id = client.ClientId });
                 }
+                this.FlashError("There were validation errors while trying to create the client record.");
             }
-            catch
+            catch(Exception ex)
             {
-                TempData["error"] = "There was an error while trying to create the client record.";
+                _logger.Error(ex);
+                this.FlashError("There was an error while trying to create the client record.");
                 return View(clientEditViewModel);
             }
-
-            TempData["error"] = "There were validation errors while trying to create the client record.";
+            
+            clientEditViewModel.UsStates = new SelectList(_repository.All<UsState>(), "StateCode", "StateName");
             return View(clientEditViewModel);
         }
         
         public ActionResult Edit(int id)
         {
-            Client client = _repository.Single<Client>(c => c.ClientId == id);
-            ClientEditViewModel clientEditViewModel = new ClientEditViewModel
-                                                          {
-                                                              UsStates = new SelectList(_repository.All<UsState>(), "StateCode","StateName")
-                                                          };
-
-            clientEditViewModel.InjectFrom(client);
-
-            return View(clientEditViewModel);
+            try
+            {
+                Client client = _repository.Single<Client>(c => c.ClientId == id);
+                ClientEditViewModel clientEditViewModel = new ClientEditViewModel
+                {
+                    UsStates = new SelectList(_repository.All<UsState>(), "StateCode", "StateName")
+                };
+                clientEditViewModel.InjectFrom(client);
+                return View(clientEditViewModel);
+            }
+            catch (Exception ex)
+            {
+                this.FlashError("Unable to load client record from the database.");
+                _logger.Fatal(ex);
+                return RedirectToAction("Create");
+            }
         }
 
         [HttpPost]
@@ -69,20 +84,22 @@ namespace AWC.WebUI.Controllers
                 {
                     Client client = _repository.Single<Client>(c => c.ClientId == clientEditViewModel.ClientId);
                     client.InjectFrom(clientEditViewModel);
-                    _repository.CommitChanges();
 
-                    TempData["success"] = string.Format("The client record for {0} {1} has been updated successfully.", client.FirstName, client.LastName);
+                    _repository.CommitChanges();
+                    this.FlashSuccess(string.Format("The client record for {0} {1} has been updated successfully.", client.FirstName, client.LastName));
                     return RedirectToAction("Edit", new { id = client.ClientId });
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                TempData["error"] = "There was an error while trying to edit the client record.";
-                return View(clientEditViewModel);
+                _logger.Error(ex);
+                this.FlashError("There was an error while trying to edit the client record.");
             }
 
-            TempData["error"] = "There were validation errors while trying to edit the client record.";
+            this.FlashError("There were validation errors while trying to edit the client record.");
+            clientEditViewModel.UsStates = new SelectList(_repository.All<UsState>(), "StateCode", "StateName");
             return View(clientEditViewModel);
+
         }
 
         [HttpPost]
@@ -91,14 +108,17 @@ namespace AWC.WebUI.Controllers
             try
             {
                 Client client = _repository.Single<Client>(c => c.ClientId == id);
+                string firstName = client.FirstName;
+                string lastName = client.LastName;
                 _repository.Delete(client);
                 _repository.CommitChanges();
-                TempData["success"] = string.Format("The client record for {0} {1} has been deleted.", client.FirstName, client.LastName);
+                this.FlashSuccess(string.Format("The client record for {0} {1} has been deleted.", firstName, lastName));
                 return RedirectToAction("Create");
             }
-            catch
+            catch (Exception ex)
             {
-                TempData["error"] = "There was an error while trying to delete the client record.";
+                _logger.Error(ex);
+                this.FlashError("There was an error while trying to delete the client record.");
                 return RedirectToAction("Edit", new { id });
             }
         }

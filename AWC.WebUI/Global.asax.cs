@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using AWC.Domain.Abstract;
 using AWC.Domain.Concrete;
+using AWC.WebUI.Infrastructure.Logging;
 using Ninject;
 using Ninject.Modules;
 using Ninject.Web.Mvc;
@@ -54,6 +55,7 @@ namespace AWC.WebUI
         public override void Load()
         {
             Bind<IRepository>().To<EFRepository>().InRequestScope();
+            Bind<ILogger>().To<NLogLogger>().InRequestScope();
         }
     }
 

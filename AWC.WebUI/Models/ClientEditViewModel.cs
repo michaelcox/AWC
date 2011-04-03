@@ -17,26 +17,30 @@ namespace AWC.WebUI.Models
 
         [Display(Name = "First Name")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "First Name is required.")]
-        [MaxLength(20, ErrorMessage = "First Name is too long.")]
+        [StringLength(20, ErrorMessage = "First Name is too long.")]
         public string FirstName { get; set; }
 
         [Display(Name = "Last Name")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Last Name is required.")]
-        [MaxLength(20, ErrorMessage = "Last Name is too long.")]
+        [StringLength(20, ErrorMessage = "Last Name is too long.")]
         public string LastName { get; set; }
 
         [Display(Name = "Email Address")]
         [Email(ErrorMessage = "Email address is not valid.")]
+        [StringLength(50, ErrorMessage = "Email Address is too long.")]
         public string EmailAddress { get; set; }
 
         [Display(Name = "Address Line 1")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Address is required.")]
+        [StringLength(50, ErrorMessage = "Address is too long.")]
         public string AddressLine1 { get; set; }
 
         [Display(Name = "Address Line 2")]
+        [StringLength(50, ErrorMessage = "Address is too long.")]
         public string AddressLine2 { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "City is required.")]
+        [StringLength(50, ErrorMessage = "City is too long.")]
         public string City { get; set; }
 
         [Display(Name = "State")]
