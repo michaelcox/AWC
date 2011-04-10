@@ -15,7 +15,7 @@ namespace AWC.Domain.Entities
         [StringLength(20)]
         public string LastName { get; set; }
 
-        [StringLength(20)]
+        [StringLength(50)]
         public string EmailAddress { get; set; }
 
         [Required(AllowEmptyStrings = false)]

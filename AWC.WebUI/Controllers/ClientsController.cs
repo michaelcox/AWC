@@ -21,11 +21,19 @@ namespace AWC.WebUI.Controllers
 
         public ActionResult Create()
         {
-            ClientEditViewModel clientEditViewModel = new ClientEditViewModel
-                                                          {
-                                                              UsStates = new SelectList(_repository.All<UsState>(), "StateCode","StateName")
-                                                          };
-            return View(clientEditViewModel);
+            try
+            {
+                ClientEditViewModel clientEditViewModel = new ClientEditViewModel
+                {
+                    UsStates = new SelectList(_repository.All<UsState>(), "StateCode", "StateName")
+                };
+                return View(clientEditViewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.Fatal(ex);
+                return RedirectToRoute("dashboard");
+            }
         } 
 
         [HttpPost]
@@ -48,11 +56,20 @@ namespace AWC.WebUI.Controllers
             {
                 _logger.Error(ex);
                 this.FlashError("There was an error while trying to create the client record.");
+            }
+
+            // Only reach this part if there is an error
+            try
+            {
+                clientEditViewModel.UsStates = new SelectList(_repository.All<UsState>(), "StateCode", "StateName");
                 return View(clientEditViewModel);
             }
-            
-            clientEditViewModel.UsStates = new SelectList(_repository.All<UsState>(), "StateCode", "StateName");
-            return View(clientEditViewModel);
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+                this.FlashError("There was an error accessing the database.");
+            }
+            return RedirectToAction("Create");
         }
         
         public ActionResult Edit(int id)
@@ -84,11 +101,12 @@ namespace AWC.WebUI.Controllers
                 {
                     Client client = _repository.Single<Client>(c => c.ClientId == clientEditViewModel.ClientId);
                     client.InjectFrom(clientEditViewModel);
-
                     _repository.CommitChanges();
                     this.FlashSuccess(string.Format("The client record for {0} {1} has been updated successfully.", client.FirstName, client.LastName));
                     return RedirectToAction("Edit", new { id = client.ClientId });
                 }
+
+                this.FlashError("There were validation errors while trying to edit the client record.");
             }
             catch (Exception ex)
             {
@@ -96,10 +114,18 @@ namespace AWC.WebUI.Controllers
                 this.FlashError("There was an error while trying to edit the client record.");
             }
 
-            this.FlashError("There were validation errors while trying to edit the client record.");
-            clientEditViewModel.UsStates = new SelectList(_repository.All<UsState>(), "StateCode", "StateName");
-            return View(clientEditViewModel);
-
+            // Only reach this part if there is an error
+            try
+            {
+                clientEditViewModel.UsStates = new SelectList(_repository.All<UsState>(), "StateCode", "StateName");
+                return View(clientEditViewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+                this.FlashError("There was an error accessing the database.");
+            }
+            return RedirectToAction("Create");
         }
 
         [HttpPost]

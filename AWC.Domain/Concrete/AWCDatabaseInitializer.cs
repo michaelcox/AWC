@@ -19,12 +19,13 @@ namespace AWC.Domain.Concrete
         }
     }
 
-    public class AWCDatabaseInitializer : DropCreateDatabaseIfModelChanges<AWCDatabase>
+    public class AWCDatabaseInitializer : DropCreateDatabaseAlways<AWCDatabase>
     {
         protected override void Seed(AWCDatabase context)
         {
-            context.UsStates.Add(new UsState { StateCode = "MA", StateName = "Massachusetts"});
-            context.UsStates.Add(new UsState { StateCode = "VT", StateName = "Vermont" });
+            context.UsStates.Add(new UsState { StateCode = "MD", StateName = "Maryland"});
+            context.UsStates.Add(new UsState { StateCode = "VA", StateName = "Virginia" });
+            context.UsStates.Add(new UsState { StateCode = "DC", StateName = "District of Columbia" });
             context.SaveChanges();
             base.Seed(context);
         }
