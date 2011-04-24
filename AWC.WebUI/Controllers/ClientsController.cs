@@ -1,13 +1,17 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using AWC.Domain.Abstract;
 using AWC.Domain.Entities;
+using AWC.WebUI.Helpers;
 using AWC.WebUI.Infrastructure.Logging;
 using AWC.WebUI.Models;
 using Omu.ValueInjecter;
 
 namespace AWC.WebUI.Controllers
 {
+    [UsesCountiesDropdown]
+    [UsesStatesDropdown]
     public class ClientsController : Controller
     {
         private readonly IRepository _repository;
@@ -21,30 +25,16 @@ namespace AWC.WebUI.Controllers
 
         public ActionResult Create()
         {
-            try
-            {
-                ClientEditViewModel clientEditViewModel = new ClientEditViewModel
-                {
-                    UsStates = new SelectList(_repository.All<UsState>(), "StateCode", "StateName")
-                };
-                return View(clientEditViewModel);
-            }
-            catch (Exception ex)
-            {
-                _logger.Fatal(ex);
-                return RedirectToRoute("dashboard");
-            }
+            return View(new ClientEditViewModel());
         } 
 
         [HttpPost]
-        public ActionResult Create(ClientEditViewModel clientEditViewModel)
+        public ActionResult Create(Client client)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Client client = new Client();
-                    client.InjectFrom(clientEditViewModel);
                     _repository.Add(client);
                     _repository.CommitChanges();
                     this.FlashSuccess(string.Format("A new client record for {0} {1} has been created successfully.", client.FirstName, client.LastName));
@@ -58,18 +48,7 @@ namespace AWC.WebUI.Controllers
                 this.FlashError("There was an error while trying to create the client record.");
             }
 
-            // Only reach this part if there is an error
-            try
-            {
-                clientEditViewModel.UsStates = new SelectList(_repository.All<UsState>(), "StateCode", "StateName");
-                return View(clientEditViewModel);
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex);
-                this.FlashError("There was an error accessing the database.");
-            }
-            return RedirectToAction("Create");
+            return View();
         }
         
         public ActionResult Edit(int id)
@@ -77,30 +56,37 @@ namespace AWC.WebUI.Controllers
             try
             {
                 Client client = _repository.Single<Client>(c => c.ClientId == id);
+                ClientNotesViewModel clientNotesViewModel = new ClientNotesViewModel
+                                                                {
+                                                                    ClientNotes =
+                                                                        _repository.All<ClientNote>().Where(c => c.ClientId == client.ClientId).ToList(),
+                                                                        ClientId = client.ClientId
+                                                                };
                 ClientEditViewModel clientEditViewModel = new ClientEditViewModel
-                {
-                    UsStates = new SelectList(_repository.All<UsState>(), "StateCode", "StateName")
-                };
+                                                              {
+                                                                  ClientNotesViewModel = clientNotesViewModel
+                                                              };
+
                 clientEditViewModel.InjectFrom(client);
                 return View(clientEditViewModel);
             }
             catch (Exception ex)
             {
                 this.FlashError("Unable to load client record from the database.");
-                _logger.Fatal(ex);
+                _logger.Error(ex);
                 return RedirectToAction("Create");
             }
         }
 
         [HttpPost]
-        public ActionResult Edit(ClientEditViewModel clientEditViewModel)
+        public ActionResult Edit(Client client)
         {
             try
             {
+                Client existingClient = _repository.Single<Client>(c => c.ClientId == client.ClientId);
                 if (ModelState.IsValid)
                 {
-                    Client client = _repository.Single<Client>(c => c.ClientId == clientEditViewModel.ClientId);
-                    client.InjectFrom(clientEditViewModel);
+                    existingClient.InjectFrom(client);
                     _repository.CommitChanges();
                     this.FlashSuccess(string.Format("The client record for {0} {1} has been updated successfully.", client.FirstName, client.LastName));
                     return RedirectToAction("Edit", new { id = client.ClientId });
@@ -114,17 +100,6 @@ namespace AWC.WebUI.Controllers
                 this.FlashError("There was an error while trying to edit the client record.");
             }
 
-            // Only reach this part if there is an error
-            try
-            {
-                clientEditViewModel.UsStates = new SelectList(_repository.All<UsState>(), "StateCode", "StateName");
-                return View(clientEditViewModel);
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex);
-                this.FlashError("There was an error accessing the database.");
-            }
             return RedirectToAction("Create");
         }
 
@@ -147,6 +122,28 @@ namespace AWC.WebUI.Controllers
                 this.FlashError("There was an error while trying to delete the client record.");
                 return RedirectToAction("Edit", new { id });
             }
+        }
+    
+        [HttpPost]
+        public ActionResult AddNote(ClientNote note)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _repository.Add(note);
+                    _repository.CommitChanges();
+                    this.FlashSuccess("Note added successfully.");
+                }
+                this.FlashError("There were validation errors while trying to add the note.");
+            }
+            catch(Exception ex)
+            {
+                _logger.Error(ex);
+                this.FlashError("There was an error while trying add the note.");
+            }
+
+            return RedirectToAction("Edit", new { id = note.ClientId });
         }
     }
 }

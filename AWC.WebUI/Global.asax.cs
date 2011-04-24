@@ -4,10 +4,12 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using AWC.Domain.Abstract;
 using AWC.Domain.Concrete;
+using AWC.WebUI.Helpers;
 using AWC.WebUI.Infrastructure.Logging;
 using Ninject;
 using Ninject.Modules;
 using Ninject.Web.Mvc;
+using Ninject.Web.Mvc.FilterBindingSyntax;
 
 namespace AWC.WebUI
 {
@@ -56,6 +58,7 @@ namespace AWC.WebUI
         {
             Bind<IRepository>().To<EFRepository>().InRequestScope();
             Bind<ILogger>().To<NLogLogger>().InRequestScope();
+            //this.BindFilter<UsesStatesDropdownAttribute>(FilterScope.Controller, 0);
         }
     }
 

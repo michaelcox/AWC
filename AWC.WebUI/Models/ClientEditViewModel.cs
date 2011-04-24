@@ -1,17 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using AWC.Domain.Entities;
 using DataAnnotationsExtensions;
 
 namespace AWC.WebUI.Models
 {
     public class ClientEditViewModel
     {
-        public ClientEditViewModel()
-        {
-            PopulateCounties();
-        }
-
         [HiddenInput(DisplayValue = false)]
         public int ClientId { get; set; }
 
@@ -68,18 +64,6 @@ namespace AWC.WebUI.Models
         [Display(Name = "How Did You Hear About Us?")]
         public string ReferredFrom { get; set; }
 
-        public SelectList UsStates { get; set; }
-
-        public SelectList Counties { get; set; }
-
-        public void PopulateCounties()
-        {
-            List<SelectListItem> items = new List<SelectListItem>
-                                             {
-                                                 new SelectListItem { Text = "Montgomery County", Value = "MC"},
-                                                 new SelectListItem { Text = "PG County", Value = "PG"}
-                                             };
-            Counties = new SelectList(items, "Value", "Text");
-        }
+        public ClientNotesViewModel ClientNotesViewModel { get; set; }
     }
 }

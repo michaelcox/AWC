@@ -1,6 +1,7 @@
 ﻿@model AWC.WebUI.Models.ClientEditViewModel
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
     @Html.ValidationSummary(true)
     <fieldset>
         <legend>Client</legend>
@@ -59,7 +60,7 @@
             @Html.LabelFor(model => model.StateCode)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.StateCode, Model.UsStates)
+            @Html.DropDownListFor(model => model.StateCode, new SelectList(ViewData["UsStates"] as IEnumerable, "StateCode", "StateName", Model.StateCode), "Select State...")
             @Html.ValidationMessageFor(model => model.StateCode)
         </div>
 
@@ -67,7 +68,7 @@
             @Html.LabelFor(model => model.CountyCode)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.CountyCode, Model.Counties)
+            @Html.DropDownListFor(model => model.CountyCode, new SelectList(ViewData["Counties"] as IEnumerable, "CountyCode", "CountyName", Model.CountyCode), "Select County...")
             @Html.ValidationMessageFor(model => model.CountyCode)
         </div>
 

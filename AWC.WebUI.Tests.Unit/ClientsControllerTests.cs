@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using AWC.Domain.Abstract;
 using AWC.Domain.Entities;
 using AWC.WebUI.Controllers;
@@ -61,23 +63,23 @@ namespace AWC.WebUI.Tests.Unit
             var logger = new Mock<ILogger>();
 
             var repository = new Mock<IRepository>();
-            ClientEditViewModel clientEditViewModel = new ClientEditViewModel
-                                                          {
-                                                              ClientId = 0,
-                                                              FirstName = "Michael",
-                                                              LastName = "Cox",
-                                                              AddressLine1 = "123 Fake St",
-                                                              City = "Auburn",
-                                                              StateCode = "MA",
-                                                              CountyCode = "PG",
-                                                              NumberOfAdults = 2,
-                                                              NumberOfChildren = 2
-                                                          };
+            Client client = new Client
+                                {
+                                    ClientId = 0,
+                                    FirstName = "Michael",
+                                    LastName = "Cox",
+                                    AddressLine1 = "123 Fake St",
+                                    City = "Auburn",
+                                    StateCode = "MA",
+                                    CountyCode = "PG",
+                                    NumberOfAdults = 2,
+                                    NumberOfChildren = 2
+                                };
 
             ClientsController clientsController = new ClientsController(repository.Object, logger.Object);
 
             // Act
-            RedirectToRouteResult result = clientsController.Create(clientEditViewModel) as RedirectToRouteResult;
+            RedirectToRouteResult result = clientsController.Create(client) as RedirectToRouteResult;
 
             // Assert
             Assert.IsTrue(clientsController.ModelState.IsValid);
@@ -91,9 +93,9 @@ namespace AWC.WebUI.Tests.Unit
         {
             // Arrange
             var logger = new Mock<ILogger>();
-
+            
             var repository = new Mock<IRepository>();
-            ClientEditViewModel clientEditViewModel = new ClientEditViewModel()
+            Client client = new Client
             {
                 ClientId = 1,
                 FirstName = "Michael",
@@ -106,20 +108,18 @@ namespace AWC.WebUI.Tests.Unit
                 NumberOfChildren = 2
             };
 
-            Client client = new Client {ClientId = 1};
-
-            repository.Setup(s => s.Single(It.IsAny<Expression<Func<Client, bool>>>())).Returns(client);
+            Client existingClient = new Client {ClientId = 1};
+            repository.Setup(s => s.Single(It.IsAny<Expression<Func<Client, bool>>>())).Returns(existingClient);
 
             ClientsController clientsController = new ClientsController(repository.Object, logger.Object);
 
             // Act
-            RedirectToRouteResult result = clientsController.Create(clientEditViewModel) as RedirectToRouteResult;
+            RedirectToRouteResult result = clientsController.Edit(client) as RedirectToRouteResult;
 
             // Assert
             Assert.IsTrue(clientsController.ModelState.IsValid);
             repository.Verify(v => v.CommitChanges(), Times.Once(), "Should save data to repository.");
             Assert.AreEqual("Edit", result.RouteValues["action"]);
-
         }
 
         [Test]
@@ -137,11 +137,39 @@ namespace AWC.WebUI.Tests.Unit
             clientsController.ModelState.AddModelError("", "Dummy error message.");
 
             // Act
-            ViewResult result = clientsController.Edit(new ClientEditViewModel()) as ViewResult;
+            ViewResult result = clientsController.Edit(new Client()) as ViewResult;
 
             // Assert
             Assert.IsFalse(clientsController.ModelState.IsValid);
             repository.Verify(v => v.CommitChanges(), Times.Never(), "Should not update the database with validation errors.");
+        }
+
+        [Test]
+        public void Should_Be_Able_To_Add_A_Note_To_A_Client_Record()
+        {
+            // Arrange
+            var logger = new Mock<ILogger>();
+            var repository = new Mock<IRepository>();
+
+            Client client = new Client { ClientId = 1 };
+            repository.Setup(s => s.Single(It.IsAny<Expression<Func<Client, bool>>>())).Returns(client);
+
+            ClientsController clientsController = new ClientsController(repository.Object, logger.Object);
+
+            ClientNote clientNote = new ClientNote
+                                        {
+                                            ClientId = 1,
+                                            Body = "Note information"
+                                        };
+
+            // Act
+            ViewResult result = clientsController.AddNote(clientNote) as ViewResult;
+
+            // Assert
+            Assert.IsTrue(clientsController.ModelState.IsValid);
+            repository.Verify(v => v.Add(clientNote), Times.Once());
+            repository.Verify(v => v.CommitChanges(), Times.Once());            
+
         }
     }
 }

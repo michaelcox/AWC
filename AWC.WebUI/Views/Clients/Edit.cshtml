@@ -1,9 +1,11 @@
 ﻿@model AWC.WebUI.Models.ClientEditViewModel
 
 @{
-    ViewBag.Title = "Edit Client";
+    ViewBag.Title = Model.FirstName + " " + Model.LastName;
 }
 
 <h2>Edit Client Record for @Model.FirstName @Model.LastName</h2>
 
 @{Html.RenderPartial("EditClient", Model);}
+
+@{Html.RenderPartial("ClientNotes", Model.ClientNotesViewModel);}

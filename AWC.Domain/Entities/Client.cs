@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace AWC.Domain.Entities
 {
@@ -45,5 +46,10 @@ namespace AWC.Domain.Entities
 
         [StringLength(100)]
         public string ReferredFrom { get; set; }
+
+        public virtual ICollection<ClientNote> ClientNotes { get; set; }
+
+        public virtual UsState UsState { get; set; }
+        public virtual County County { get; set; }
     }
 }

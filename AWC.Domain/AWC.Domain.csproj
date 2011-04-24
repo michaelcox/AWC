@@ -53,6 +53,8 @@
     <Compile Include="Concrete\EFRepository.cs" />
     <Compile Include="Concrete\AWCDatabaseInitializer.cs" />
     <Compile Include="Entities\Client.cs" />
+    <Compile Include="Entities\ClientNote.cs" />
+    <Compile Include="Entities\County.cs" />
     <Compile Include="Entities\UsState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

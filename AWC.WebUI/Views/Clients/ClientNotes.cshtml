@@ -1,0 +1,31 @@
+﻿@model AWC.WebUI.Models.ClientNotesViewModel
+
+@using (Html.BeginForm("AddNote", "Clients")) {
+    @Html.ValidationSummary(true)
+    
+    @Html.HiddenFor(model => model.ClientId)
+    @Html.Hidden("ClientNoteId", 0)
+    
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Body)
+    </div>
+    <div class="editor-field">
+        @Html.TextAreaFor(model => model.Body)
+        @Html.ValidationMessageFor(model => model.Body)
+    </div>
+
+    <p>
+        <input type="submit" value="Add Note" />
+    </p>
+}
+
+
+@foreach (var item in Model.ClientNotes)
+{
+    <div class="note">
+        @item.Body<br />
+        Posted on @Html.DateTimeDisplay(item.TimeStamp)
+    </div>
+}
+
+

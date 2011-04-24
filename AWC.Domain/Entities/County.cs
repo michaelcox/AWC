@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AWC.Domain.Entities
 {
-    public class UsState
+    public class County
     {
         [Key]
         [StringLength(2)]
-        public string StateCode { get; set; }
-        
-        [StringLength(20)]
-        public string StateName { get; set; }
+        public string CountyCode { get; set; }
+
+        [StringLength(100)]
+        public string CountyName { get; set; }
 
         public virtual ICollection<Client> Clients { get; set; }
     }
