@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-using AWC.Domain.Entities;
 using DataAnnotationsExtensions;
 
 namespace AWC.WebUI.Models
@@ -35,17 +33,18 @@ namespace AWC.WebUI.Models
         [StringLength(50, ErrorMessage = "Address is too long.")]
         public string AddressLine2 { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "City is required.")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter the city this client lives in.")]
         [StringLength(50, ErrorMessage = "City is too long.")]
         public string City { get; set; }
 
         [Display(Name = "State")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "State is required.")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter the state this client lives in.")]
         [MaxLength(2)]
         [MinLength(2)]
         public string StateCode { get; set; }
 
-        [Display(Name = "City/County")]
+        [Display(Name = "County")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter the county this client lives in.")]
         public string CountyCode { get; set; }
 
         [Display(Name = "Are You a Previous Client?")]

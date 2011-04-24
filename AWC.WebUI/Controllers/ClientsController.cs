@@ -100,7 +100,19 @@ namespace AWC.WebUI.Controllers
                 this.FlashError("There was an error while trying to edit the client record.");
             }
 
-            return RedirectToAction("Create");
+
+            ClientNotesViewModel clientNotesViewModel = new ClientNotesViewModel
+            {
+                ClientNotes = _repository.All<ClientNote>().Where(c => c.ClientId == client.ClientId).ToList(),
+                ClientId = client.ClientId
+            };
+            ClientEditViewModel clientEditViewModel = new ClientEditViewModel
+            {
+                ClientNotesViewModel = clientNotesViewModel
+            };
+
+            clientEditViewModel.InjectFrom(client);
+            return View(clientEditViewModel);
         }
 
         [HttpPost]
@@ -135,7 +147,10 @@ namespace AWC.WebUI.Controllers
                     _repository.CommitChanges();
                     this.FlashSuccess("Note added successfully.");
                 }
-                this.FlashError("There were validation errors while trying to add the note.");
+                else
+                {
+                    this.FlashError("There were validation errors while trying to add the note.");
+                }
             }
             catch(Exception ex)
             {
