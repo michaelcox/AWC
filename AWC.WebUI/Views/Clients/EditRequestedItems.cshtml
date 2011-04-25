@@ -1,0 +1,24 @@
+﻿@model AWC.WebUI.Models.RequestedItemsViewModel
+
+<table border="1" width="100%">
+    <tr>
+        <th>@Html.LabelFor(model => model.ItemName)</th>
+        <th>@Html.LabelFor(model => model.QuantityRequested)</th>
+        <th>@Html.LabelFor(model => model.Received)</th>
+        <th>@Html.LabelFor(model => model.QuantityReceived)</th>
+        <th>@Html.LabelFor(model => model.ReasonForNonReceipt)</th>
+    </tr>
+    @{
+        if (Model.RequestedItems != null && Model.RequestedItems.Count > 0)
+        {
+            foreach (var item in Model.RequestedItems)
+            {
+                Html.RenderPartial("EditRequestedItems", item);
+            }
+        }
+        else
+        {
+            Html.RenderAction("AddNewItem");
+        }
+    }
+</table>

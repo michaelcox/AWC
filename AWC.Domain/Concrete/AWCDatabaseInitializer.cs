@@ -10,26 +10,27 @@ namespace AWC.Domain.Concrete
         public DbSet<UsState> UsStates { get; set; }
         public DbSet<County> Counties { get; set; }
         public DbSet<ClientNote> ClientNotes { get; set; }
+        public DbSet<RequestedItem> RequestedItems { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Client>()
                 .HasRequired(c => c.UsState)
                 .WithMany(s => s.Clients)
-                .HasForeignKey(c => c.StateCode)
-                .WillCascadeOnDelete(false);
+                .HasForeignKey(c => c.StateCode);
 
             modelBuilder.Entity<Client>()
                 .HasRequired(c => c.County)
                 .WithMany(s => s.Clients)
-                .HasForeignKey(c => c.CountyCode)
-                .WillCascadeOnDelete(false);
+                .HasForeignKey(c => c.CountyCode);
 
-            modelBuilder.Entity<ClientNote>()
-                .HasRequired(c => c.Client)
-                .WithMany(c => c.ClientNotes)
-                .HasForeignKey(f => f.ClientId)
-                .WillCascadeOnDelete(true);
+            modelBuilder.Entity<Client>()
+                .HasMany(c => c.RequestedItems)
+                .WithRequired(i => i.Client);
+
+            modelBuilder.Entity<Client>()
+                .HasMany(c => c.ClientNotes)
+                .WithRequired(i => i.Client);
         }
     }
 

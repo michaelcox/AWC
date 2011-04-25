@@ -10,8 +10,6 @@ using Omu.ValueInjecter;
 
 namespace AWC.WebUI.Controllers
 {
-    [UsesCountiesDropdown]
-    [UsesStatesDropdown]
     public class ClientsController : Controller
     {
         private readonly IRepository _repository;
@@ -23,12 +21,16 @@ namespace AWC.WebUI.Controllers
             _logger = logger;
         }
 
+        [UsesCountiesDropdown]
+        [UsesStatesDropdown]
         public ActionResult Create()
         {
             return View(new ClientEditViewModel());
         } 
 
         [HttpPost]
+        [UsesCountiesDropdown]
+        [UsesStatesDropdown]
         public ActionResult Create(Client client)
         {
             try
@@ -50,7 +52,9 @@ namespace AWC.WebUI.Controllers
 
             return View();
         }
-        
+
+        [UsesCountiesDropdown]
+        [UsesStatesDropdown]
         public ActionResult Edit(int id)
         {
             try
@@ -68,6 +72,7 @@ namespace AWC.WebUI.Controllers
                                                               };
 
                 clientEditViewModel.InjectFrom(client);
+                clientEditViewModel.RequestedItemsViewModel = new RequestedItemsViewModel();
                 return View(clientEditViewModel);
             }
             catch (Exception ex)
@@ -79,6 +84,8 @@ namespace AWC.WebUI.Controllers
         }
 
         [HttpPost]
+        [UsesCountiesDropdown]
+        [UsesStatesDropdown]
         public ActionResult Edit(Client client)
         {
             try
@@ -160,5 +167,11 @@ namespace AWC.WebUI.Controllers
 
             return RedirectToAction("Edit", new { id = note.ClientId });
         }
+    
+        public ActionResult AddNewItem()
+        {
+            return View("EditRequestedItem", new RequestedItem());
+        }
+    
     }
 }
