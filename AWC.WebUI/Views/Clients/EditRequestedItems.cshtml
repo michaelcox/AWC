@@ -1,6 +1,6 @@
 ﻿@model AWC.WebUI.Models.RequestedItemsViewModel
 
-<table border="1" width="100%">
+<table border="1" width="100%" id="requestedItemsTable">
     <tr>
         <th>@Html.LabelFor(model => model.ItemName)</th>
         <th>@Html.LabelFor(model => model.QuantityRequested)</th>
@@ -13,12 +13,29 @@
         {
             foreach (var item in Model.RequestedItems)
             {
-                Html.RenderPartial("EditRequestedItems", item);
+                Html.RenderPartial("EditRequestedItem", item);
             }
         }
         else
         {
-            Html.RenderAction("AddNewItem");
+            Html.RenderPartial("EditRequestedItem", new AWC.Domain.Entities.RequestedItem());
         }
     }
 </table>
+
+<div id="addRequestedItemForm">
+@using (Html.BeginForm("AddNewItem", "Clients")) {
+    <input type="submit" id="addNewItem" value="Add New Item" />
+}
+</div>
+
+<script type="text/javascript" language="javascript">
+    $(function () {
+        $('#addRequestedItemForm form').ajaxForm({
+            type: 'POST',
+            success: function (html) {
+                $('#requestedItemsTable').append(html);
+            }
+        });
+    });
+</script>

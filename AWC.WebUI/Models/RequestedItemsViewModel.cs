@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using AWC.Domain.Entities;
 
 namespace AWC.WebUI.Models
@@ -21,15 +18,19 @@ namespace AWC.WebUI.Models
         public string ItemName { get; set; }
 
         [Required]
+        [Display(Name = "Quantity Requested")]
         public short QuantityRequested { get; set; }
 
         [Required]
+        [Display(Name = "Item Received")]
         public bool Received { get; set; }
 
         [Required]
+        [Display(Name = "Quantity Received")]
         public short QuantityReceived { get; set; }
 
         [StringLength(1000)]
+        [Display(Name = "Reason Item Not Received")]
         public string ReasonForNonReceipt { get; set; }
 
         [Required]

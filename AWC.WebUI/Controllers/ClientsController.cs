@@ -168,9 +168,10 @@ namespace AWC.WebUI.Controllers
             return RedirectToAction("Edit", new { id = note.ClientId });
         }
     
+        [HttpPost]
         public ActionResult AddNewItem()
         {
-            return View("EditRequestedItem", new RequestedItem());
+            return PartialView("EditRequestedItem", new RequestedItem());
         }
     
     }

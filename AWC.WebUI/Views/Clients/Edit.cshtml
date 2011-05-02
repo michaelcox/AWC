@@ -12,11 +12,11 @@
                                  
     Html.RenderPartial("EditClient", Model);
 
-    Html.RenderPartial("EditRequestedItems", Model.RequestedItemsViewModel);
-
     <p>
         <input type="submit" value="Save" />
     </p>
  }
+
+@{Html.RenderPartial("EditRequestedItems", Model.RequestedItemsViewModel);}
 
 @{Html.RenderPartial("ClientNotes", Model.ClientNotesViewModel);}
