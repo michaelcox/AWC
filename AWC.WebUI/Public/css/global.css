@@ -1,0 +1,232 @@
+﻿/**
+ * A Wider Circle (@link http://www.awidercircle.org/)
+ *
+ * @package AWC
+ * @since 1.0
+ *
+ * Author: Kevin M. Vess
+ *
+ */
+
+/* html5 reset */
+    html, body, div, span, object, iframe,
+    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+    abbr, address, cite, code,
+    del, dfn, em, img, ins, kbd, q, samp,
+    small, strong, sub, sup, var,
+    b, i,
+    dl, dt, dd, ol, ul, li,
+    fieldset, form, label, legend,
+    table, caption, tbody, tfoot, thead, tr, th, td,
+    article, aside, canvas, details, figcaption, figure, 
+    footer, header, hgroup, menu, nav, section, summary,
+    time, mark, audio, video {
+        margin:0;
+        padding:0;
+        border:0;
+        outline:0;
+        font-size:100%;
+        vertical-align:baseline;
+        background:transparent;
+    }
+    
+    body {
+        line-height:1;
+    }
+    
+    article,aside,details,figcaption,figure,
+    footer,header,hgroup,menu,nav,section { 
+        display:block;
+    }
+    
+    nav ul {
+        list-style:none;
+    }
+    
+    blockquote, q {
+        quotes:none;
+    }
+    
+    blockquote:before, blockquote:after,
+    q:before, q:after {
+        content:'';
+        content:none;
+    }
+    a {
+        margin:0;
+        padding:0;
+        font-size:100%;
+        vertical-align:baseline;
+        background:transparent;
+    }
+    ins {
+        background-color:#ff9;
+        color:#000;
+        text-decoration:none;
+    }
+    mark {
+        background-color:#ff9;
+        color:#000; 
+        font-style:italic;
+        font-weight:bold;
+    }
+    
+    del {
+        text-decoration: line-through;
+    }
+    
+    abbr[title], dfn[title] {
+        border-bottom:1px dotted;
+        cursor:help;
+    }
+    
+    table {
+        border-collapse:collapse;
+        border-spacing:0;
+    }
+    hr {
+        display:block;
+        height:1px;
+        border:0;   
+        border-top:1px solid #cccccc;
+        margin:1em 0;
+        padding:0;
+    }
+    
+    input, select {
+        vertical-align:middle;
+    }
+
+/* default */
+body{
+	background-color: #b1d4e5;
+    font: 14px/18px Georgia, Times, serif;
+	color: #58585a;
+}
+a{
+	color:#14afdb;
+	text-decoration:none;
+}
+a:hover{text-decoration:underline;}
+p { margin: 0 0 12px; }
+
+/* layout */
+#header {
+    width: 100%;
+    height: 189px;
+    background: url(../images/bg-header.gif) repeat-x 0 0;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+}
+#header .container {
+    width: 960px;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+}
+#header .logo {
+    width: 308px;
+    height: 65px;
+    background: url('../images/logo.gif') no-repeat;
+    font: 1px/1px sans-serif;
+    text-indent: -999999px;
+    margin: 35px 0 39px;
+    float: left;
+}
+#header .logo a {
+    width: 308px;
+    height: 65px;
+    display: block;
+}
+nav .menu-primary {
+    width: 960px;
+    height: 50px;
+    overflow: hidden;
+}
+nav .menu-primary li {
+    text-align: center;
+    padding: 0 0 8px;
+    float: left;
+}
+nav .menu-primary a {
+	color: #58585a;
+    text-decoration: none;
+    padding: 12px 22px;
+    display: block;
+}
+nav .menu-primary .active {
+	background: url(../images/bg-menu-active.gif) no-repeat center 100%;
+}
+nav .menu-primary .active a {
+	background: #14afdb;
+    color: #fff;
+}
+#header section {
+    width: 360px;
+    position: absolute;
+    top: 45px;
+    right: 0;
+}
+nav .menu-links {
+    font: 11px/13px Arial, Helvetica, sans-serif;
+    margin: 0 0 8px;
+	float: right;
+}
+nav .menu-links li {
+    background: url(../images/bg-global-li.gif) no-repeat 0 4px;
+    margin: 0 0 0 10px;
+    padding: 0 0 0 8px;
+    float: left;
+}
+#header .search {
+	float: right;
+}
+#header .search input{
+    text-transform: uppercase;
+    border: none;
+    float: left;
+}
+#header .search .text {
+    width: 282px;
+    background-color: #fff;
+    border: 1px solid #d5d5d5;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    font: 11px/13px Arial, Helvetica, sans-serif;
+    color: #b8b8b8;
+    margin: 1px 2px 0 0;
+    padding: 16px 14px 0 12px;
+}
+#header .search .btn-go {
+    width: 33px;
+    height: 33px;
+    background: url(../images/btn-go.gif) no-repeat;
+    font: 1px/1px sans-serif;
+    text-indent: -99999px;
+    cursor: pointer;
+}
+#content {
+    width: 974px;
+    background: #fff url(../images/bg-content.gif) repeat-y;
+    margin: -9px auto 30px;
+    position: relative;
+    z-index: 1;
+}
+#content .container {
+    background: url(../images/bg-content-top.gif) no-repeat 0 0;
+    padding: 20px 27px;
+}
+#content .b {
+    width: 974px;
+    height: 10px;
+    background: url(../images/bg-content.gif) no-repeat -974px 0;
+}
+#content h2 {
+    font:normal 24px/28px Georgia, Times, serif;
+    color: #58585a;
+    margin: 10px 0;
+    padding: 0 0 7px;
+    border-bottom: 2px solid #58585a;
+}

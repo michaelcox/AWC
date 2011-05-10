@@ -4,7 +4,7 @@
     ViewBag.Title = Model.FirstName + " " + Model.LastName;
 }
 
-<h2>Edit Client Record for @Model.FirstName @Model.LastName</h2>
+<h2>Edit Client Record for <em>@Model.FirstName @Model.LastName</em></h2>
 
 @{Html.RenderPartial("EditClient", Model);}
 
