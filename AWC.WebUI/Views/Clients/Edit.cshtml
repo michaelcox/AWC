@@ -6,6 +6,17 @@
 
 <h2>Edit Client Record for <em>@Model.FirstName @Model.LastName</em></h2>
 
-@{Html.RenderPartial("EditClient", Model);}
+@using (Html.BeginForm())
+{
+    Html.ValidationSummary(true);
+                                 
+    Html.RenderPartial("EditClient", Model);
+
+    Html.RenderPartial("EditRequestedItems", Model.RequestedItemsViewModel);
+
+    <p>
+        <input type="submit" value="Save" />
+    </p>
+ }
 
 @{Html.RenderPartial("ClientNotes", Model.ClientNotesViewModel);}

@@ -48,6 +48,7 @@ namespace AWC.Domain.Entities
         public string ReferredFrom { get; set; }
 
         public virtual ICollection<ClientNote> ClientNotes { get; set; }
+        public virtual ICollection<RequestedItem> RequestedItems { get; set; }
 
         public virtual UsState UsState { get; set; }
         public virtual County County { get; set; }

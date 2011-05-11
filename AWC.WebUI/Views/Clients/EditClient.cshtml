@@ -1,8 +1,5 @@
 ﻿@model AWC.WebUI.Models.ClientEditViewModel
 
-@using (Html.BeginForm())
-{
-    @Html.ValidationSummary(true)
     <fieldset>
         <legend>Client</legend>
 
@@ -103,9 +100,4 @@
             @Html.TextAreaFor(model => model.ReferredFrom)
             @Html.ValidationMessageFor(model => model.ReferredFrom)
         </div>
-
-        <p>
-            <input type="submit" value="Save" />
-        </p>
     </fieldset>
-}

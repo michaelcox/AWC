@@ -58,7 +58,6 @@ namespace AWC.WebUI
         {
             Bind<IRepository>().To<EFRepository>().InRequestScope();
             Bind<ILogger>().To<NLogLogger>().InRequestScope();
-            //this.BindFilter<UsesStatesDropdownAttribute>(FilterScope.Controller, 0);
         }
     }
 

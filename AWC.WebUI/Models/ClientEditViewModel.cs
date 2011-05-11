@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using AWC.Domain.Entities;
 using DataAnnotationsExtensions;
 
 namespace AWC.WebUI.Models
@@ -64,5 +66,7 @@ namespace AWC.WebUI.Models
         public string ReferredFrom { get; set; }
 
         public ClientNotesViewModel ClientNotesViewModel { get; set; }
+
+        public RequestedItemsViewModel RequestedItemsViewModel { get; set; }
     }
 }
