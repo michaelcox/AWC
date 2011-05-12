@@ -6,7 +6,15 @@
 
 <h2>Add New Client</h2>
 
-@{Html.RenderPartial("EditClient", Model);}
+@using (Html.BeginForm())
+{
+    Html.ValidationSummary(true);
+    Html.RenderPartial("EditClient", Model);
+ 
+    <p>
+        <input type="submit" value="Save" />
+    </p>
+}
 
 
 
