@@ -95,6 +95,7 @@
     <Compile Include="Infrastructure\Logging\NLogLogger.cs" />
     <Compile Include="Models\ClientEditViewModel.cs" />
     <Compile Include="Models\ClientNotesViewModel.cs" />
+    <Compile Include="Models\PartnerInfoViewModel.cs" />
     <Compile Include="Models\RequestedItemsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -148,7 +149,7 @@
     <Content Include="Views\Clients\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Clients\Edit.cshtml" />
+    <Content Include="Views\Clients\BasicInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Clients\EditClient.cshtml" />
@@ -161,6 +162,7 @@
     <Content Include="Views\Clients\ClientNotes.cshtml" />
     <Content Include="Views\Clients\EditRequestedItems.cshtml" />
     <Content Include="Views\Clients\EditRequestedItem.cshtml" />
+    <Content Include="Views\Clients\PartnerInfo.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

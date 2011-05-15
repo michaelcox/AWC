@@ -40,7 +40,7 @@ namespace AWC.WebUI.Controllers
                     _repository.Add(client);
                     _repository.CommitChanges();
                     this.FlashSuccess(string.Format("A new client record for {0} {1} has been created successfully.", client.FirstName, client.LastName));
-                    return RedirectToAction("Edit", new { id = client.ClientId });
+                    return RedirectToAction("BasicInfo", new { id = client.ClientId });
                 }
                 this.FlashError("There were validation errors while trying to create the client record.");
             }
@@ -55,7 +55,7 @@ namespace AWC.WebUI.Controllers
 
         [UsesCountiesDropdown]
         [UsesStatesDropdown]
-        public ActionResult Edit(int id)
+        public ActionResult BasicInfo(int id)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace AWC.WebUI.Controllers
         [HttpPost]
         [UsesCountiesDropdown]
         [UsesStatesDropdown]
-        public ActionResult Edit(Client client)
+        public ActionResult BasicInfo(Client client)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace AWC.WebUI.Controllers
                     existingClient.InjectFrom(client);
                     _repository.CommitChanges();
                     this.FlashSuccess(string.Format("The client record for {0} {1} has been updated successfully.", client.FirstName, client.LastName));
-                    return RedirectToAction("Edit", new { id = client.ClientId });
+                    return RedirectToAction("BasicInfo", new { id = client.ClientId });
                 }
 
                 this.FlashError("There were validation errors while trying to edit the client record.");
@@ -122,6 +122,11 @@ namespace AWC.WebUI.Controllers
             return View(clientEditViewModel);
         }
 
+        public ActionResult PartnerInfo(int id)
+        {
+            return View();
+        }
+
         [HttpPost]
         public ActionResult Delete(int id)
         {
@@ -139,7 +144,7 @@ namespace AWC.WebUI.Controllers
             {
                 _logger.Error(ex);
                 this.FlashError("There was an error while trying to delete the client record.");
-                return RedirectToAction("Edit", new { id });
+                return RedirectToAction("BasicInfo", new { id });
             }
         }
     
@@ -165,7 +170,7 @@ namespace AWC.WebUI.Controllers
                 this.FlashError("There was an error while trying add the note.");
             }
 
-            return RedirectToAction("Edit", new { id = note.ClientId });
+            return RedirectToAction("BasicInfo", new { id = note.ClientId });
         }
     
         [HttpPost]

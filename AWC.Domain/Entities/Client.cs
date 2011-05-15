@@ -47,10 +47,19 @@ namespace AWC.Domain.Entities
         [StringLength(100)]
         public string ReferredFrom { get; set; }
 
+        public bool IsReplacingFurniture { get; set; }
+
+        public int? CaseworkerId { get; set; }
+        
+        // Virtual / Foreign Keys
+        public virtual Caseworker Caseworker { get; set; }
+
         public virtual ICollection<ClientNote> ClientNotes { get; set; }
+        
         public virtual ICollection<RequestedItem> RequestedItems { get; set; }
 
         public virtual UsState UsState { get; set; }
+        
         public virtual County County { get; set; }
     }
 }

@@ -43,7 +43,7 @@ namespace AWC.WebUI.Tests.Unit
             ClientsController clientsController = new ClientsController(repository.Object, logger.Object);
 
             // Act
-            ActionResult result = clientsController.Edit(1);
+            ActionResult result = clientsController.BasicInfo(1);
 
             // Assert
             Assert.IsInstanceOf(typeof(ViewResult), result);
@@ -109,7 +109,7 @@ namespace AWC.WebUI.Tests.Unit
             ClientsController clientsController = new ClientsController(repository.Object, logger.Object);
 
             // Act
-            RedirectToRouteResult result = clientsController.Edit(client) as RedirectToRouteResult;
+            RedirectToRouteResult result = clientsController.BasicInfo(client) as RedirectToRouteResult;
 
             // Assert
             Assert.IsTrue(clientsController.ModelState.IsValid);
@@ -132,7 +132,7 @@ namespace AWC.WebUI.Tests.Unit
             clientsController.ModelState.AddModelError("", "Dummy error message.");
 
             // Act
-            ViewResult result = clientsController.Edit(new Client()) as ViewResult;
+            ViewResult result = clientsController.BasicInfo(new Client()) as ViewResult;
 
             // Assert
             Assert.IsFalse(clientsController.ModelState.IsValid);
