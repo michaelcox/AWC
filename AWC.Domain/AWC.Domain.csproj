@@ -59,6 +59,7 @@
     <Compile Include="Entities\PartneringOrg.cs" />
     <Compile Include="Entities\RequestedItem.cs" />
     <Compile Include="Entities\UsState.cs" />
+    <Compile Include="Metadata\OptionAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

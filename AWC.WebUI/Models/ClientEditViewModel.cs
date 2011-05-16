@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using AWC.Domain.Entities;
+using AWC.Domain.Metadata;
 using DataAnnotationsExtensions;
 
 namespace AWC.WebUI.Models
@@ -50,6 +51,8 @@ namespace AWC.WebUI.Models
         public string CountyCode { get; set; }
 
         [Display(Name = "Are You a Previous Client?")]
+        [Option(DisplayText = "Yes", Value = true)]
+        [Option(DisplayText = "No", Value = false)]
         public bool IsPreviousClient { get; set; }
 
         [Display(Name = "Number of Adults")]

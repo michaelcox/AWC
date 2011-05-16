@@ -6,6 +6,7 @@ using AWC.Domain.Abstract;
 using AWC.Domain.Concrete;
 using AWC.WebUI.Helpers;
 using AWC.WebUI.Infrastructure.Logging;
+using AWC.WebUI.Utils;
 using Ninject;
 using Ninject.Modules;
 using Ninject.Web.Mvc;
@@ -39,6 +40,8 @@ namespace AWC.WebUI
             AreaRegistration.RegisterAllAreas();
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
+
+            ModelMetadataProviders.Current = new CustomMetadataProvider();
 
             Initialize.Init(ConfigurationManager.ConnectionStrings["AWCDatabase"].ConnectionString);
         }
