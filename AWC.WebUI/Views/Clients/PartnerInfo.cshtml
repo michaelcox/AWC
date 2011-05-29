@@ -1,8 +1,64 @@
 ﻿@model AWC.WebUI.Models.PartnerInfoViewModel
 
 @{
-    ViewBag.Title = "PartnerInfo";
+    ViewBag.Title = "Partner Info for ";
 }
 
-<h2>PartnerInfo</h2>
+<h2>Partner Info for <em>@Model.ClientFirstName @Model.ClientLastName</em></h2>
+
+<p>
+    @Html.ActionLink("Edit Basic Info", "BasicInfo", new { id = Model.ClientId })
+</p>
+
+@using (Html.BeginForm()) {
+
+    @Html.EditorFor(model => model.ClientId)
+    @Html.EditorFor(model => model.CaseworkerId)
+
+    <div>
+        @Html.LabelFor(model => model.PartneringOrgId)
+
+        @Html.DropDownListFor(model => model.PartneringOrgId, new SelectList(ViewData["PartneringOrgs"] as IEnumerable, "PartneringOrgId", "OrganizationName", Model.PartneringOrgId), "Select Organization...")
+        @Html.ValidationMessageFor(model => model.PartneringOrgId)
+    </div>
+    
+    <div>
+    @Html.LabelFor(model => model.Department)
+    @Html.EditorFor(model => model.Department)
+    </div>
+
+    <div>
+    @Html.LabelFor(model => model.FirstName)
+    @Html.EditorFor(model => model.FirstName)
+    @Html.ValidationMessageFor(model => model.FirstName)
+    </div>
+
+    <div>
+    @Html.LabelFor(model => model.LastName)
+    @Html.EditorFor(model => model.LastName)
+    @Html.ValidationMessageFor(model => model.LastName)
+    </div>
+
+    <div>
+    @Html.LabelFor(model => model.ExternalId)
+    @Html.EditorFor(model => model.ExternalId)
+    </div>
+
+    <div>
+    @Html.LabelFor(model => model.Email)
+    @Html.EditorFor(model => model.Email)
+    </div>
+
+    <div>
+    @Html.LabelFor(model => model.IsReplacingFurniture)
+    @Html.EditorFor(model => model.IsReplacingFurniture)
+    </div>
+
+    <p>
+        <input type="submit" value="Save Changes" />
+        @Html.ActionLink("Cancel", "BasicInfo", new { id = Model.ClientId })
+    </p>
+}
+
+@{Html.RenderPartial("ClientNotes", Model.ClientNotesViewModel);}
 

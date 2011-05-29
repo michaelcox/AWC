@@ -6,6 +6,10 @@
 
 <h2>Edit Client Record for <em>@Model.FirstName @Model.LastName</em></h2>
 
+<p>
+    @Html.ActionLink("Edit Partner Info", "PartnerInfo", new { id = Model.ClientId })
+</p>
+
 @using (Html.BeginForm())
 {
     Html.ValidationSummary(true);

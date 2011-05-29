@@ -9,9 +9,11 @@ namespace AWC.Domain.Entities
         public int CaseworkerId { get; set; }
 
         [StringLength(50)]
+        [Required]
         public string FirstName { get; set; }
 
         [StringLength(50)]
+        [Required]
         public string LastName { get; set; }
 
         [StringLength(50)]

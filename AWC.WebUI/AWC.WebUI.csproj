@@ -86,9 +86,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\UsesCountiesOrgsDropdownAttribute.cs" />
     <Compile Include="Helpers\FlashHelper.cs" />
     <Compile Include="Helpers\TimeHelper.cs" />
-    <Compile Include="Helpers\UsesCountiesDropdownAttribute.cs" />
+    <Compile Include="Helpers\UsesPartnerOrgsDropdownAttribute.cs" />
     <Compile Include="Helpers\UsesStatesDropdownAttribute.cs" />
     <Compile Include="Infrastructure\Logging\ILogger.cs" />
     <Compile Include="Infrastructure\Logging\LogUtility.cs" />
@@ -163,8 +164,8 @@
     <Content Include="Views\Clients\ClientNotes.cshtml" />
     <Content Include="Views\Clients\EditRequestedItems.cshtml" />
     <Content Include="Views\Clients\EditRequestedItem.cshtml" />
-    <Content Include="Views\Clients\PartnerInfo.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\RadioButtons.cshtml" />
+    <Content Include="Views\Clients\PartnerInfo.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

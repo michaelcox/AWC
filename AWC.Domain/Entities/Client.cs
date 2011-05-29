@@ -47,6 +47,7 @@ namespace AWC.Domain.Entities
         [StringLength(100)]
         public string ReferredFrom { get; set; }
 
+        [Required]
         public bool IsReplacingFurniture { get; set; }
 
         public int? CaseworkerId { get; set; }

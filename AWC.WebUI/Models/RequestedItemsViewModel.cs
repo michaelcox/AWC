@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using AWC.Domain.Entities;
+using AWC.Domain.Metadata;
 
 namespace AWC.WebUI.Models
 {
     public class RequestedItemsViewModel
     {
-        [Key]
+        [Required]
         public int RequestedItemId { get; set; }
 
         [Required]
@@ -23,6 +24,8 @@ namespace AWC.WebUI.Models
 
         [Required]
         [Display(Name = "Item Received")]
+        [Option(DisplayText = "No", Value = false)]
+        [Option(DisplayText = "Yes", Value = true)]
         public bool Received { get; set; }
 
         [Required]

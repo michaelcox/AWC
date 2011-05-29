@@ -37,6 +37,7 @@ namespace AWC.WebUI.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    client.IsReplacingFurniture = false; // To be set on Partner Info page
                     _repository.Add(client);
                     _repository.CommitChanges();
                     this.FlashSuccess(string.Format("A new client record for {0} {1} has been created successfully.", client.FirstName, client.LastName));
@@ -122,9 +123,92 @@ namespace AWC.WebUI.Controllers
             return View(clientEditViewModel);
         }
 
+        [UsesPartnerOrgsDropdown]
         public ActionResult PartnerInfo(int id)
         {
-            return View();
+            try
+            {
+                Client client = _repository.Single<Client>(c => c.ClientId == id);
+                ClientNotesViewModel clientNotesViewModel = new ClientNotesViewModel
+                {
+                    ClientNotes =
+                        _repository.All<ClientNote>().Where(c => c.ClientId == client.ClientId).ToList(),
+                    ClientId = client.ClientId
+                };
+
+                var partnerInfoViewModel = new PartnerInfoViewModel
+                {
+                    IsReplacingFurniture = client.IsReplacingFurniture,
+                    ClientId = client.ClientId,
+                    ClientFirstName = client.FirstName,
+                    ClientLastName = client.LastName,
+                    ClientNotesViewModel = clientNotesViewModel
+                };
+
+                // Client may not have a caseworker assigned if they were only just created
+                Caseworker caseworker = client.Caseworker;
+                if (caseworker != null)
+                {
+                    partnerInfoViewModel.InjectFrom(caseworker);
+                }
+
+                return View(partnerInfoViewModel);
+            }
+            catch (Exception ex)
+            {
+                this.FlashError("Unable to load client record from the database.");
+                _logger.Error(ex);
+                return RedirectToAction("Create");
+            }
+
+        }
+
+        [HttpPost]
+        [UsesPartnerOrgsDropdown]
+        public ActionResult PartnerInfo(PartnerInfoViewModel partnerInfoViewModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Caseworker caseworker = null;
+                    if (partnerInfoViewModel.CaseworkerId > 0)
+                    {
+                        caseworker = _repository.Single<Caseworker>(c => c.CaseworkerId == partnerInfoViewModel.CaseworkerId);
+                    }
+                    else
+                    {
+                        caseworker = new Caseworker();
+                        _repository.Add(caseworker);
+                    }
+
+                    caseworker.InjectFrom(partnerInfoViewModel);
+                    _repository.CommitChanges();
+
+                    Client client = _repository.Single<Client>(c => c.ClientId == partnerInfoViewModel.ClientId);
+                    client.IsReplacingFurniture = partnerInfoViewModel.IsReplacingFurniture;
+                    client.CaseworkerId = caseworker.CaseworkerId;
+
+                    _repository.CommitChanges();
+
+                    this.FlashSuccess(string.Format("The client record for {0} {1} has been updated successfully.", client.FirstName, client.LastName));
+                    return RedirectToAction("PartnerInfo", new { id = client.ClientId });
+                }
+            }
+            catch(Exception ex)
+            {
+                this.FlashError("Unable to save changes to client record.");
+                _logger.Error(ex);
+            }
+
+            ClientNotesViewModel clientNotesViewModel = new ClientNotesViewModel
+            {
+                ClientNotes =
+                    _repository.All<ClientNote>().Where(c => c.ClientId == partnerInfoViewModel.ClientId).ToList(),
+                ClientId = partnerInfoViewModel.ClientId
+            };
+            partnerInfoViewModel.ClientNotesViewModel = clientNotesViewModel;
+            return View(partnerInfoViewModel);
         }
 
         [HttpPost]
