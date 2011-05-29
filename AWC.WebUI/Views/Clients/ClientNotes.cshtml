@@ -1,9 +1,14 @@
 ﻿@model AWC.WebUI.Models.ClientNotesViewModel
 
+@{
+    Layout = null;
+}
+
 @using (Html.BeginForm("AddNote", "Clients")) {
     @Html.ValidationSummary(true)
     
-    @Html.HiddenFor(model => model.ClientId)
+    @Html.EditorFor(model => model.ClientId)
+    @Html.EditorFor(model => model.RefAction)
     @Html.Hidden("ClientNoteId", 0)
     
     <div class="editor-label">

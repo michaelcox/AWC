@@ -66,8 +66,6 @@ namespace AWC.WebUI.Models
         [Display(Name = "How Did You Hear About Us?")]
         public string ReferredFrom { get; set; }
 
-        public ClientNotesViewModel ClientNotesViewModel { get; set; }
-
         public RequestedItemsViewModel RequestedItemsViewModel { get; set; }
     }
 }

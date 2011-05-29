@@ -50,12 +50,10 @@ namespace AWC.WebUI.Models
         [Option(DisplayText = "No", Value = false)]
         public bool IsReplacingFurniture { get; set; }
 
-        public ClientNotesViewModel ClientNotesViewModel { get; set; }
-
-        [ScaffoldColumn(false)]
+        [HiddenInput(DisplayValue = false)]
         public string ClientFirstName { get; set; }
 
-        [ScaffoldColumn(false)]
+        [HiddenInput(DisplayValue = false)]
         public string ClientLastName { get; set; }
     }
 }

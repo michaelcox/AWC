@@ -51,7 +51,9 @@ namespace AWC.WebUI.Controllers
                 this.FlashError("There was an error while trying to create the client record.");
             }
 
-            return View();
+            var clientEditViewModel = new ClientEditViewModel();
+            clientEditViewModel.InjectFrom(client);
+            return View(clientEditViewModel);
         }
 
         [UsesCountiesDropdown]
@@ -60,17 +62,8 @@ namespace AWC.WebUI.Controllers
         {
             try
             {
-                Client client = _repository.Single<Client>(c => c.ClientId == id);
-                ClientNotesViewModel clientNotesViewModel = new ClientNotesViewModel
-                                                                {
-                                                                    ClientNotes =
-                                                                        _repository.All<ClientNote>().Where(c => c.ClientId == client.ClientId).ToList(),
-                                                                        ClientId = client.ClientId
-                                                                };
-                ClientEditViewModel clientEditViewModel = new ClientEditViewModel
-                                                              {
-                                                                  ClientNotesViewModel = clientNotesViewModel
-                                                              };
+                var client = _repository.Single<Client>(c => c.ClientId == id);
+                var clientEditViewModel = new ClientEditViewModel();
 
                 clientEditViewModel.InjectFrom(client);
                 clientEditViewModel.RequestedItemsViewModel = new RequestedItemsViewModel();
@@ -91,7 +84,7 @@ namespace AWC.WebUI.Controllers
         {
             try
             {
-                Client existingClient = _repository.Single<Client>(c => c.ClientId == client.ClientId);
+                var existingClient = _repository.Single<Client>(c => c.ClientId == client.ClientId);
                 if (ModelState.IsValid)
                 {
                     existingClient.InjectFrom(client);
@@ -108,17 +101,7 @@ namespace AWC.WebUI.Controllers
                 this.FlashError("There was an error while trying to edit the client record.");
             }
 
-
-            ClientNotesViewModel clientNotesViewModel = new ClientNotesViewModel
-            {
-                ClientNotes = _repository.All<ClientNote>().Where(c => c.ClientId == client.ClientId).ToList(),
-                ClientId = client.ClientId
-            };
-            ClientEditViewModel clientEditViewModel = new ClientEditViewModel
-            {
-                ClientNotesViewModel = clientNotesViewModel
-            };
-
+            var clientEditViewModel = new ClientEditViewModel();
             clientEditViewModel.InjectFrom(client);
             return View(clientEditViewModel);
         }
@@ -129,20 +112,13 @@ namespace AWC.WebUI.Controllers
             try
             {
                 Client client = _repository.Single<Client>(c => c.ClientId == id);
-                ClientNotesViewModel clientNotesViewModel = new ClientNotesViewModel
-                {
-                    ClientNotes =
-                        _repository.All<ClientNote>().Where(c => c.ClientId == client.ClientId).ToList(),
-                    ClientId = client.ClientId
-                };
 
                 var partnerInfoViewModel = new PartnerInfoViewModel
                 {
                     IsReplacingFurniture = client.IsReplacingFurniture,
                     ClientId = client.ClientId,
                     ClientFirstName = client.FirstName,
-                    ClientLastName = client.LastName,
-                    ClientNotesViewModel = clientNotesViewModel
+                    ClientLastName = client.LastName
                 };
 
                 // Client may not have a caseworker assigned if they were only just created
@@ -201,13 +177,6 @@ namespace AWC.WebUI.Controllers
                 _logger.Error(ex);
             }
 
-            ClientNotesViewModel clientNotesViewModel = new ClientNotesViewModel
-            {
-                ClientNotes =
-                    _repository.All<ClientNote>().Where(c => c.ClientId == partnerInfoViewModel.ClientId).ToList(),
-                ClientId = partnerInfoViewModel.ClientId
-            };
-            partnerInfoViewModel.ClientNotesViewModel = clientNotesViewModel;
             return View(partnerInfoViewModel);
         }
 
@@ -232,8 +201,20 @@ namespace AWC.WebUI.Controllers
             }
         }
     
+        [ChildActionOnly]
+        public ActionResult ClientNotes(int clientId, string refAction)
+        {
+            ClientNotesViewModel clientNotesViewModel = new ClientNotesViewModel
+            {
+                ClientNotes = _repository.All<ClientNote>().Where(c => c.ClientId == clientId).ToList(),
+                ClientId = clientId
+            };
+
+            return View(clientNotesViewModel);
+        }
+
         [HttpPost]
-        public ActionResult AddNote(ClientNote note)
+        public ActionResult AddNote(ClientNote note, string refAction)
         {
             try
             {
@@ -254,7 +235,9 @@ namespace AWC.WebUI.Controllers
                 this.FlashError("There was an error while trying add the note.");
             }
 
-            return RedirectToAction("BasicInfo", new { id = note.ClientId });
+            // Adding in some assurances they can't force a bad redirect
+            refAction = (refAction == "PartnerInfo") ? "PartnerInfo" : "BasicInfo";
+            return RedirectToAction(refAction, new { id = note.ClientId });
         }
     
         [HttpPost]

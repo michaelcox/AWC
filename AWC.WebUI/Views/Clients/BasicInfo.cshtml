@@ -23,4 +23,4 @@
 
 @{Html.RenderPartial("EditRequestedItems", Model.RequestedItemsViewModel);}
 
-@{Html.RenderPartial("ClientNotes", Model.ClientNotesViewModel);}
+@{Html.RenderAction("ClientNotes", new { clientId = Model.ClientId, refAction = "BasicInfo" });}

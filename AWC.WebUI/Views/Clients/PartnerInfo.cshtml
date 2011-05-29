@@ -14,6 +14,8 @@
 
     @Html.EditorFor(model => model.ClientId)
     @Html.EditorFor(model => model.CaseworkerId)
+    @Html.EditorFor(model => model.ClientFirstName)
+    @Html.EditorFor(model => model.ClientLastName)
 
     <div>
         @Html.LabelFor(model => model.PartneringOrgId)
@@ -60,5 +62,5 @@
     </p>
 }
 
-@{Html.RenderPartial("ClientNotes", Model.ClientNotesViewModel);}
+@{Html.RenderAction("ClientNotes", new { clientId = Model.ClientId, refAction = "PartnerInfo"});}
 

@@ -158,7 +158,7 @@ namespace AWC.WebUI.Tests.Unit
                                         };
 
             // Act
-            ViewResult result = clientsController.AddNote(clientNote) as ViewResult;
+            ViewResult result = clientsController.AddNote(clientNote, "BasicInfo") as ViewResult;
 
             // Assert
             Assert.IsTrue(clientsController.ModelState.IsValid);
