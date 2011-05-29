@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace AWC.Domain.Entities
 {
@@ -10,8 +11,8 @@ namespace AWC.Domain.Entities
         [Required]
         public int ClientId { get; set; }
 
-        [Timestamp]
-        public byte[] TimeStamp { get; set; }
+        [Required]
+        public DateTime PostedDateTime { get; set; }
 
         [StringLength(4000)]
         [Required(AllowEmptyStrings = false)]

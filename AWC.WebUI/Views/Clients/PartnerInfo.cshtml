@@ -1,7 +1,7 @@
 ﻿@model AWC.WebUI.Models.PartnerInfoViewModel
 
 @{
-    ViewBag.Title = "Partner Info for ";
+    ViewBag.Title = string.Format("Partner Info for {0} {1}", Model.ClientFirstName, Model.ClientLastName);
 }
 
 <h2>Partner Info for <em>@Model.ClientFirstName @Model.ClientLastName</em></h2>

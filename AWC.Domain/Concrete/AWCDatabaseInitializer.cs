@@ -1,4 +1,5 @@
-﻿using System.Data.Entity.Infrastructure;
+﻿using System;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity;
 using AWC.Domain.Entities;
 
@@ -68,6 +69,24 @@ namespace AWC.Domain.Concrete
 
             context.PartneringOrgs.Add(new PartneringOrg { OrganizationName = "Health and Human Services"});
             context.PartneringOrgs.Add(new PartneringOrg { OrganizationName = "Department of the Interior" });
+
+            context.Clients.Add(new Client
+                                    {
+                                        FirstName = "Michael",
+                                        LastName = "Cox",
+                                        AddressLine1 = "123 Main Street",
+                                        AddressLine2 = "Suite 103",
+                                        City = "Worcester",
+                                        StateCode = "MD",
+                                        CountyCode = "MC",
+                                        NumberOfAdults = 1,
+                                        NumberOfChildren = 3,
+                                        IsPreviousClient = false,
+                                        IsReplacingFurniture = false,
+                                        ReferredFrom = "I'm not sure where I heard of this organization.",
+                                        CreatedDateTime = DateTime.Now,
+                                        LastUpdatedDateTime = DateTime.Now
+                                    });
 
             context.SaveChanges();
             base.Seed(context);

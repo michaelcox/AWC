@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace AWC.Domain.Entities
@@ -7,6 +8,15 @@ namespace AWC.Domain.Entities
     {
         [Key]
         public int ClientId { get; set; }
+
+        [Required]
+        public DateTime CreatedDateTime { get; set; }
+
+        [Required]
+        public DateTime LastUpdatedDateTime { get; set; }
+
+        [Timestamp]
+        public byte[] TimeStamp { get; set; }
 
         [Required(AllowEmptyStrings = false)]
         [StringLength(20)]

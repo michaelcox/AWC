@@ -33,11 +33,13 @@ namespace AWC.WebUI.Controllers
         [UsesStatesDropdown]
         public ActionResult Create(Client client)
         {
+            client.IsReplacingFurniture = false; // To be set on Partner Info page
+            client.CreatedDateTime = DateTime.UtcNow;
+            client.LastUpdatedDateTime = DateTime.UtcNow;
             try
             {
                 if (ModelState.IsValid)
                 {
-                    client.IsReplacingFurniture = false; // To be set on Partner Info page
                     _repository.Add(client);
                     _repository.CommitChanges();
                     this.FlashSuccess(string.Format("A new client record for {0} {1} has been created successfully.", client.FirstName, client.LastName));
@@ -88,6 +90,7 @@ namespace AWC.WebUI.Controllers
                 if (ModelState.IsValid)
                 {
                     existingClient.InjectFrom(client);
+                    client.LastUpdatedDateTime = DateTime.UtcNow;
                     _repository.CommitChanges();
                     this.FlashSuccess(string.Format("The client record for {0} {1} has been updated successfully.", client.FirstName, client.LastName));
                     return RedirectToAction("BasicInfo", new { id = client.ClientId });
@@ -161,9 +164,10 @@ namespace AWC.WebUI.Controllers
                     caseworker.InjectFrom(partnerInfoViewModel);
                     _repository.CommitChanges();
 
-                    Client client = _repository.Single<Client>(c => c.ClientId == partnerInfoViewModel.ClientId);
+                    var client = _repository.Single<Client>(c => c.ClientId == partnerInfoViewModel.ClientId);
                     client.IsReplacingFurniture = partnerInfoViewModel.IsReplacingFurniture;
                     client.CaseworkerId = caseworker.CaseworkerId;
+                    client.LastUpdatedDateTime = DateTime.UtcNow;
 
                     _repository.CommitChanges();
 
@@ -214,11 +218,12 @@ namespace AWC.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddNote(ClientNote note, string refAction)
+        public ActionResult AddNote(string body, int clientId, string refAction)
         {
+            var note = new ClientNote { PostedDateTime = DateTime.UtcNow };
             try
             {
-                if (ModelState.IsValid)
+                if (TryUpdateModel(note))
                 {
                     _repository.Add(note);
                     _repository.CommitChanges();
@@ -237,7 +242,7 @@ namespace AWC.WebUI.Controllers
 
             // Adding in some assurances they can't force a bad redirect
             refAction = (refAction == "PartnerInfo") ? "PartnerInfo" : "BasicInfo";
-            return RedirectToAction(refAction, new { id = note.ClientId });
+            return RedirectToAction(refAction, new { id = clientId });
         }
     
         [HttpPost]
