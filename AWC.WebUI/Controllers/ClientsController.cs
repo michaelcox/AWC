@@ -89,8 +89,9 @@ namespace AWC.WebUI.Controllers
                 var existingClient = _repository.Single<Client>(c => c.ClientId == client.ClientId);
                 if (ModelState.IsValid)
                 {
+                    client.CreatedDateTime = existingClient.CreatedDateTime; // Don't want to overwrite this with injection
                     existingClient.InjectFrom(client);
-                    client.LastUpdatedDateTime = DateTime.UtcNow;
+                    existingClient.LastUpdatedDateTime = DateTime.UtcNow;
                     _repository.CommitChanges();
                     this.FlashSuccess(string.Format("The client record for {0} {1} has been updated successfully.", client.FirstName, client.LastName));
                     return RedirectToAction("BasicInfo", new { id = client.ClientId });
@@ -150,7 +151,7 @@ namespace AWC.WebUI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    Caseworker caseworker = null;
+                    Caseworker caseworker;
                     if (partnerInfoViewModel.CaseworkerId > 0)
                     {
                         caseworker = _repository.Single<Caseworker>(c => c.CaseworkerId == partnerInfoViewModel.CaseworkerId);
@@ -210,20 +211,22 @@ namespace AWC.WebUI.Controllers
         {
             ClientNotesViewModel clientNotesViewModel = new ClientNotesViewModel
             {
+                ClientId = clientId,
                 ClientNotes = _repository.All<ClientNote>().Where(c => c.ClientId == clientId).ToList(),
-                ClientId = clientId
+                RefAction = refAction
             };
 
             return View(clientNotesViewModel);
         }
 
         [HttpPost]
-        public ActionResult AddNote(string body, int clientId, string refAction)
+        public ActionResult AddNote(ClientNote note, string refAction)
         {
-            var note = new ClientNote { PostedDateTime = DateTime.UtcNow };
+            note.ClientNoteId = 0;
+            note.PostedDateTime = DateTime.UtcNow;
             try
             {
-                if (TryUpdateModel(note))
+                if (ModelState.IsValid)
                 {
                     _repository.Add(note);
                     _repository.CommitChanges();
@@ -242,7 +245,7 @@ namespace AWC.WebUI.Controllers
 
             // Adding in some assurances they can't force a bad redirect
             refAction = (refAction == "PartnerInfo") ? "PartnerInfo" : "BasicInfo";
-            return RedirectToAction(refAction, new { id = clientId });
+            return RedirectToAction(refAction, new { id = note.ClientId });
         }
     
         [HttpPost]

@@ -80,7 +80,7 @@ namespace AWC.WebUI.Tests.Unit
             Assert.IsTrue(clientsController.ModelState.IsValid);
             repository.Verify(v => v.Add(It.IsAny<Client>()), Times.Once(), "Should add new client.");
             repository.Verify(v => v.CommitChanges(), Times.Once(), "Should save data to repository.");
-            Assert.AreEqual("Edit", result.RouteValues["action"]);
+            Assert.AreEqual("BasicInfo", result.RouteValues["action"]);
         }
 
         [Test]
@@ -114,7 +114,43 @@ namespace AWC.WebUI.Tests.Unit
             // Assert
             Assert.IsTrue(clientsController.ModelState.IsValid);
             repository.Verify(v => v.CommitChanges(), Times.Once(), "Should save data to repository.");
-            Assert.AreEqual("Edit", result.RouteValues["action"]);
+            Assert.AreEqual("BasicInfo", result.RouteValues["action"]);
+        }
+
+        [Test]
+        public void Should_Be_Able_To_Add_PartnerOrgInfo_To_Client()
+        {
+            // Arrange
+            var logger = new Mock<ILogger>();
+
+            var repository = new Mock<IRepository>();
+
+            var partnerInfoViewModel = new PartnerInfoViewModel
+            {
+                CaseworkerId = 0,
+                ClientId = 1,
+                FirstName = "Jane",
+                LastName = "Doe",
+                PartneringOrgId = 1,
+                IsReplacingFurniture = true
+            };
+
+            Client existingClient = new Client
+            {
+                ClientId = 1
+            };
+
+            repository.Setup(s => s.Single(It.IsAny<Expression<Func<Client, bool>>>())).Returns(existingClient);
+
+            ClientsController clientsController = new ClientsController(repository.Object, logger.Object);
+
+            // Act
+            var result = clientsController.PartnerInfo(partnerInfoViewModel) as RedirectToRouteResult;
+
+            // Assert
+            Assert.IsTrue(clientsController.ModelState.IsValid);
+            repository.Verify(v => v.CommitChanges(), Times.Exactly(2), "Should save data to repository.");
+            Assert.AreEqual("PartnerInfo", result.RouteValues["action"]);
         }
 
         [Test]
@@ -146,19 +182,130 @@ namespace AWC.WebUI.Tests.Unit
             var logger = new Mock<ILogger>();
             var repository = new Mock<IRepository>();
 
-            Client client = new Client { ClientId = 1 };
+            var client = new Client { ClientId = 1 };
             repository.Setup(s => s.Single(It.IsAny<Expression<Func<Client, bool>>>())).Returns(client);
+
+            var clientsController = new ClientsController(repository.Object, logger.Object);
+
+            var clientNote = new ClientNote
+                                        {
+                                            Body = "Note Information",
+                                            ClientId = 1
+                                        };
+
+            // Act
+            var result = clientsController.AddNote(clientNote, "BasicInfo") as ViewResult;
+
+            // Assert
+            Assert.IsTrue(clientsController.ModelState.IsValid);
+            repository.Verify(v => v.Add(clientNote), Times.Once());
+            repository.Verify(v => v.CommitChanges(), Times.Once());            
+
+        }
+
+        [Test]
+        public void Should_Set_CreateDate_LastUpdateDate_On_Create()
+        {
+            // Arrange
+            var logger = new Mock<ILogger>();
+
+            var repository = new Mock<IRepository>();
+            Client client = new Client
+            {
+                ClientId = 0,
+                FirstName = "Michael",
+                LastName = "Cox",
+                AddressLine1 = "123 Fake St",
+                City = "Auburn",
+                StateCode = "MA",
+                CountyCode = "PG",
+                NumberOfAdults = 2,
+                NumberOfChildren = 2
+            };
 
             ClientsController clientsController = new ClientsController(repository.Object, logger.Object);
 
             // Act
-            ViewResult result = clientsController.AddNote("Note Information", 0, "BasicInfo") as ViewResult;
+            RedirectToRouteResult result = clientsController.Create(client) as RedirectToRouteResult;
 
             // Assert
-            Assert.IsTrue(clientsController.ModelState.IsValid);
-            //repository.Verify(v => v.Add(clientNote), Times.Once());
-            repository.Verify(v => v.CommitChanges(), Times.Once());            
+            Assert.AreEqual(DateTime.UtcNow, client.CreatedDateTime);
+            Assert.AreEqual(DateTime.UtcNow, client.LastUpdatedDateTime);
+        }
 
+        [Test]
+        public void Should_Set_LastUpdateDate_On_Edit()
+        {
+            // Arrange
+            var logger = new Mock<ILogger>();
+
+            var repository = new Mock<IRepository>();
+            Client client = new Client
+            {
+                ClientId = 1,
+                FirstName = "Michael",
+                LastName = "Cox",
+                AddressLine1 = "123 Fake St",
+                City = "Auburn",
+                StateCode = "MA",
+                CountyCode = "PG",
+                NumberOfAdults = 2,
+                NumberOfChildren = 2
+            };
+
+            Client existingClient = new Client
+                                        {
+                                            ClientId = 1,
+                                            CreatedDateTime = new DateTime(2010, 1, 1, 6, 0, 0, DateTimeKind.Utc),
+                                            LastUpdatedDateTime = new DateTime(2010, 1, 1, 6, 0, 0, DateTimeKind.Utc)
+                                        };
+
+            repository.Setup(s => s.Single(It.IsAny<Expression<Func<Client, bool>>>())).Returns(existingClient);
+
+            ClientsController clientsController = new ClientsController(repository.Object, logger.Object);
+
+            // Act
+            var result = clientsController.BasicInfo(client) as RedirectToRouteResult;
+
+            // Assert
+            Assert.AreEqual(DateTime.UtcNow.ToString(), existingClient.LastUpdatedDateTime.ToString());
+            Assert.AreEqual(new DateTime(2010, 1, 1, 6, 0, 0, DateTimeKind.Utc), existingClient.CreatedDateTime);
+        }
+
+        [Test]
+        public void Should_Set_LastUpdateDate_On_PartnerInfo_Edit()
+        {
+            // Arrange
+            var logger = new Mock<ILogger>();
+
+            var repository = new Mock<IRepository>();
+
+            var partnerInfoViewModel = new PartnerInfoViewModel
+            {
+                CaseworkerId = 0,
+                ClientId = 1,
+                FirstName = "Jane",
+                LastName = "Doe",
+                PartneringOrgId = 1,
+                IsReplacingFurniture = true
+            };
+
+            Client existingClient = new Client
+            {
+                ClientId = 1,
+                CreatedDateTime = new DateTime(2010, 1, 1, 6, 0, 0, DateTimeKind.Utc)
+            };
+
+            repository.Setup(s => s.Single(It.IsAny<Expression<Func<Client, bool>>>())).Returns(existingClient);
+
+            ClientsController clientsController = new ClientsController(repository.Object, logger.Object);
+
+            // Act
+            var result = clientsController.PartnerInfo(partnerInfoViewModel) as RedirectToRouteResult;
+
+            // Assert
+            Assert.AreEqual(DateTime.UtcNow.ToString(), existingClient.LastUpdatedDateTime.ToString());
+            Assert.AreEqual(new DateTime(2010, 1, 1, 6, 0, 0, DateTimeKind.Utc), existingClient.CreatedDateTime);
         }
     }
 }
