@@ -52,6 +52,7 @@
     <Compile Include="Abstract\IRepository.cs" />
     <Compile Include="Concrete\EFRepository.cs" />
     <Compile Include="Concrete\AWCDatabaseInitializer.cs" />
+    <Compile Include="Entities\Appointment.cs" />
     <Compile Include="Entities\Caseworker.cs" />
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Entities\ClientNote.cs" />

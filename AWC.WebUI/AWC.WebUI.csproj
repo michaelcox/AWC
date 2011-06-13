@@ -83,6 +83,8 @@
   <ItemGroup>
     <Compile Include="App_Start\RegisterClientValidationExtensions.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
+    <Compile Include="Controllers\ScheduleController.cs" />
+    <Compile Include="Controllers\WaitListController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -98,6 +100,7 @@
     <Compile Include="Models\ClientNotesViewModel.cs" />
     <Compile Include="Models\PartnerInfoViewModel.cs" />
     <Compile Include="Models\RequestedItemsViewModel.cs" />
+    <Compile Include="Models\WaitListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\CustomMetadataProvider.cs" />
   </ItemGroup>

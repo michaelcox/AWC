@@ -4,11 +4,10 @@
     var options = ViewData.ModelMetadata.AdditionalValues["optionValues"];
 }
 
-@foreach (var option in (IDictionary<object, string>)options)
+@foreach (var option in ((IDictionary<object, string>)options).OrderByDescending(b => b.Key))
 {
     <label>
         @Html.RadioButton("", option.Key, option.Key.Equals(Model))
         @option.Value
     </label>
-    <br />
 }

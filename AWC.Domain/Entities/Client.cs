@@ -69,6 +69,8 @@ namespace AWC.Domain.Entities
         
         public virtual ICollection<RequestedItem> RequestedItems { get; set; }
 
+        public virtual ICollection<Appointment> Appointments { get; set; }
+
         public virtual UsState UsState { get; set; }
         
         public virtual County County { get; set; }
