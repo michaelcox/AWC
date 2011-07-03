@@ -41,6 +41,16 @@ namespace AWC.WebUI.Controllers
                 if (ModelState.IsValid)
                 {
                     _repository.Add(client);
+
+                    // On first create, add blank appointment
+                    var appt = new Appointment
+                                   {
+                                       ClientId = client.ClientId,
+                                       AppointmentStatusId = (byte) Constants.AppointmentStatusId.NotScheduled,
+                                       SentLetterOrEmail = false
+                                   };
+
+                    _repository.Add(appt);
                     _repository.CommitChanges();
                     this.FlashSuccess(string.Format("A new client record for {0} {1} has been created successfully.", client.FirstName, client.LastName));
                     return RedirectToAction("BasicInfo", new { id = client.ClientId });
@@ -65,9 +75,14 @@ namespace AWC.WebUI.Controllers
             try
             {
                 var client = _repository.Single<Client>(c => c.ClientId == id);
+
+                // Load the current appointment
+                var appt = _repository.Single<Appointment>(a => a.ClientId == id && a.AppointmentId != (byte)Constants.AppointmentStatusId.Closed);
+
                 var clientEditViewModel = new ClientEditViewModel();
 
                 clientEditViewModel.InjectFrom(client);
+                clientEditViewModel.InjectFrom(appt);
                 clientEditViewModel.RequestedItemsViewModel = new RequestedItemsViewModel();
                 return View(clientEditViewModel);
             }

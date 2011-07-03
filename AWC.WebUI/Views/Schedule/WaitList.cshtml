@@ -1,0 +1,15 @@
+﻿@model IEnumerable<AWC.WebUI.Models.WaitListViewModel>
+           
+@{
+    ViewBag.Title = "WaitList";
+}
+
+<h2>WaitList</h2>
+
+<div>
+    @foreach (var client in Model)
+    {
+        @client.FirstName @client.LastName
+    }
+</div>
+

@@ -66,8 +66,6 @@ namespace AWC.Domain.Entities
         public virtual Caseworker Caseworker { get; set; }
 
         public virtual ICollection<ClientNote> ClientNotes { get; set; }
-        
-        public virtual ICollection<RequestedItem> RequestedItems { get; set; }
 
         public virtual ICollection<Appointment> Appointments { get; set; }
 

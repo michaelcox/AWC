@@ -8,7 +8,7 @@ namespace AWC.Domain.Entities
         public int RequestedItemId { get; set; }
 
         [Required]
-        public int ClientId { get; set; }
+        public int AppointmentId { get; set; }
 
         [Required(AllowEmptyStrings = false)]
         [StringLength(100)]
@@ -29,6 +29,6 @@ namespace AWC.Domain.Entities
         [Required]
         public bool IsActive { get; set; }
 
-        public virtual Client Client { get; set; }
+        public virtual Appointment Appointment { get; set; }
     }
 }

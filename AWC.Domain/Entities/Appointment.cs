@@ -11,8 +11,7 @@ namespace AWC.Domain.Entities
         [Key]
         public int AppointmentId { get; set; }
 
-        [Required]
-        public DateTime ScheduledDateTime { get; set; }
+        public DateTime? ScheduledDateTime { get; set; }
 
         [Timestamp]
         public byte[] TimeStamp { get; set; }
@@ -25,13 +24,14 @@ namespace AWC.Domain.Entities
         public bool SentLetterOrEmail { get; set; }
 
         [Required]
-        public bool RequestFulfilled { get; set; }
-
-        [Required]
-        public byte StatusId { get; set; }
+        public byte AppointmentStatusId { get; set; }
 
         public int ClientId { get; set; }
 
         public virtual Client Client { get; set; }
+
+        public virtual ICollection<RequestedItem> RequestedItems { get; set; }
+
+        public virtual AppointmentStatus AppointmentStatus { get; set; }
     }
 }

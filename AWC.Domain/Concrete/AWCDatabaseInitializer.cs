@@ -15,6 +15,7 @@ namespace AWC.Domain.Concrete
         public DbSet<Caseworker> Caseworkers { get; set; }
         public DbSet<PartneringOrg> PartneringOrgs { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<AppointmentStatus> AppointmentStatuses { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -29,12 +30,9 @@ namespace AWC.Domain.Concrete
                 .HasForeignKey(c => c.CountyCode);
 
             modelBuilder.Entity<Client>()
-                .HasMany(c => c.RequestedItems)
-                .WithRequired(i => i.Client);
-
-            modelBuilder.Entity<Client>()
                 .HasMany(c => c.ClientNotes)
-                .WithRequired(i => i.Client);
+                .WithRequired(i => i.Client)
+                .HasForeignKey(c => c.ClientId);
 
             modelBuilder.Entity<Client>()
                 .HasOptional(c => c.Caseworker)
@@ -50,6 +48,11 @@ namespace AWC.Domain.Concrete
                 .HasRequired(a => a.Client)
                 .WithMany(c => c.Appointments)
                 .HasForeignKey(a => a.ClientId);
+
+            modelBuilder.Entity<Appointment>()
+                .HasMany(c => c.RequestedItems)
+                .WithRequired(i => i.Appointment)
+                .HasForeignKey(c => c.AppointmentId);
         }
     }
 
@@ -76,23 +79,39 @@ namespace AWC.Domain.Concrete
             context.PartneringOrgs.Add(new PartneringOrg { OrganizationName = "Health and Human Services"});
             context.PartneringOrgs.Add(new PartneringOrg { OrganizationName = "Department of the Interior" });
 
-            context.Clients.Add(new Client
-                                    {
-                                        FirstName = "Michael",
-                                        LastName = "Cox",
-                                        AddressLine1 = "123 Main Street",
-                                        AddressLine2 = "Suite 103",
-                                        City = "Worcester",
-                                        StateCode = "MD",
-                                        CountyCode = "MC",
-                                        NumberOfAdults = 1,
-                                        NumberOfChildren = 3,
-                                        IsPreviousClient = false,
-                                        IsReplacingFurniture = false,
-                                        ReferredFrom = "I'm not sure where I heard of this organization.",
-                                        CreatedDateTime = DateTime.Now,
-                                        LastUpdatedDateTime = DateTime.Now
-                                    });
+            context.AppointmentStatuses.Add(new AppointmentStatus { AppointmentStatusId = 1, Name = "Not Scheduled"});
+            context.AppointmentStatuses.Add(new AppointmentStatus { AppointmentStatusId = 2, Name = "Scheduled" });
+            context.AppointmentStatuses.Add(new AppointmentStatus { AppointmentStatusId = 3, Name = "Recheduled" });
+            context.AppointmentStatuses.Add(new AppointmentStatus { AppointmentStatusId = 4, Name = "Closed" });
+
+            var client = new Client
+                             {
+                                 FirstName = "Michael",
+                                 LastName = "Cox",
+                                 AddressLine1 = "123 Main Street",
+                                 AddressLine2 = "Suite 103",
+                                 City = "Worcester",
+                                 StateCode = "MD",
+                                 CountyCode = "MC",
+                                 NumberOfAdults = 1,
+                                 NumberOfChildren = 3,
+                                 IsPreviousClient = false,
+                                 IsReplacingFurniture = false,
+                                 ReferredFrom = "I'm not sure where I heard of this organization.",
+                                 CreatedDateTime = DateTime.UtcNow,
+                                 LastUpdatedDateTime = DateTime.UtcNow
+                             };
+
+            context.Clients.Add(client);
+
+            var appt = new Appointment
+                           {
+                               ClientId = client.ClientId,
+                               AppointmentStatusId = 1,
+                               SentLetterOrEmail = false
+                           };
+
+            context.Appointments.Add(appt);
 
             context.SaveChanges();
             base.Seed(context);

@@ -234,6 +234,36 @@ namespace AWC.WebUI.Tests.Unit
         }
 
         [Test]
+        public void Should_Set_Blank_Appointment_On_Create()
+        {
+            // Arrange
+            var logger = new Mock<ILogger>();
+
+            var repository = new Mock<IRepository>();
+            var client = new Client
+            {
+                ClientId = 0,
+                FirstName = "Michael",
+                LastName = "Cox",
+                AddressLine1 = "123 Fake St",
+                City = "Auburn",
+                StateCode = "MA",
+                CountyCode = "PG",
+                NumberOfAdults = 2,
+                NumberOfChildren = 2
+            };
+
+            var clientsController = new ClientsController(repository.Object, logger.Object);
+
+            // Act
+            var result = clientsController.Create(client) as RedirectToRouteResult;
+
+            // Assert
+            repository.Verify(r => r.Add(It.IsAny<Appointment>()), Times.Once(), "Should create blank appointment on first create.");
+            repository.Verify(r => r.CommitChanges(), Times.Once(), "Should persist data to database.");
+        }
+
+        [Test]
         public void Should_Set_LastUpdateDate_On_Edit()
         {
             // Arrange
