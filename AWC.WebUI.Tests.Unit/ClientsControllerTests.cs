@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Web.Mvc;
+using AWC.Domain;
 using AWC.Domain.Abstract;
 using AWC.Domain.Entities;
 using AWC.WebUI.Controllers;
+using AWC.WebUI.Helpers;
 using AWC.WebUI.Infrastructure.Logging;
 using AWC.WebUI.Models;
 using Moq;
@@ -36,11 +38,18 @@ namespace AWC.WebUI.Tests.Unit
             var logger = new Mock<ILogger>();
 
             var repository = new Mock<IRepository>();
-            Client client = new Client {ClientId = 1};
+            var client = new Client {ClientId = 1};
+            var appointment = new Appointment
+                                  {
+                                      AppointmentId = 1,
+                                      ClientId = 1,
+                                      AppointmentStatusId = (byte) Constants.AppointmentStatusId.Scheduled
+                                  };
 
             repository.Setup(s=> s.Single(It.IsAny<Expression<Func<Client, bool>>>())).Returns(client);
+            repository.Setup(s => s.Single(It.IsAny<Expression<Func<Appointment, bool>>>())).Returns(appointment);
 
-            ClientsController clientsController = new ClientsController(repository.Object, logger.Object);
+            var clientsController = new ClientsController(repository.Object, logger.Object);
 
             // Act
             ActionResult result = clientsController.BasicInfo(1);
@@ -270,7 +279,7 @@ namespace AWC.WebUI.Tests.Unit
             var logger = new Mock<ILogger>();
 
             var repository = new Mock<IRepository>();
-            Client client = new Client
+            var client = new Client
             {
                 ClientId = 1,
                 FirstName = "Michael",
@@ -283,23 +292,24 @@ namespace AWC.WebUI.Tests.Unit
                 NumberOfChildren = 2
             };
 
-            Client existingClient = new Client
-                                        {
-                                            ClientId = 1,
-                                            CreatedDateTime = new DateTime(2010, 1, 1, 6, 0, 0, DateTimeKind.Utc),
-                                            LastUpdatedDateTime = new DateTime(2010, 1, 1, 6, 0, 0, DateTimeKind.Utc)
-                                        };
+            var existingClient = new Client
+                                     {
+                                         ClientId = 1,
+                                         CreatedDateTime = new DateTime(2010, 1, 1, 6, 0, 0, DateTimeKind.Utc),
+                                         LastUpdatedDateTime = new DateTime(2010, 1, 1, 6, 0, 0, DateTimeKind.Utc)
+                                     };
 
             repository.Setup(s => s.Single(It.IsAny<Expression<Func<Client, bool>>>())).Returns(existingClient);
 
-            ClientsController clientsController = new ClientsController(repository.Object, logger.Object);
+            var clientsController = new ClientsController(repository.Object, logger.Object);
 
             // Act
             var result = clientsController.BasicInfo(client) as RedirectToRouteResult;
 
             // Assert
-            Assert.AreEqual(DateTime.UtcNow.ToString(), existingClient.LastUpdatedDateTime.ToString());
+            Assert.AreEqual(DateTime.UtcNow.ToString("f"), existingClient.LastUpdatedDateTime.ToString("f"));
             Assert.AreEqual(new DateTime(2010, 1, 1, 6, 0, 0, DateTimeKind.Utc), existingClient.CreatedDateTime);
+            Assert.AreEqual("BasicInfo", result.RouteValues["action"]);
         }
 
         [Test]

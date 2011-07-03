@@ -87,10 +87,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\Constants.cs" />
+    <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\UsesCountiesOrgsDropdownAttribute.cs" />
     <Compile Include="Helpers\FlashHelper.cs" />
-    <Compile Include="Helpers\TimeHelper.cs" />
     <Compile Include="Helpers\UsesPartnerOrgsDropdownAttribute.cs" />
     <Compile Include="Helpers\UsesStatesDropdownAttribute.cs" />
     <Compile Include="Infrastructure\Logging\ILogger.cs" />

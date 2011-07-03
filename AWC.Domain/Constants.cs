@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace AWC.WebUI.Helpers
+namespace AWC.Domain
 {
     public static class Constants
     {
@@ -13,6 +8,14 @@ namespace AWC.WebUI.Helpers
             Scheduled = 2,
             Rescheduled = 3,
             Closed = 4
+        }
+
+        public enum PhoneNumberTypeId
+        {
+            Home = 1,
+            Mobile = 2,
+            Work = 3,
+            Other = 4
         }
     }
 }

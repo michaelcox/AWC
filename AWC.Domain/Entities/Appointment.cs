@@ -11,6 +11,8 @@ namespace AWC.Domain.Entities
         [Key]
         public int AppointmentId { get; set; }
 
+        public DateTime CreatedDateTime { get; set; }
+
         public DateTime? ScheduledDateTime { get; set; }
 
         [Timestamp]

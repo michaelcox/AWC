@@ -8,6 +8,11 @@ namespace AWC.WebUI.Models
 {
     public class WaitListViewModel
     {
+        public IEnumerable<WaitlistClient> Clients { get; set; }
+    }
+
+    public class WaitlistClient
+    {
         public int ClientId { get; set; }
 
         public DateTime CreatedDateTime { get; set; }
@@ -16,8 +21,12 @@ namespace AWC.WebUI.Models
 
         public string LastName { get; set; }
 
-        public List<RequestedItem> RequestedItems { get; set; }
+        public string PrimaryPhoneNumber { get; set; }
 
-        public List<ClientNote> ClientNotes { get; set; }
+        public byte PhoneNumberTypeId { get; set; }
+
+        public IEnumerable<RequestedItem> RequestedItems { get; set; }
+
+        public IEnumerable<ClientNote> ClientNotes { get; set; }
     }
 }

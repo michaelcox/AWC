@@ -26,6 +26,18 @@ namespace AWC.Domain.Entities
         [StringLength(20)]
         public string LastName { get; set; }
 
+        [Required(AllowEmptyStrings = false)]
+        [StringLength(10)]
+        public string PrimaryPhoneNumber { get; set; }
+
+        [Required]
+        public byte PrimaryPhoneTypeId { get; set; }
+
+        [StringLength(10)]
+        public string SecondaryPhoneNumber { get; set; }
+
+        public byte SecondaryPhoneTypeId { get; set; }
+
         [StringLength(50)]
         public string EmailAddress { get; set; }
 

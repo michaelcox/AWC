@@ -1,4 +1,5 @@
-﻿@model IEnumerable<AWC.WebUI.Models.WaitListViewModel>
+﻿@using AWC.Domain
+@model AWC.WebUI.Models.WaitListViewModel
            
 @{
     ViewBag.Title = "WaitList";
@@ -6,10 +7,38 @@
 
 <h2>WaitList</h2>
 
-<div>
-    @foreach (var client in Model)
+<table width="100%">
+    <tr>
+        <th style="text-align: left;">Client Name</th>
+        <th style="text-align: left;">Primary Phone Number</th>
+        <th style="text-align: left;">Signup Date</th>
+        <th>Requested Items</th>
+        <th>Notes</th>
+        <th>Schedule</th>
+    </tr>
+    @foreach (var client in Model.Clients)
     {
-        @client.FirstName @client.LastName
+        <tr>
+            <td>@client.FirstName @client.LastName</td>
+            <td>@Html.PhoneDisplay(client.PrimaryPhoneNumber) (@Enum.Parse(typeof(Constants.PhoneNumberTypeId), client.PhoneNumberTypeId.ToString()).ToString())</td>
+            <td>@Html.DateDisplay(client.CreatedDateTime)</td>
+            <td>
+                @foreach (var item in client.RequestedItems)
+                {
+                    if (item.IsActive && (item.QuantityRequested > item.QuantityReceived))
+                    {
+                        @item.QuantityRequested @item.ItemName @:&nbsp;,
+                    }
+                }
+            </td>
+            <td>
+                @foreach (var note in client.ClientNotes)
+                {
+                    @Html.DateDisplay(note.PostedDateTime) @:&mdash; @note.Body<br />
+                }
+            </td>
+            <td>@Html.ActionLink("Schedule Now", "Create", "Schedule", new {clientId = client.ClientId})</td>
+        </tr>
     }
-</div>
+</table>
 

@@ -92,6 +92,8 @@ namespace AWC.Domain.Concrete
                                  AddressLine2 = "Suite 103",
                                  City = "Worcester",
                                  StateCode = "MD",
+                                 PrimaryPhoneNumber = "6175552993",
+                                 PrimaryPhoneTypeId = (byte)Constants.PhoneNumberTypeId.Mobile,
                                  CountyCode = "MC",
                                  NumberOfAdults = 1,
                                  NumberOfChildren = 3,
@@ -107,7 +109,8 @@ namespace AWC.Domain.Concrete
             var appt = new Appointment
                            {
                                ClientId = client.ClientId,
-                               AppointmentStatusId = 1,
+                               CreatedDateTime = DateTime.UtcNow,
+                               AppointmentStatusId = (byte)Constants.AppointmentStatusId.NotScheduled,
                                SentLetterOrEmail = false
                            };
 
