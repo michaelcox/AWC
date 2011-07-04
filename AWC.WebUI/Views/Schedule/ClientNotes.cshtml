@@ -1,0 +1,6 @@
+﻿@model IEnumerable<AWC.Domain.Entities.ClientNote>
+
+@foreach (var note in Model)
+{
+    @Html.DateDisplay(note.PostedDateTime) @:&mdash; @note.Body<br />
+}

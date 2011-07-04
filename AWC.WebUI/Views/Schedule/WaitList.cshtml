@@ -7,37 +7,26 @@
 
 <h2>WaitList</h2>
 
-<table width="100%">
+<table style="width: 100%;">
     <tr>
-        <th style="text-align: left;">Client Name</th>
-        <th style="text-align: left;">Primary Phone Number</th>
-        <th style="text-align: left;">Signup Date</th>
+        <th style="text-align: left;">Client</th>
+        <th style="text-align: left;">Intake Date</th>
         <th>Requested Items</th>
         <th>Notes</th>
-        <th>Schedule</th>
+        <th style="text-align:right;">Schedule</th>
     </tr>
     @foreach (var client in Model.Clients)
     {
         <tr>
-            <td>@client.FirstName @client.LastName</td>
-            <td>@Html.PhoneDisplay(client.PrimaryPhoneNumber) (@Enum.Parse(typeof(Constants.PhoneNumberTypeId), client.PhoneNumberTypeId.ToString()).ToString())</td>
+            <td><a href="@Url.Action("BasicInfo", "Clients", new {id = client.ClientId})">@client.FirstName @client.LastName</a> <br />@Html.PhoneDisplay(client.PrimaryPhoneNumber) (@Html.PhoneType(client.PhoneNumberTypeId))</td>
             <td>@Html.DateDisplay(client.CreatedDateTime)</td>
             <td>
-                @foreach (var item in client.RequestedItems)
-                {
-                    if (item.IsActive && (item.QuantityRequested > item.QuantityReceived))
-                    {
-                        @item.QuantityRequested @item.ItemName @:&nbsp;,
-                    }
-                }
+                @{Html.RenderPartial("RequestedItems", client.RequestedItems);}
             </td>
             <td>
-                @foreach (var note in client.ClientNotes)
-                {
-                    @Html.DateDisplay(note.PostedDateTime) @:&mdash; @note.Body<br />
-                }
+                @{Html.RenderPartial("ClientNotes", client.ClientNotes);}
             </td>
-            <td>@Html.ActionLink("Schedule Now", "Create", "Schedule", new {clientId = client.ClientId})</td>
+            <td style="text-align: right;">@Html.ActionLink("Schedule Now", "Create", new { clientId = client.ClientId })</td>
         </tr>
     }
 </table>

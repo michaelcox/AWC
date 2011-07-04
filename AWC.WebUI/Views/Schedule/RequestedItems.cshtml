@@ -1,0 +1,13 @@
+﻿@model IEnumerable<AWC.Domain.Entities.RequestedItem>
+
+@foreach (var item in Model)
+{
+    if (item.IsActive && (item.QuantityRequested > item.QuantityReceived))
+    {
+        @item.QuantityRequested @item.ItemName@:,&nbsp;
+    }
+    else
+    {
+        <span style="text-decoration: line-through;">@item.QuantityRequested @item.ItemName,&nbsp;</span>
+    }
+}

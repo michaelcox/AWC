@@ -1,0 +1,37 @@
+﻿@using AWC.WebUI.Models
+
+@model ScheduleViewModel
+
+@{
+    ViewBag.Title = "Schedule";
+}
+
+<h2>Scheduled Clients</h2>
+
+<table style="width: 100%;">
+    <tr>
+        <th style="text-align: left;">Scheduled Appt</th>
+        <th style="text-align: left;">Client</th>
+        <th>Requested Items</th>
+        <th>Notes</th>
+        <th>Confirmations</th>
+    </tr>
+    @foreach (var client in Model.Clients)
+    {
+        <tr>
+            <td>@Html.DateTimeDisplay(@client.ScheduledDateTime)</td>
+            <td><a href="@Url.Action("BasicInfo", "Clients", new {id = client.ClientId})">@client.FirstName @client.LastName</a> <br />@Html.PhoneDisplay(client.PrimaryPhoneNumber) (@Html.PhoneType(client.PhoneNumberTypeId))</td>
+            <td>
+                 @{Html.RenderPartial("RequestedItems", client.RequestedItems);}
+            </td>
+            <td>
+                @{Html.RenderPartial("ClientNotes", client.ClientNotes);}
+            </td>
+            <td>
+                @Html.CheckBox("TwoWeekConfirmation", client.TwoWeekConfirmation.HasValue) Two Week Confirmation<br/>
+                @Html.CheckBox("TwoDayConfirmation", client.TwoDayConfirmation.HasValue) Two Day Confirmation<br/>
+                @Html.CheckBox("LetterEmail", client.SentLetterOrEmail) Sent Letter/Email
+            </td>
+        </tr>
+    }
+</table>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AWC.Domain;
 
 namespace AWC.WebUI.Helpers
 {
@@ -31,6 +32,11 @@ namespace AWC.WebUI.Helpers
         {
             DateTime dateTime = gmtDateTime.ToLocalTime();
             return new MvcHtmlString(dateTime.ToShortDateString() + " " + dateTime.ToShortTimeString());
+        }
+
+        public static MvcHtmlString PhoneType(this HtmlHelper helper, byte phoneNumberTypeId)
+        {
+            return new MvcHtmlString(Enum.Parse(typeof (Constants.PhoneNumberTypeId), phoneNumberTypeId.ToString()).ToString());
         }
     }
 }
