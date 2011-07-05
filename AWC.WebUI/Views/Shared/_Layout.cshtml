@@ -25,9 +25,9 @@
             <h1 class="logo"><a href="#">A Wider Circle</a></h1>
             <nav>
                 <ul class="menu-primary">
-                    <li class="active"><a href="@Url.Action("Create", "Clients")">Client Info</a></li>
-                    <li><a href="@Url.Action("WaitList", "Schedule")">Client Wait List</a></li>
-                    <li><a href="@Url.Action("Confirmed", "Schedule")">Client Schedule</a></li>
+                    @Html.ActionMenuItem("Client Info", "Create", "Clients", true)
+                    @Html.ActionMenuItem("Wait List", "WaitList", "Schedule")
+                    @Html.ActionMenuItem("Schedule", "Confirmed", "Schedule")
                 </ul>
             </nav>
             <section>
