@@ -109,6 +109,11 @@
     <Content Include="Global.asax" />
     <Content Include="Public\css\global.css" />
     <Content Include="Public\css\Site.css" />
+    <Content Include="Public\fullcalendar\fullcalendar.css" />
+    <Content Include="Public\fullcalendar\fullcalendar.js" />
+    <Content Include="Public\fullcalendar\fullcalendar.min.js" />
+    <Content Include="Public\fullcalendar\fullcalendar.print.css" />
+    <Content Include="Public\fullcalendar\gcal.js" />
     <Content Include="Public\images\bg-content-top.gif" />
     <Content Include="Public\images\bg-content.gif" />
     <Content Include="Public\images\bg-global-li.gif" />
@@ -173,6 +178,7 @@
     <Content Include="Views\Schedule\Confirmed.cshtml" />
     <Content Include="Views\Schedule\RequestedItems.cshtml" />
     <Content Include="Views\Schedule\ClientNotes.cshtml" />
+    <Content Include="Views\Schedule\Calendar.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
