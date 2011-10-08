@@ -20,6 +20,22 @@
 </div>
 
 <div class="editor-label">
+    @Html.LabelFor(model => model.PrimaryPhoneNumber)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.PrimaryPhoneNumber)
+    @Html.ValidationMessageFor(model => model.PrimaryPhoneNumber)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.SecondaryPhoneNumber)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.SecondaryPhoneNumber)
+    @Html.ValidationMessageFor(model => model.SecondaryPhoneNumber)
+</div>
+
+<div class="editor-label">
     @Html.LabelFor(model => model.EmailAddress)
 </div>
 <div class="editor-field">

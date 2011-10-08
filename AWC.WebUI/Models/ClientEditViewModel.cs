@@ -20,6 +20,15 @@ namespace AWC.WebUI.Models
         [StringLength(20, ErrorMessage = "Last Name is too long.")]
         public string LastName { get; set; }
 
+        [Display(Name = "Primary Phone Number")]
+        [Required(ErrorMessage = "Phone number is required.")]
+        [StringLength(10, ErrorMessage = "Phone Number is too long.")]
+        public string PrimaryPhoneNumber { get; set; }
+
+        [Display(Name = "Secondary Phone Number")]
+        [StringLength(10, ErrorMessage = "Phone Number is too long.")]
+        public string SecondaryPhoneNumber { get; set; }
+
         [Display(Name = "Email Address")]
         [Email(ErrorMessage = "Email address is not valid.")]
         [StringLength(50, ErrorMessage = "Email Address is too long.")]
@@ -65,7 +74,5 @@ namespace AWC.WebUI.Models
 
         [Display(Name = "How Did You Hear About Us?")]
         public string ReferredFrom { get; set; }
-
-        public RequestedItemsViewModel RequestedItemsViewModel { get; set; }
     }
 }

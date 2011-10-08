@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace AWC.WebUI.Infrastructure.Logging
 {
@@ -29,6 +31,19 @@ namespace AWC.WebUI.Infrastructure.Logging
 			// Method where the error occurred
             strErrorMsg += Environment.NewLine + "TargetSite: " + logException.TargetSite;
 			return strErrorMsg;
+        }
+
+        public static string BuildExceptionMessage(ModelStateDictionary modelState)
+        {
+            string returnString = "";
+
+            foreach (var field in modelState.Values)
+            {
+                if (field.Errors.Count <= 0) continue;
+                returnString = field.Errors.Aggregate(returnString, (current, error) => current + ("Error: " + error.ErrorMessage + "\n"));
+            }
+
+            return returnString;
         }
     }
 }

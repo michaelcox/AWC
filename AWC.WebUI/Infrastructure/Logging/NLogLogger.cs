@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web.Mvc;
 using NLog;
 
 namespace AWC.WebUI.Infrastructure.Logging
@@ -29,6 +30,12 @@ namespace AWC.WebUI.Infrastructure.Logging
         public void Error(Exception x) {
             Error(LogUtility.BuildExceptionMessage(x));
         }
+
+        public void Error(ModelStateDictionary modelState)
+        {
+            Error(LogUtility.BuildExceptionMessage(modelState));
+        }
+
         public void Fatal(string message) {
             _logger.Fatal(message);
         }

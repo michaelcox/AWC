@@ -32,31 +32,36 @@ namespace AWC.WebUI.Controllers
         [HttpPost]
         [UsesCountiesDropdown]
         [UsesStatesDropdown]
-        public ActionResult Create(Client client)
+        public ActionResult Create(ClientEditViewModel client)
         {
-            client.IsReplacingFurniture = false; // To be set on Partner Info page
-            client.CreatedDateTime = DateTime.UtcNow;
-            client.LastUpdatedDateTime = DateTime.UtcNow;
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _repository.Add(client);
+                    var newClient = new Client();
+                    newClient.InjectFrom(client);
+                    newClient.IsReplacingFurniture = false; // To be set on Partner Info page
+                    newClient.CreatedDateTime = DateTime.UtcNow;
+                    newClient.LastUpdatedDateTime = DateTime.UtcNow;
+
+                    _repository.Add(newClient);
 
                     // On first create, add blank appointment
                     var appt = new Appointment
                                    {
-                                       ClientId = client.ClientId,
+                                       ClientId = newClient.ClientId,
                                        AppointmentStatusId = (byte) Constants.AppointmentStatusId.NotScheduled,
+                                       CreatedDateTime = DateTime.UtcNow,
                                        SentLetterOrEmail = false
                                    };
 
                     _repository.Add(appt);
                     _repository.CommitChanges();
-                    this.FlashSuccess(string.Format("A new client record for {0} {1} has been created successfully.", client.FirstName, client.LastName));
-                    return RedirectToAction("BasicInfo", new { id = client.ClientId });
+                    this.FlashSuccess(string.Format("A new client record for {0} {1} has been created successfully.", newClient.FirstName, newClient.LastName));
+                    return RedirectToAction("BasicInfo", new { id = newClient.ClientId });
                 }
                 this.FlashError("There were validation errors while trying to create the client record.");
+                _logger.Error(ModelState);
             }
             catch(Exception ex)
             {
@@ -64,9 +69,7 @@ namespace AWC.WebUI.Controllers
                 this.FlashError("There was an error while trying to create the client record.");
             }
 
-            var clientEditViewModel = new ClientEditViewModel();
-            clientEditViewModel.InjectFrom(client);
-            return View(clientEditViewModel);
+            return View(client);
         }
 
         [UsesCountiesDropdown]
@@ -84,7 +87,6 @@ namespace AWC.WebUI.Controllers
 
                 clientEditViewModel.InjectFrom(client);
                 clientEditViewModel.InjectFrom(appt);
-                clientEditViewModel.RequestedItemsViewModel = new RequestedItemsViewModel();
                 return View(clientEditViewModel);
             }
             catch (Exception ex)
@@ -98,14 +100,13 @@ namespace AWC.WebUI.Controllers
         [HttpPost]
         [UsesCountiesDropdown]
         [UsesStatesDropdown]
-        public ActionResult BasicInfo(Client client)
+        public ActionResult BasicInfo(ClientEditViewModel client)
         {
             try
             {
                 var existingClient = _repository.Single<Client>(c => c.ClientId == client.ClientId);
                 if (ModelState.IsValid)
                 {
-                    client.CreatedDateTime = existingClient.CreatedDateTime; // Don't want to overwrite this with injection
                     existingClient.InjectFrom(client);
                     existingClient.LastUpdatedDateTime = DateTime.UtcNow;
                     _repository.CommitChanges();
@@ -114,6 +115,7 @@ namespace AWC.WebUI.Controllers
                 }
 
                 this.FlashError("There were validation errors while trying to edit the client record.");
+                _logger.Error(ModelState);
             }
             catch (Exception ex)
             {
@@ -121,9 +123,7 @@ namespace AWC.WebUI.Controllers
                 this.FlashError("There was an error while trying to edit the client record.");
             }
 
-            var clientEditViewModel = new ClientEditViewModel();
-            clientEditViewModel.InjectFrom(client);
-            return View(clientEditViewModel);
+            return View(client);
         }
 
         [UsesPartnerOrgsDropdown]
@@ -221,14 +221,19 @@ namespace AWC.WebUI.Controllers
                 return RedirectToAction("BasicInfo", new { id });
             }
         }
+
+        public ActionResult Items(int id)
+        {
+            return View();
+        }
     
         [ChildActionOnly]
-        public ActionResult ClientNotes(int clientId, string refAction)
+        public ActionResult ClientNotes(int id, string refAction)
         {
-            ClientNotesViewModel clientNotesViewModel = new ClientNotesViewModel
+            var clientNotesViewModel = new ClientNotesViewModel
             {
-                ClientId = clientId,
-                ClientNotes = _repository.All<ClientNote>().Where(c => c.ClientId == clientId).ToList(),
+                ClientId = id,
+                ClientNotes = _repository.All<ClientNote>().Where(c => c.ClientId == id).ToList(),
                 RefAction = refAction
             };
 

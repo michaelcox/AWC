@@ -83,6 +83,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RegisterClientValidationExtensions.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
     <Compile Include="Controllers\WaitlistController.cs" />
     <Compile Include="Global.asax.cs">
@@ -175,11 +176,12 @@
     <Content Include="Views\Shared\EditorTemplates\RadioButtons.cshtml" />
     <Content Include="Views\Clients\PartnerInfo.cshtml" />
     <Content Include="Views\Schedule\Confirmed.cshtml" />
-    <Content Include="Views\Schedule\RequestedItems.cshtml" />
-    <Content Include="Views\Schedule\ClientNotes.cshtml" />
     <Content Include="Views\Schedule\Calendar.cshtml" />
     <Content Include="Views\Waitlist\Index.cshtml" />
     <Content Include="Views\Schedule\SubNavigation.cshtml" />
+    <Content Include="Views\Shared\RequestedItems.cshtml" />
+    <Content Include="Views\Shared\ClientNotes.cshtml" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

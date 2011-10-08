@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using AWC.Domain.Entities;
-using AWC.Domain.Metadata;
 
 namespace AWC.WebUI.Models
 {
@@ -21,12 +20,6 @@ namespace AWC.WebUI.Models
         [Required]
         [Display(Name = "Quantity Requested")]
         public short QuantityRequested { get; set; }
-
-        [Required]
-        [Display(Name = "Item Received")]
-        [Option(DisplayText = "No", Value = false)]
-        [Option(DisplayText = "Yes", Value = true)]
-        public bool Received { get; set; }
 
         [Required]
         [Display(Name = "Quantity Received")]

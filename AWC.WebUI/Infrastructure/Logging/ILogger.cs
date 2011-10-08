@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web.Mvc;
 
 
 namespace AWC.WebUI.Infrastructure.Logging
@@ -10,6 +11,7 @@ namespace AWC.WebUI.Infrastructure.Logging
         void Debug(string message);
         void Error(string message);
         void Error(Exception x);
+        void Error(ModelStateDictionary modelState);
         void Fatal(string message);
         void Fatal(Exception x);
 

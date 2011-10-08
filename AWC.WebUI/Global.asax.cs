@@ -36,9 +36,27 @@ namespace AWC.WebUI
             );
 
             routes.MapRoute(
-                "Clients", // Route name
-                "Clients/{action}/{id}", // URL with parameters
-                new { controller = "Clients", action = "Create", id = UrlParameter.Optional } // Parameter defaults
+                "CreateClient", // Route name
+                "Clients/Create", // URL with parameters
+                new { controller = "Clients", action = "Create" }
+            );
+
+            routes.MapRoute(
+                "ClientInfo", // Route name
+                "Clients/{id}", // URL with parameters
+                new { controller = "Clients", action = "BasicInfo", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                "ClientDetail", // Route name
+                "Clients/{id}/{action}", // URL with parameters
+                new { controller = "Clients"}
+            );
+
+            routes.MapRoute(
+                "Homepage", // Route name
+                "", // URL with parameters
+                new { controller = "Dashboard", action = "Index" }
             );
 
         }

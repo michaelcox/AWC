@@ -18,9 +18,6 @@ namespace AWC.Domain.Entities
         public short QuantityRequested { get; set; }
 
         [Required]
-        public bool Received { get; set; }
-
-        [Required]
         public short QuantityReceived { get; set; }
 
         [StringLength(1000)]
