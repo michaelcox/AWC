@@ -4,13 +4,11 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using AWC.Domain.Abstract;
 using AWC.Domain.Concrete;
-using AWC.WebUI.Helpers;
 using AWC.WebUI.Infrastructure.Logging;
 using AWC.WebUI.Utils;
 using Ninject;
 using Ninject.Modules;
 using Ninject.Web.Mvc;
-using Ninject.Web.Mvc.FilterBindingSyntax;
 
 namespace AWC.WebUI
 {
@@ -26,8 +24,20 @@ namespace AWC.WebUI
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                "Default", // Route name
-                "{controller}/{action}/{id}", // URL with parameters
+                "Waitlist", // Route name
+                "Waitlist", // URL with parameters
+                new { controller = "Waitlist", action = "Index" }
+            );
+
+            routes.MapRoute(
+                "Schedule", // Route name
+                "Schedule/{action}", // URL with parameters
+                new { controller = "Schedule", action = "Confirmed" }
+            );
+
+            routes.MapRoute(
+                "Clients", // Route name
+                "Clients/{action}/{id}", // URL with parameters
                 new { controller = "Clients", action = "Create", id = UrlParameter.Optional } // Parameter defaults
             );
 

@@ -38,14 +38,14 @@ namespace AWC.WebUI.Controllers
             return View();
         }
 
-        public JsonResult CalendarEvents(int? start, int? end, string callback)
+        public JsonResult CalendarEvents(int? start, int? end)
         {
             DateTime t = DateTime.Today;
 
             var startDate = start.HasValue ? ConvertFromUnixTimestamp(start.Value) : DateTime.Today;
             var endDate = end.HasValue
                               ? ConvertFromUnixTimestamp(end.Value)
-                              : new DateTime(t.Year, t.Month, 1, 11, 59, 59).AddMonths(1).AddDays(-1);
+                              : new DateTime(t.Year, t.Month, 1, 11, 59, 59).AddMonths(3).AddDays(-1);
 
             var clients = GetScheduledClients();
 
@@ -62,30 +62,6 @@ namespace AWC.WebUI.Controllers
 
             return Json(events, JsonRequestBehavior.AllowGet);
             //return string.Format("{0}({1});", callback, "");
-        }
-
-        public ActionResult WaitList()
-        {
-            // Load clients/appointments with eager loading
-            var clients = from c in _repository.All<Client>().Include("ClientNotes")
-                          join a in _repository.All<Appointment>().Include("RequestedItems") on c equals a.Client
-                          where a.AppointmentStatusId == (byte)Constants.AppointmentStatusId.NotScheduled
-                          orderby  a.CreatedDateTime ascending 
-                          select new WaitlistClient
-                                     {
-                                         ClientId = c.ClientId,
-                                         CreatedDateTime = c.CreatedDateTime,
-                                         FirstName = c.FirstName,
-                                         LastName = c.LastName,
-                                         PrimaryPhoneNumber = c.PrimaryPhoneNumber,
-                                         PhoneNumberTypeId = c.PrimaryPhoneTypeId,
-                                         RequestedItems = a.RequestedItems,
-                                         ClientNotes = c.ClientNotes
-                                     };
-
-            var waitlistViewModel = new WaitListViewModel {Clients = clients};
-
-            return View(waitlistViewModel);
         }
 
         public ActionResult Create(int clientId)

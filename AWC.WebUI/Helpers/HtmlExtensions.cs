@@ -63,13 +63,13 @@ namespace AWC.WebUI.Helpers
             var routeAction = routeData.GetRequiredString("action");
             
             // Check the area - return false if we're not in the right area
-            if (!string.IsNullOrEmpty(areaName) && !string.IsNullOrEmpty(routeArea) && routeArea != areaName)
+            if (!string.IsNullOrEmpty(areaName) && !string.IsNullOrEmpty(routeArea) && !routeArea.IsSameAs(areaName,  StringComparison.InvariantCultureIgnoreCase))
             {
                 return false;
             }
 
             // Check the controller
-            if (!string.IsNullOrEmpty(controllerName) && !string.IsNullOrEmpty(routeController) && routeController != controllerName)
+            if (!string.IsNullOrEmpty(controllerName) && !string.IsNullOrEmpty(routeController) && !routeController.IsSameAs(controllerName, StringComparison.InvariantCultureIgnoreCase))
             {
                 return false;
             }
@@ -84,12 +84,30 @@ namespace AWC.WebUI.Helpers
                 return true;
             }
 
-            if (actionNames.Contains(routeAction))
+            if (actionNames.Contains(routeAction, StringComparison.InvariantCultureIgnoreCase))
             {
                 return true;
             }
 
             return false;
         }
+
+        private static bool IsSameAs(this string original, string value, StringComparison comparisonType)
+        {
+            return original.IndexOf(value, comparisonType) >= 0;
+        }
+
+        private static bool Contains(this IEnumerable<string> list, string value, StringComparison comparisonType)
+        {
+            foreach (string s in list)
+            {
+                if (s.IsSameAs(value, comparisonType))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
+
 }
