@@ -4,6 +4,13 @@
     ViewBag.Title = Model.FirstName + " " + Model.LastName;
 }
 
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        $("#PrimaryPhoneNumber").mask("(999) 999-9999");
+        $("#SecondaryPhoneNumber").mask("(999) 999-9999");
+    });
+</script>
+
 <h2>Edit Client Record for <em>@Model.FirstName @Model.LastName</em></h2>
 
 <p>

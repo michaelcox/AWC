@@ -54,6 +54,12 @@ namespace AWC.WebUI
             );
 
             routes.MapRoute(
+                "Search", // Route name
+                "Search/{action}", // URL with parameters
+                new { controller = "Search", action = "Index" }
+            );
+
+            routes.MapRoute(
                 "Homepage", // Route name
                 "", // URL with parameters
                 new { controller = "Dashboard", action = "Index" }

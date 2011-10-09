@@ -22,11 +22,11 @@ namespace AWC.WebUI.Models
 
         [Display(Name = "Primary Phone Number")]
         [Required(ErrorMessage = "Phone number is required.")]
-        [StringLength(10, ErrorMessage = "Phone Number is too long.")]
+        [StringLength(14, ErrorMessage = "Phone Number is too long.")]
         public string PrimaryPhoneNumber { get; set; }
 
         [Display(Name = "Secondary Phone Number")]
-        [StringLength(10, ErrorMessage = "Phone Number is too long.")]
+        [StringLength(14, ErrorMessage = "Phone Number is too long.")]
         public string SecondaryPhoneNumber { get; set; }
 
         [Display(Name = "Email Address")]

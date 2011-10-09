@@ -85,6 +85,7 @@
     <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\WaitlistController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -102,6 +103,7 @@
     <Compile Include="Models\PartnerInfoViewModel.cs" />
     <Compile Include="Models\RequestedItemsViewModel.cs" />
     <Compile Include="Models\ScheduleViewModel.cs" />
+    <Compile Include="Models\SearchResultViewModel.cs" />
     <Compile Include="Models\WaitListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\CustomMetadataProvider.cs" />
@@ -127,6 +129,7 @@
     <Content Include="Public\images\jbar-bg.png" />
     <Content Include="Public\images\logo.gif" />
     <Content Include="Public\js\jquery.form.js" />
+    <Content Include="Public\js\jquery.maskedinput-1.3.min.js" />
     <Content Include="Public\js\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Public\js\jquery.validate.min.js" />
     <Content Include="Public\js\jquery.validate.unobtrusive.min.js" />
