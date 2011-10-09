@@ -11,17 +11,17 @@
     @Html.EditorFor(model => model.RefAction)
     @Html.Hidden("ClientNoteId", 0)
     
-    <div class="editor-label">
-        @Html.LabelFor(model => model.Body)
-    </div>
-    <div class="editor-field">
+<div class="notes">
+    <h3>Notes:</h3>
+
+    <div class="field-block">
+        @*@Html.LabelFor(model => model.Body)*@
         @Html.TextAreaFor(model => model.Body)
         @Html.ValidationMessageFor(model => model.Body)
     </div>
 
-    <p>
-        <input type="submit" value="Add Note" />
-    </p>
+    <input type="submit" value="Add Note" class="button" />
+</div>
 }
 
 
