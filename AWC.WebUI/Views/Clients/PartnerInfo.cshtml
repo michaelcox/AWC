@@ -6,12 +6,7 @@
 
 <h2>Edit Record for <em>@Model.ClientFirstName @Model.ClientLastName</em></h2>
 
-<nav class="menu">
-    <ul>
-        <li>@Html.ActionLink("Basic Info", "BasicInfo", new { id = Model.ClientId })</li>
-        <li class="current_page_item">@Html.ActionLink("Partner Info", "PartnerInfo", new { id = Model.ClientId })</li>
-    </ul>
-</nav>
+@{Html.RenderPartial("SubNavigation", Model.ClientId);}
 
 @using (Html.BeginForm()) {
 

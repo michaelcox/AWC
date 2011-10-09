@@ -4,21 +4,9 @@
     ViewBag.Title = Model.FirstName + " " + Model.LastName;
 }
 
-<script language="javascript" type="text/javascript">
-    $(document).ready(function () {
-        $("#PrimaryPhoneNumber").mask("(999) 999-9999");
-        $("#SecondaryPhoneNumber").mask("(999) 999-9999");
-    });
-</script>
-
 <h2>Edit Record for <em>@Model.FirstName @Model.LastName</em></h2>
 
-<nav class="menu">
-    <ul>
-        <li class="current_page_item">@Html.ActionLink("Basic Info", "BasicInfo", new { id = Model.ClientId })</li>
-        <li>@Html.ActionLink("Partner Info", "PartnerInfo", new { id = Model.ClientId })</li>
-    </ul>
-</nav>
+@{Html.RenderPartial("SubNavigation", Model.ClientId);}
 
 @using (Html.BeginForm())
 {

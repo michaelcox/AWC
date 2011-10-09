@@ -32,10 +32,10 @@
             <h1 class="logo"><a href="/">A Wider Circle</a></h1>
             <nav>
                 <ul class="menu-primary">
-                    @Html.ActionMenuItem("Dashboard", "Index", "Dashboard", true)
-                    @Html.ActionMenuItem("Client Info", "Create", "Clients", true)
-                    @Html.ActionMenuItem("Wait List", "Index", "Waitlist")
-                    @Html.ActionMenuItem("Schedule", "Confirmed", "Schedule", true)
+                    @Html.ActionMenuItem("Dashboard", "Index", "Dashboard", true, null)
+                    @Html.ActionMenuItem("Client Info", "Create", "Clients", true, null)
+                    @Html.ActionMenuItem("Wait List", "Index", "Waitlist", false, null)
+                    @Html.ActionMenuItem("Schedule", "Confirmed", "Schedule", true, null)
                 </ul>
             </nav>
             <section>

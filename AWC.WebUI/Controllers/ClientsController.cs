@@ -245,7 +245,11 @@ namespace AWC.WebUI.Controllers
 
         public ActionResult Items(int id)
         {
-            return View();
+            var client = _repository.Single<Client>(c => c.ClientId == id);
+
+            var rivm = new RequestedItemsViewModel();
+            rivm.InjectFrom(client);
+            return View(rivm);
         }
     
         [ChildActionOnly]

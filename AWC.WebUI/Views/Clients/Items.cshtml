@@ -1,0 +1,11 @@
+﻿@model AWC.WebUI.Models.RequestedItemsViewModel
+
+@{
+    ViewBag.Title = "Requested Items";
+}
+
+<h2>Edit Record for <em>@Model.FirstName @Model.LastName</em></h2>
+
+@{Html.RenderPartial("SubNavigation", Model.ClientId);}
+
+<p>The items the client requested will go here</p>

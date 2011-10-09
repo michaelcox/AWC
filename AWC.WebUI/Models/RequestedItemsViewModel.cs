@@ -12,6 +12,10 @@ namespace AWC.WebUI.Models
         [Required]
         public int ClientId { get; set; }
 
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
         [Required(AllowEmptyStrings = false)]
         [StringLength(100)]
         [Display(Name = "Item Name")]
