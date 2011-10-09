@@ -11,11 +11,14 @@
     });
 </script>
 
-<h2>Edit Client Record for <em>@Model.FirstName @Model.LastName</em></h2>
+<nav class="menu">
+    <ul>
+        <li class="current_page_item">@Html.ActionLink("Basic Info", "BasicInfo", new { id = Model.ClientId })</li>
+        <li>@Html.ActionLink("Partner Info", "PartnerInfo", new { id = Model.ClientId })</li>
+    </ul>
+</nav>
 
-<p>
-    @Html.ActionLink("Edit Partner Info", "PartnerInfo", new { id = Model.ClientId })
-</p>
+<h2>Basic Information for <em>@Model.FirstName @Model.LastName</em></h2>
 
 @using (Html.BeginForm())
 {
@@ -23,9 +26,7 @@
                                  
     Html.RenderPartial("EditClient", Model);
 
-    <p>
-        <input type="submit" value="Save" />
-    </p>
+    <input type="submit" value="Save" class="button" />
  }
 
 @{Html.RenderAction("ClientNotes", new { id = Model.ClientId, refAction = "BasicInfo" });}

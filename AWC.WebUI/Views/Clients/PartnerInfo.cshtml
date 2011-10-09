@@ -4,11 +4,14 @@
     ViewBag.Title = string.Format("Partner Info for {0} {1}", Model.ClientFirstName, Model.ClientLastName);
 }
 
-<h2>Partner Info for <em>@Model.ClientFirstName @Model.ClientLastName</em></h2>
+<nav class="menu">
+    <ul>
+        <li>@Html.ActionLink("Basic Info", "BasicInfo", new { id = Model.ClientId })</li>
+        <li class="current_page_item">@Html.ActionLink("Partner Info", "PartnerInfo", new { id = Model.ClientId })</li>
+    </ul>
+</nav>
 
-<p>
-    @Html.ActionLink("Edit Basic Info", "BasicInfo", new { id = Model.ClientId })
-</p>
+<h2>Partner Information for <em>@Model.ClientFirstName @Model.ClientLastName</em></h2>
 
 @using (Html.BeginForm()) {
 
@@ -16,50 +19,53 @@
     @Html.EditorFor(model => model.CaseworkerId)
     @Html.EditorFor(model => model.ClientFirstName)
     @Html.EditorFor(model => model.ClientLastName)
-
-    <div>
-        @Html.LabelFor(model => model.PartneringOrgId)
-
-        @Html.DropDownListFor(model => model.PartneringOrgId, new SelectList(ViewData["PartneringOrgs"] as IEnumerable, "PartneringOrgId", "OrganizationName", Model.PartneringOrgId), "Select Organization...")
-        @Html.ValidationMessageFor(model => model.PartneringOrgId)
-    </div>
     
-    <div>
-    @Html.LabelFor(model => model.Department)
-    @Html.EditorFor(model => model.Department)
+    <div class="block">
+    
+        <div class="field-block">
+            @Html.LabelFor(model => model.PartneringOrgId)
+
+            @Html.DropDownListFor(model => model.PartneringOrgId, new SelectList(ViewData["PartneringOrgs"] as IEnumerable, "PartneringOrgId", "OrganizationName", Model.PartneringOrgId), "Select Organization...")
+            @Html.ValidationMessageFor(model => model.PartneringOrgId)
+        </div>
+    
+        <div class="field-block">
+            @Html.LabelFor(model => model.Department)
+            @Html.EditorFor(model => model.Department)
+        </div>
+    
+        <div class="field-block">
+            @Html.LabelFor(model => model.FirstName)
+            @Html.EditorFor(model => model.FirstName)
+            @Html.ValidationMessageFor(model => model.FirstName)
+        </div>
+    
+        <div class="field-block">
+            @Html.LabelFor(model => model.LastName)
+            @Html.EditorFor(model => model.LastName)
+            @Html.ValidationMessageFor(model => model.LastName)
+        </div>
+    
+        <div class="field-block">
+            @Html.LabelFor(model => model.ExternalId)
+            @Html.EditorFor(model => model.ExternalId)
+        </div>
+    
+        <div class="field-block">
+            @Html.LabelFor(model => model.Email)
+            @Html.EditorFor(model => model.Email)
+        </div>
+    
+        <div class="field-block">
+            @Html.LabelFor(model => model.IsReplacingFurniture)
+            <div class="list">
+                @Html.EditorFor(model => model.IsReplacingFurniture)
+            </div>
+        </div>
     </div>
 
-    <div>
-    @Html.LabelFor(model => model.FirstName)
-    @Html.EditorFor(model => model.FirstName)
-    @Html.ValidationMessageFor(model => model.FirstName)
-    </div>
-
-    <div>
-    @Html.LabelFor(model => model.LastName)
-    @Html.EditorFor(model => model.LastName)
-    @Html.ValidationMessageFor(model => model.LastName)
-    </div>
-
-    <div>
-    @Html.LabelFor(model => model.ExternalId)
-    @Html.EditorFor(model => model.ExternalId)
-    </div>
-
-    <div>
-    @Html.LabelFor(model => model.Email)
-    @Html.EditorFor(model => model.Email)
-    </div>
-
-    <div>
-    @Html.LabelFor(model => model.IsReplacingFurniture)
-    @Html.EditorFor(model => model.IsReplacingFurniture)
-    </div>
-
-    <p>
-        <input type="submit" value="Save Changes" />
-        @Html.ActionLink("Cancel", "BasicInfo", new { id = Model.ClientId })
-    </p>
+    <input type="submit" value="Save" class="button" />
+    @*@Html.ActionLink("Cancel", "BasicInfo", new { id = Model.ClientId })*@
 }
 
 @{Html.RenderAction("ClientNotes", new { clientId = Model.ClientId, refAction = "PartnerInfo"});}

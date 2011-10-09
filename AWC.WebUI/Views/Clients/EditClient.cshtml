@@ -3,122 +3,104 @@
 
 @Html.EditorFor(model => model.ClientId)
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.FirstName)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.FirstName)
-    @Html.ValidationMessageFor(model => model.FirstName)
+<div class="block">
+    <h3>About</h3>
+
+    <div class="field-block">
+        @Html.LabelFor(model => model.FirstName)
+        @Html.EditorFor(model => model.FirstName)
+        @Html.ValidationMessageFor(model => model.FirstName)
+    </div>
+
+    <div class="field-block">
+        @Html.LabelFor(model => model.LastName)
+        @Html.EditorFor(model => model.LastName)
+        @Html.ValidationMessageFor(model => model.LastName)
+    </div>
+
+    <div class="field-block">
+        @Html.LabelFor(model => model.IsPreviousClient)
+        <div class="list">
+            @Html.EditorFor(model => model.IsPreviousClient)
+        </div>
+        @Html.ValidationMessageFor(model => model.IsPreviousClient)
+    </div>
+
+    <div class="field-block">
+        @Html.LabelFor(model => model.NumberOfAdults)
+        @Html.EditorFor(model => model.NumberOfAdults)
+        @Html.ValidationMessageFor(model => model.NumberOfAdults)
+    </div>
+
+    <div class="field-block">
+        @Html.LabelFor(model => model.NumberOfChildren)
+        @Html.EditorFor(model => model.NumberOfChildren)
+        @Html.ValidationMessageFor(model => model.NumberOfChildren)
+    </div>
+
+    <div class="field-block">
+        @Html.LabelFor(model => model.ReferredFrom)
+        @Html.TextAreaFor(model => model.ReferredFrom)
+        @Html.ValidationMessageFor(model => model.ReferredFrom)
+    </div>
 </div>
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.LastName)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.LastName)
-    @Html.ValidationMessageFor(model => model.LastName)
+<div class="block">
+    <h3>Contact Details</h3>
+    
+    <div class="field-block phone">
+        @Html.LabelFor(model => model.PrimaryPhoneNumber)
+        @Html.DropDownListFor(model => model.PrimaryPhoneTypeId, new SelectList(ViewData["PhoneTypes"] as IEnumerable, "Value", "Name", Model.PrimaryPhoneTypeId))
+        @Html.EditorFor(model => model.PrimaryPhoneNumber)
+        @Html.ValidationMessageFor(model => model.PrimaryPhoneTypeId)
+        @Html.ValidationMessageFor(model => model.PrimaryPhoneNumber)
+    </div>
+
+    <div class="field-block phone">
+        @Html.LabelFor(model => model.SecondaryPhoneNumber)
+        @Html.DropDownListFor(model => model.SecondaryPhoneTypeId, new SelectList(ViewData["PhoneTypes"] as IEnumerable, "Value", "Name", Model.SecondaryPhoneTypeId))
+        @Html.EditorFor(model => model.SecondaryPhoneNumber)
+        @Html.ValidationMessageFor(model => model.SecondaryPhoneTypeId)
+        @Html.ValidationMessageFor(model => model.SecondaryPhoneNumber)
+    </div>
+
+    <div class="field-block">
+        @Html.LabelFor(model => model.EmailAddress)
+        @Html.EditorFor(model => model.EmailAddress)
+        @Html.ValidationMessageFor(model => model.EmailAddress)
+    </div>
 </div>
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.PrimaryPhoneNumber)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.PrimaryPhoneNumber)
-    @Html.ValidationMessageFor(model => model.PrimaryPhoneNumber)
-</div>
-<div class="editor-field">
-    @Html.DropDownListFor(model => model.PrimaryPhoneTypeId, new SelectList(ViewData["PhoneTypes"] as IEnumerable, "Value", "Name", Model.PrimaryPhoneTypeId))
-    @Html.ValidationMessageFor(model => model.PrimaryPhoneTypeId)
-</div>
+<div class="block">
+    <h3>Address</h3>
+    
+    <div class="field-block">
+        @Html.LabelFor(model => model.AddressLine1)
+        @Html.EditorFor(model => model.AddressLine1)
+        @Html.ValidationMessageFor(model => model.AddressLine1)
+    </div>
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.SecondaryPhoneNumber)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.SecondaryPhoneNumber)
-    @Html.ValidationMessageFor(model => model.SecondaryPhoneNumber)
-</div>
-<div class="editor-field">
-    @Html.DropDownListFor(model => model.SecondaryPhoneTypeId, new SelectList(ViewData["PhoneTypes"] as IEnumerable, "Value", "Name", Model.SecondaryPhoneTypeId))
-    @Html.ValidationMessageFor(model => model.SecondaryPhoneTypeId)
-</div>
+    <div class="field-block">
+        @Html.LabelFor(model => model.AddressLine2)
+        @Html.EditorFor(model => model.AddressLine2)
+        @Html.ValidationMessageFor(model => model.AddressLine2)
+    </div>
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.EmailAddress)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.EmailAddress)
-    @Html.ValidationMessageFor(model => model.EmailAddress)
-</div>
+    <div class="field-block">
+        @Html.LabelFor(model => model.City)
+        @Html.EditorFor(model => model.City)
+        @Html.ValidationMessageFor(model => model.City)
+    </div>
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.AddressLine1)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.AddressLine1)
-    @Html.ValidationMessageFor(model => model.AddressLine1)
-</div>
+    <div class="field-block">
+        @Html.LabelFor(model => model.StateCode)
+        @Html.DropDownListFor(model => model.StateCode, new SelectList(ViewData["UsStates"] as IEnumerable, "StateCode", "StateName", Model.StateCode), "Select State...")
+        @Html.ValidationMessageFor(model => model.StateCode)
+    </div>
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.AddressLine2)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.AddressLine2)
-    @Html.ValidationMessageFor(model => model.AddressLine2)
-</div>
-
-<div class="editor-label">
-    @Html.LabelFor(model => model.City)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.City)
-    @Html.ValidationMessageFor(model => model.City)
-</div>
-
-<div class="editor-label">
-    @Html.LabelFor(model => model.StateCode)
-</div>
-<div class="editor-field">
-    @Html.DropDownListFor(model => model.StateCode, new SelectList(ViewData["UsStates"] as IEnumerable, "StateCode", "StateName", Model.StateCode), "Select State...")
-    @Html.ValidationMessageFor(model => model.StateCode)
-</div>
-
-<div class="editor-label">
-    @Html.LabelFor(model => model.CountyCode)
-</div>
-<div class="editor-field">
-    @Html.DropDownListFor(model => model.CountyCode, new SelectList(ViewData["Counties"] as IEnumerable, "CountyCode", "CountyName", Model.CountyCode), "Select County...")
-    @Html.ValidationMessageFor(model => model.CountyCode)
-</div>
-
-<div class="editor-label">
-    @Html.LabelFor(model => model.IsPreviousClient)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.IsPreviousClient)
-    @Html.ValidationMessageFor(model => model.IsPreviousClient)
-</div>
-
-<div class="editor-label">
-    @Html.LabelFor(model => model.NumberOfAdults)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.NumberOfAdults)
-    @Html.ValidationMessageFor(model => model.NumberOfAdults)
-</div>
-
-<div class="editor-label">
-    @Html.LabelFor(model => model.NumberOfChildren)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.NumberOfChildren)
-    @Html.ValidationMessageFor(model => model.NumberOfChildren)
-</div>
-
-<div class="editor-label">
-    @Html.LabelFor(model => model.ReferredFrom)
-</div>
-<div class="editor-field">
-    @Html.TextAreaFor(model => model.ReferredFrom)
-    @Html.ValidationMessageFor(model => model.ReferredFrom)
+    <div class="field-block">
+        @Html.LabelFor(model => model.CountyCode)
+        @Html.DropDownListFor(model => model.CountyCode, new SelectList(ViewData["Counties"] as IEnumerable, "CountyCode", "CountyName", Model.CountyCode), "Select County...")
+        @Html.ValidationMessageFor(model => model.CountyCode)
+    </div>
 </div>

@@ -20,10 +20,10 @@
             <td><a href="@Url.Action("BasicInfo", "Clients", new {id = client.ClientId})">@client.FirstName @client.LastName</a> <br />@Html.PhoneDisplay(client.PrimaryPhoneNumber) (@Html.PhoneType(client.PhoneNumberTypeId))</td>
             <td>@Html.DateDisplay(client.CreatedDateTime)</td>
             <td>
-                @{Html.RenderPartial("RequestedItems", client.RequestedItems);}
+                
             </td>
             <td>
-                @{Html.RenderPartial("ClientNotes", client.ClientNotes);}
+                
             </td>
             <td style="text-align: right;">@Html.RouteLink("Add To Schedule", new { controller = "Schedule", action = "Create", id = client.ClientId })
         </tr>
