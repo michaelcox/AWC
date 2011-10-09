@@ -26,6 +26,10 @@
     @Html.EditorFor(model => model.PrimaryPhoneNumber)
     @Html.ValidationMessageFor(model => model.PrimaryPhoneNumber)
 </div>
+<div class="editor-field">
+    @Html.DropDownListFor(model => model.PrimaryPhoneTypeId, new SelectList(ViewData["PhoneTypes"] as IEnumerable, "Value", "Name", Model.PrimaryPhoneTypeId))
+    @Html.ValidationMessageFor(model => model.PrimaryPhoneTypeId)
+</div>
 
 <div class="editor-label">
     @Html.LabelFor(model => model.SecondaryPhoneNumber)
@@ -33,6 +37,10 @@
 <div class="editor-field">
     @Html.EditorFor(model => model.SecondaryPhoneNumber)
     @Html.ValidationMessageFor(model => model.SecondaryPhoneNumber)
+</div>
+<div class="editor-field">
+    @Html.DropDownListFor(model => model.SecondaryPhoneTypeId, new SelectList(ViewData["PhoneTypes"] as IEnumerable, "Value", "Name", Model.SecondaryPhoneTypeId))
+    @Html.ValidationMessageFor(model => model.SecondaryPhoneTypeId)
 </div>
 
 <div class="editor-label">

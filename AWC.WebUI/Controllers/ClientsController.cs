@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using AWC.Domain;
 using AWC.Domain.Abstract;
@@ -24,6 +27,7 @@ namespace AWC.WebUI.Controllers
 
         [UsesCountiesDropdown]
         [UsesStatesDropdown]
+        [UsesPhoneTypeDropdown]
         public ActionResult Create()
         {
             return View(new ClientEditViewModel());
@@ -32,6 +36,7 @@ namespace AWC.WebUI.Controllers
         [HttpPost]
         [UsesCountiesDropdown]
         [UsesStatesDropdown]
+        [UsesPhoneTypeDropdown]
         public ActionResult Create(ClientEditViewModel client)
         {
             try
@@ -74,6 +79,7 @@ namespace AWC.WebUI.Controllers
 
         [UsesCountiesDropdown]
         [UsesStatesDropdown]
+        [UsesPhoneTypeDropdown]
         public ActionResult BasicInfo(int id)
         {
             try
@@ -100,10 +106,15 @@ namespace AWC.WebUI.Controllers
         [HttpPost]
         [UsesCountiesDropdown]
         [UsesStatesDropdown]
+        [UsesPhoneTypeDropdown]
         public ActionResult BasicInfo(ClientEditViewModel client)
         {
             try
             {
+                // Strip out extra characters from phone numbers
+                client.PrimaryPhoneNumber = (!string.IsNullOrEmpty(client.PrimaryPhoneNumber)) ? Regex.Replace(client.PrimaryPhoneNumber, @"\D", string.Empty) : null;
+                client.SecondaryPhoneNumber = (!string.IsNullOrEmpty(client.SecondaryPhoneNumber)) ? Regex.Replace(client.SecondaryPhoneNumber, @"\D", string.Empty) : null;
+
                 var existingClient = _repository.Single<Client>(c => c.ClientId == client.ClientId);
                 if (ModelState.IsValid)
                 {
@@ -116,6 +127,16 @@ namespace AWC.WebUI.Controllers
 
                 this.FlashError("There were validation errors while trying to edit the client record.");
                 _logger.Error(ModelState);
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        _logger.Error(string.Format("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage));
+                    }
+                }
             }
             catch (Exception ex)
             {

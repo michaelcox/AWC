@@ -31,7 +31,7 @@
                 revertDuration: 0  //  original position after the drag
             });
 
-        });
+        });
 
         $('#calendar').fullCalendar({
             eventSources: [
@@ -54,9 +54,33 @@
             },
             droppable: true,
             drop: function (date, allDay) {
-                alert('Dropped onto: ' + date.toString());  //TODO: Fill in with functionality to save to database
+                var eventObject = $(this).data('eventObject');
+                eventObject.start = date;
+                eventObject.allDay = false;
+                eventObject.editable = true;
+                $('#calendar').fullCalendar('renderEvent', eventObject, true);
                 $(this).remove();
             },
+            disableResizing: true,
+            eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
+
+                    alert(
+                        event.title + " was moved " +
+                        dayDelta + " days and " +
+                        minuteDelta + " minutes."
+                    );
+
+                    if (allDay) {
+                        alert("Event is now all-day");
+                    }else{
+                        alert("Event has a time-of-day");
+                    }
+
+                    if (!confirm("Are you sure about this change?")) {
+                        revertFunc();
+                    }
+
+                },
             defaultEventMinutes: 30,
             firstDay: 1,
             defaultView: 'agendaWeek',

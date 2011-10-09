@@ -25,9 +25,15 @@ namespace AWC.WebUI.Models
         [StringLength(14, ErrorMessage = "Phone Number is too long.")]
         public string PrimaryPhoneNumber { get; set; }
 
+        [Required]
+        public byte PrimaryPhoneTypeId { get; set; }
+
         [Display(Name = "Secondary Phone Number")]
         [StringLength(14, ErrorMessage = "Phone Number is too long.")]
         public string SecondaryPhoneNumber { get; set; }
+
+        [Required]
+        public byte SecondaryPhoneTypeId { get; set; }
 
         [Display(Name = "Email Address")]
         [Email(ErrorMessage = "Email address is not valid.")]

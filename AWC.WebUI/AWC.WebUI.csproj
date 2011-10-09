@@ -94,6 +94,7 @@
     <Compile Include="Helpers\UsesCountiesOrgsDropdownAttribute.cs" />
     <Compile Include="Helpers\FlashHelper.cs" />
     <Compile Include="Helpers\UsesPartnerOrgsDropdownAttribute.cs" />
+    <Compile Include="Helpers\UsesPhoneTypeDropdown.cs" />
     <Compile Include="Helpers\UsesStatesDropdownAttribute.cs" />
     <Compile Include="Infrastructure\Logging\ILogger.cs" />
     <Compile Include="Infrastructure\Logging\LogUtility.cs" />
