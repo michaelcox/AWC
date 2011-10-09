@@ -1,0 +1,76 @@
+﻿@model AWC.WebUI.Models.SearchResultViewModel
+
+@{
+    ViewBag.Title = "Schedule Client";
+}
+
+<h2>Schedule Client</h2>
+
+(Need some nice help advice up here to instruct the user to drag this to the calendar)
+<div id="waitlist-clients">
+    <div class="waitlist-client">@Model.FirstName @Model.LastName</div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#waitlist-clients div.waitlist-client').each(function () {
+
+            // it doesn't need to have a start or end
+            var eventObject = {
+                title: $.trim($(this).text()) // use the element's text as the event title
+            };
+
+            // store the Event Object in the DOM element so we can get to it later
+            $(this).data('eventObject', eventObject);
+
+            // make the event draggable using jQuery UI
+            $(this).draggable({
+                zIndex: 999,
+                revert: true,      // will cause the event to go back to its
+                revertDuration: 0  //  original position after the drag
+            });
+
+        });
+
+        $('#calendar').fullCalendar({
+            eventSources: [
+                {
+                    url: 'http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/public/basic',
+                    type: 'GET',
+                    color: '#F0E68C',
+                    textColor: '#666'
+                },
+                {
+                    url: '/Schedule/CalendarEvents',
+                    type: 'GET',
+                    dataType: 'json'
+                }
+            ],
+            header: {
+                left: 'today',
+                center: 'title',
+                right: 'today prev,next'
+            },
+            droppable: true,
+            drop: function (date, allDay) {
+                alert('Dropped onto: ' + date.toString());  //TODO: Fill in with functionality to save to database
+                $(this).remove();
+            },
+            defaultEventMinutes: 30,
+            firstDay: 1,
+            defaultView: 'agendaWeek',
+            allDayDefault: false,
+            ignoreTimezone: false,
+            allDayText: 'Holidays', // Figuring all day events are imported from Google only
+            minTime: 5,
+            maxTime: 24
+        });
+
+        $('#calendar').fullCalendar('rerenderEvents');
+
+    });
+    
+</script>
+<div id='loading' style='display:none'>loading...</div> 
+<div id="calendar"></div>

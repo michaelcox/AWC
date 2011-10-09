@@ -25,7 +25,7 @@
             <td>
                 @{Html.RenderPartial("ClientNotes", client.ClientNotes);}
             </td>
-            <td style="text-align: right;">@Html.ActionLink("Schedule Now", "Create", new { clientId = client.ClientId })</td>
+            <td style="text-align: right;">@Html.RouteLink("Add To Schedule", new { controller = "Schedule", action = "Create", id = client.ClientId })
         </tr>
     }
 </table>

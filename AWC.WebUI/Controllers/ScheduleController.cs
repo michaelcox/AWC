@@ -9,6 +9,7 @@ using AWC.Domain.Abstract;
 using AWC.Domain.Entities;
 using AWC.WebUI.Infrastructure.Logging;
 using AWC.WebUI.Models;
+using Omu.ValueInjecter;
 
 namespace AWC.WebUI.Controllers
 {
@@ -64,9 +65,14 @@ namespace AWC.WebUI.Controllers
             //return string.Format("{0}({1});", callback, "");
         }
 
-        public ActionResult Create(int clientId)
+        public ActionResult Create(int id)
         {
-            return View();
+            var client = _repository.Single<Client>(c => c.ClientId == id);
+
+            var clientSearchResult = new SearchResultViewModel();
+            clientSearchResult.InjectFrom(client);
+
+            return View(clientSearchResult);
         }
 
         [HttpPost]
