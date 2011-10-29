@@ -6,6 +6,7 @@ using AWC.Domain.Abstract;
 using AWC.Domain.Concrete;
 using AWC.WebUI.Infrastructure.Logging;
 using AWC.WebUI.Utils;
+using CommonServiceLocator.NinjectAdapter;
 using Ninject;
 using Ninject.Modules;
 using Ninject.Web.Mvc;
@@ -60,6 +61,13 @@ namespace AWC.WebUI
             );
 
             routes.MapRoute(
+                "Account", // Route name
+                "Account/{action}", // URL with parameters
+                new { controller = "Account", action = "LogOn" }
+            );
+
+
+            routes.MapRoute(
                 "Homepage", // Route name
                 "", // URL with parameters
                 new { controller = "Dashboard", action = "Index" }
@@ -84,6 +92,8 @@ namespace AWC.WebUI
         {
             var kernel = new StandardKernel();
             kernel.Load(Assembly.GetExecutingAssembly());
+            // var locator = new NinjectServiceLocator(kernel);
+            // ServiceLocator.SetLocatorProvider(() => locator);
             return kernel;
         }
 

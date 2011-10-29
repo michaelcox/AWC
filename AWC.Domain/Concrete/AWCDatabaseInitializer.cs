@@ -7,6 +7,7 @@ namespace AWC.Domain.Concrete
 {
     public class AWCDatabase : DbContext
     {
+        public DbSet<User> Users { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<UsState> UsStates { get; set; }
         public DbSet<County> Counties { get; set; }

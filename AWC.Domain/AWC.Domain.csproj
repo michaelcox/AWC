@@ -61,6 +61,7 @@
     <Compile Include="Entities\County.cs" />
     <Compile Include="Entities\PartneringOrg.cs" />
     <Compile Include="Entities\RequestedItem.cs" />
+    <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\UsState.cs" />
     <Compile Include="Metadata\OptionAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
