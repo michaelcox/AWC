@@ -237,7 +237,7 @@ nav .menu-links li {
 #content .menu ul li {
     display: inline;
 }
-#content .menu ul li.current_page_item a,
+#content .menu ul li.active a,
 #content .menu ul li a:hover {
     background: #954dc7;
     color: #fff;
@@ -267,6 +267,23 @@ nav .menu-links li {
     margin: 0 0 12px;
     padding: 0 0 4px;
     border-bottom: 1px solid #ccc;
+}
+#calendar h2 { border: none; }
+#waitlist-clients {
+    width: 100%;
+    margin: 0 0 14px;
+    float: left;
+}
+#waitlist-clients .waitlist-client {
+    /*background: #e9f5fa;*/
+    border: 2px dashed #14afdb;
+    padding: 6px 8px;
+    margin: 0 12px 12px 0;
+    float: left;
+    cursor: move;
+    -moz-box-shadow: 0px 0px 12px #b2b2b2;
+    -webkit-box-shadow: 0px 0px 12px #b2b2b2;
+    box-shadow: 0px 0px 12px #b2b2b2;
 }
 
 form .block {
@@ -344,11 +361,4 @@ form .block .phone select {
 .button:active {
     color: #fff;
     border-color: #444;
-}
-.waitlist-client {
-     background-color: brown;
-     padding: 5px;
-     width:100px;
-     color:White;
-     margin: 20px;
 }

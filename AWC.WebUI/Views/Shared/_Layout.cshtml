@@ -33,7 +33,7 @@
             <nav>
                 <ul class="menu-primary">
                     @Html.ActionMenuItem("Dashboard", "Index", "Dashboard", true, null)
-                    @Html.ActionMenuItem("Client Info", "Create", "Clients", true, null)
+                    @Html.ActionMenuItem("Clients", "Create", "Clients", true, null)
                     @Html.ActionMenuItem("Wait List", "Index", "Waitlist", false, null)
                     @Html.ActionMenuItem("Schedule", "Confirmed", "Schedule", true, null)
                 </ul>
@@ -46,8 +46,8 @@
                         <li><a href="#">Logout</a></li>
                     </ul>
                 </nav>
-                <form action="#" method="post" class="search">
-                    <input type="text" id="s" name="s" value="QUICK SEARCH" class="text" />
+                <form action="/search" method="post" class="search">
+                    <input type="text" id="s" name="q" value="QUICK SEARCH" class="text" />
                     <input type="submit" value="go" class="btn-go" />
                 </form>
             </section>
