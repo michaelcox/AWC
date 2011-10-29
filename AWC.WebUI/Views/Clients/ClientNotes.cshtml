@@ -4,6 +4,8 @@
     Layout = null;
 }
 
+<h3>Notes:</h3>
+
 @using (Html.BeginForm("AddNote", "Clients")) {
     @Html.ValidationSummary(true)
     
@@ -11,26 +13,22 @@
     @Html.EditorFor(model => model.RefAction)
     @Html.Hidden("ClientNoteId", 0)
     
-<div class="notes">
-    <h3>Notes:</h3>
-
     <div class="field-block">
         @*@Html.LabelFor(model => model.Body)*@
         @Html.TextAreaFor(model => model.Body)
         @Html.ValidationMessageFor(model => model.Body)
     </div>
-
     <input type="submit" value="Add Note" class="button" />
-</div>
 }
 
-
+<ul>
 @foreach (var item in Model.ClientNotes)
 {
-    <div class="note">
-        @item.Body<br />
-        Posted on @Html.DateTimeDisplay(item.PostedDateTime)
-    </div>
+    <li class="note">
+        <em>Posted on @Html.DateTimeDisplay(item.PostedDateTime)</em>
+        <pre>@item.Body</pre>
+    </li>
 }
+</ul>
 
 

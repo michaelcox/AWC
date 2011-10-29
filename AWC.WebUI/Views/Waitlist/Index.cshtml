@@ -6,13 +6,13 @@
 
 <h2>WaitList</h2>
 
-<table style="width: 100%;">
+<table class="data-list">
     <tr>
-        <th style="text-align: left;">Client</th>
-        <th style="text-align: left;">Intake Date</th>
+        <th>Client</th>
+        <th>Intake Date</th>
         <th>Requested Items</th>
         <th>Notes</th>
-        <th style="text-align:right;">Schedule</th>
+        <th style="text-align: right;">Schedule</th>
     </tr>
     @foreach (var client in Model.Clients)
     {
@@ -25,7 +25,7 @@
             <td>
                 
             </td>
-            <td style="text-align: right;">@Html.RouteLink("Add To Schedule", new { controller = "Schedule", action = "Create", id = client.ClientId })
+            <td style="text-align: right;">@Html.RouteLink("Add To Schedule", new { controller = "Schedule", action = "Create", id = client.ClientId })</td>
         </tr>
     }
 </table>

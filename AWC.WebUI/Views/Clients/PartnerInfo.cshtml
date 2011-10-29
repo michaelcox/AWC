@@ -8,6 +8,7 @@
 
 @{Html.RenderPartial("SubNavigation", Model.ClientId);}
 
+<article>
 @using (Html.BeginForm()) {
 
     @Html.EditorFor(model => model.ClientId)
@@ -62,6 +63,7 @@
     <input type="submit" value="Save" class="button" />
     @*@Html.ActionLink("Cancel", "BasicInfo", new { id = Model.ClientId })*@
 }
-
-@{Html.RenderAction("ClientNotes", new { clientId = Model.ClientId, refAction = "PartnerInfo"});}
-
+</article>
+<aside class="notes">
+    @{Html.RenderAction("ClientNotes", new { clientId = Model.ClientId, refAction = "PartnerInfo"});}
+</aside>
