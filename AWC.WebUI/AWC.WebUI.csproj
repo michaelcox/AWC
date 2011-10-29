@@ -141,6 +141,9 @@
     <Content Include="Public\js\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Public\js\jquery.validate.min.js" />
     <Content Include="Public\js\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Public\js\libs\jquery-1.6.2.min.js" />
+    <Content Include="Public\js\libs\modernizr-2.0.6.min.js" />
+    <Content Include="Public\js\script.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

@@ -25,7 +25,7 @@
             <td>
                 
             </td>
-            <td style="text-align: right;">@Html.RouteLink("Add To Schedule", new { controller = "Schedule", action = "Create", id = client.ClientId })</td>
+            <td style="text-align: right;">@Html.RouteLink("Add To Schedule", new { controller = "Schedule", action = "Create", id = client.ClientId }, new { @class = "btn schedule" })</td>
         </tr>
     }
 </table>

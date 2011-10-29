@@ -6,42 +6,5 @@
 
 @{Html.RenderPartial("SubNavigation");}
 
-<script type="text/javascript">
-    $(document).ready(function () {
-
-        $('#calendar').fullCalendar({
-            eventSources: [
-                {
-                    url: 'http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/public/basic',
-                    type: 'GET',
-                    color: '#F0E68C',
-                    textColor: '#666'
-                },
-                {
-                    url: '/Schedule/CalendarEvents',
-                    type: 'GET',
-                    dataType: 'json'
-                }
-            ],
-            header: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'month,agendaWeek'
-            },
-            defaultEventMinutes: 30,
-            firstDay: 1,
-            defaultView: 'month',
-            allDayDefault: false,
-            ignoreTimezone: false,
-            allDayText: 'Holidays', // Figuring all day events are imported from Google only
-            minTime: 5,
-            maxTime: 24
-        });
-
-        $('#calendar').fullCalendar('rerenderEvents');
-
-    });
-    
-</script>
 <div id='loading' style='display:none'>loading...</div> 
 <div id="calendar"></div>
