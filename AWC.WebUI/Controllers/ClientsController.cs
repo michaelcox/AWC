@@ -257,7 +257,7 @@ namespace AWC.WebUI.Controllers
             var clientNotesViewModel = new ClientNotesViewModel
             {
                 ClientId = id,
-                ClientNotes = _repository.All<ClientNote>().Where(c => c.ClientId == id).ToList(),
+                ClientNotes = _repository.All<ClientNote>().Where(c => c.ClientId == id).OrderByDescending(n => n.PostedDateTime).ToList(),
                 RefAction = refAction
             };
 

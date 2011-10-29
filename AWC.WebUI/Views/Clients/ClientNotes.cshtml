@@ -14,7 +14,6 @@
     @Html.Hidden("ClientNoteId", 0)
     
     <div class="field-block">
-        @*@Html.LabelFor(model => model.Body)*@
         @Html.TextAreaFor(model => model.Body)
         @Html.ValidationMessageFor(model => model.Body)
     </div>

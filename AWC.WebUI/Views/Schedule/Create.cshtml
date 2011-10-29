@@ -8,7 +8,7 @@
 
 <div id="waitlist-clients">
     <p><em>Click and drag the client name onto the calendar to schedule their appointment.</em></p>
-    <div class="waitlist-client">@Model.FirstName @Model.LastName</div>
+    <div class="waitlist-client" id="user-@Model.ClientId">@Model.FirstName @Model.LastName</div>
 </div>
 
 <script type="text/javascript">
@@ -58,29 +58,41 @@
                 eventObject.start = date;
                 eventObject.allDay = false;
                 eventObject.editable = true;
+
+                var clientId = $(this).attr('id'); // Grab the id of the div
+                clientId = clientId.substring(5);  // Strip "user-" from the id
+
+                $.ajax({
+                    url: "/Schedule/Create",
+                    type: "POST",
+                    data: { id: clientId, scheduledDate: date.toUTCString() },
+                    dataType: "json"
+                });
+
                 $('#calendar').fullCalendar('renderEvent', eventObject, true);
                 $(this).remove();
+
             },
             disableResizing: true,
-            eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
+            eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc) {
 
-                    alert(
+                alert(
                         event.title + " was moved " +
                         dayDelta + " days and " +
                         minuteDelta + " minutes."
                     );
 
-                    if (allDay) {
-                        alert("Event is now all-day");
-                    }else{
-                        alert("Event has a time-of-day");
-                    }
+                if (allDay) {
+                    alert("Event is now all-day");
+                } else {
+                    alert("Event has a time-of-day");
+                }
 
-                    if (!confirm("Are you sure about this change?")) {
-                        revertFunc();
-                    }
+                if (!confirm("Are you sure about this change?")) {
+                    revertFunc();
+                }
 
-                },
+            },
             defaultEventMinutes: 30,
             firstDay: 1,
             defaultView: 'agendaWeek',

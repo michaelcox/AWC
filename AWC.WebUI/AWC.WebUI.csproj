@@ -120,7 +120,6 @@
     <Content Include="App_Data\AWC.sdf" />
     <Content Include="Global.asax" />
     <Content Include="Public\css\global.css" />
-    <Content Include="Public\css\Site.css" />
     <Content Include="Public\fullcalendar\fullcalendar.css" />
     <Content Include="Public\fullcalendar\fullcalendar.min.js" />
     <Content Include="Public\fullcalendar\fullcalendar.print.css" />
@@ -177,7 +176,9 @@
     <Content Include="Views\Clients\EditClient.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="NLog.config" />
+    <Content Include="NLog.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="App_Data\Site.log" />

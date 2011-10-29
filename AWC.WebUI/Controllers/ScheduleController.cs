@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using AWC.Domain;
 using AWC.Domain.Abstract;
@@ -76,9 +75,26 @@ namespace AWC.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create()
+        public JsonResult Create(int id, DateTime scheduledDate)
         {
-            return View();
+            try
+            {
+                var appt = _repository.Single<Appointment>(a => a.ClientId == id && a.AppointmentStatusId == (byte)Constants.AppointmentStatusId.NotScheduled);
+
+                if (appt == null) return Json(new { success = false });
+
+                appt.AppointmentStatusId = (byte) Constants.AppointmentStatusId.Scheduled;
+                appt.ScheduledDateTime = scheduledDate;
+                _repository.CommitChanges();
+
+                return Json(new {success = true});
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+            }
+
+            return Json(new { success = false });
         }
 
         [HttpPost]
