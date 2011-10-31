@@ -20,13 +20,18 @@ $(document).ready(function () {
 
                 //process response  
                 $.each(data, function (i, val) {
-                    suggestions.push(val.FirstName + " " + val.LastName + " (" + val.ClientId + ")");
+                    var label = val.FirstName + " " + val.LastName;
+                    label += " - " + "(" + val.PrimaryPhoneNumber.substring(0, 3) + ")";
+                    label += " " + val.PrimaryPhoneNumber.substring(3, 6) + "-";
+                    label += val.PrimaryPhoneNumber.substring(6);
+                    suggestions.push({ "label": label, "value": label, "id": val.ClientId });
                 });
 
                 //pass array to callback  
                 add(suggestions);
             });
-        }
+        },
+        select: function (event, ui) { $('#searchClientId').val(ui.item.id); }
     });
 
     // jQuery Calendar Plugin

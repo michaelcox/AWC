@@ -26,25 +26,23 @@ namespace AWC.WebUI.Controllers
             return Json(clientSearchResults, JsonRequestBehavior.AllowGet);
         }
 
-        [ActionName("Index")]
         [HttpPost]
-        public RedirectToRouteResult IndexRedirect(string q)
+        public RedirectToRouteResult Index(int clientId)
         {
-            var clientSearchResults = SearchClients(q);
+            var client = _repository.Single<Client>(c => c.ClientId == clientId);
 
-            var selectedClient = clientSearchResults.First();
-            return RedirectToAction("BasicInfo", "Clients", new { id = selectedClient.ClientId });
+            return RedirectToAction("BasicInfo", "Clients", new { id = client.ClientId });
         }
 
         private List<SearchResultViewModel> SearchClients(string searchTerm)
         {
-            var clients = from r in _repository.All<Client>()
+            var clients = (from r in _repository.All<Client>()
                           where (r.EmailAddress.StartsWith(searchTerm)
                                  || r.PrimaryPhoneNumber.StartsWith(searchTerm)
                                  || r.SecondaryPhoneNumber.StartsWith(searchTerm)
                                  || r.FirstName.StartsWith(searchTerm)
                                  || r.LastName.StartsWith(searchTerm))
-                          select r;
+                          select r).Take(10);
 
             var clientSearchResults = new List<SearchResultViewModel>();
             foreach (var client in clients)
