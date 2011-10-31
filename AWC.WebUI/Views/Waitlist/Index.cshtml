@@ -11,7 +11,7 @@
         <th>Client</th>
         <th>Intake Date</th>
         <th>Requested Items</th>
-        <th>Notes</th>
+        <th>Recent Note</th>
         <th style="text-align: right;">Schedule</th>
     </tr>
     @foreach (var client in Model.Clients)
@@ -20,10 +20,16 @@
             <td><a href="@Url.Action("BasicInfo", "Clients", new {id = client.ClientId})">@client.FirstName @client.LastName</a> <br />@Html.PhoneDisplay(client.PrimaryPhoneNumber) (@Html.PhoneType(client.PhoneNumberTypeId))</td>
             <td>@Html.DateDisplay(client.CreatedDateTime)</td>
             <td>
-                
+                <span>10 Items Requested</span>
+                <div class="tooltip">
+                    
+                </div>
             </td>
             <td>
-                
+                <span>10/31/2011 12:34 PM</span>
+                <div class="tooltip">
+                    
+                </div>
             </td>
             <td style="text-align: right;">@Html.RouteLink("Add To Schedule", new { controller = "Schedule", action = "Create", id = client.ClientId }, new { @class = "btn schedule" })</td>
         </tr>
