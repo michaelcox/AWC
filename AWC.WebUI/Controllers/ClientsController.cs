@@ -48,6 +48,10 @@ namespace AWC.WebUI.Controllers
                     newClient.CreatedDateTime = DateTime.UtcNow;
                     newClient.LastUpdatedDateTime = DateTime.UtcNow;
 
+                    // Strip out extra characters from phone numbers
+                    newClient.PrimaryPhoneNumber = (!string.IsNullOrEmpty(newClient.PrimaryPhoneNumber)) ? Regex.Replace(newClient.PrimaryPhoneNumber, @"\D", string.Empty) : null;
+                    newClient.SecondaryPhoneNumber = (!string.IsNullOrEmpty(newClient.SecondaryPhoneNumber)) ? Regex.Replace(newClient.SecondaryPhoneNumber, @"\D", string.Empty) : null;
+
                     _repository.Add(newClient);
 
                     // On first create, add blank appointment
