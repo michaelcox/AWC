@@ -34,6 +34,13 @@ $(document).ready(function () {
         select: function (event, ui) { $('#searchClientId').val(ui.item.id); }
     });
 
+    // Phone Number validation
+    $("#PrimaryPhoneNumber").mask("(999) 999-9999");
+    $("#SecondaryPhoneNumber").mask("(999) 999-9999");
+
+    // Flash Message
+    $('#flashmessage').fadeIn(1000).delay(4000).fadeOut(1000);
+
     // Calendar
     $('.calendar-default #calendar').fullCalendar({
         eventSources: [
