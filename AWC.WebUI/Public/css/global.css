@@ -298,6 +298,29 @@ header .search .btn-go {
     padding: 0 0 4px;
     border-bottom: 1px solid #ccc;
 }
+#content .dashboard h2 {
+    margin: 0 0 24px;
+}
+.dashboard ul.data-list {
+    margin-bottom: 32px;
+}
+.dashboard table.data-list {
+    margin-bottom: 32px;
+}
+#content .two-col {
+    overflow: hidden;
+}
+#content .two-col .col:last-child { margin-right: 0; }
+#content .two-col .col {
+    width: 440px;
+    margin: 0 40px 0 0;
+    float: left;
+}
+.dashboard .more {
+    font-size: 11px;
+    margin: 5px 0 0;
+    float: right;
+}
 #content article {
     width: 620px;
     float: left;
@@ -380,8 +403,41 @@ form .block .phone input {
 form .block .phone select {
     width: 70px;
 }
+form .block .field-validation-error {
+    font-size: 12px;
+    font-style: italic;
+    margin: 0 0 12px 242px;
+    display: block;
+}
+/*
+form .block .field-validation-error {
+    width: 20px;
+    height: 20px;
+    background: url(../images/ico-error.png) no-repeat 0 0;
+    font: 1px/1px sans-serif;
+    text-indent: -99999px;
+    margin: 0 70px 0 0;
+    float: right;
+}
+*/
+ul.data-list {
+    list-style: none;
+    border-bottom: 1px solid #ccc;
+    padding: 0 15px 5px;
+    margin: 0 0 20px;
+    overflow: hidden;
+}
+ul.data-list li {
+    width: 46%;
+    padding: 0 4% 0 0;
+    margin: 0 0 5px;
+    float: left;
+}
 table.data-list {
     width: 100%;
+    border-collapse:separate;
+    border-bottom: 1px solid #ccc;
+    padding: 0 0 3px;
 }
 table.data-list tr:nth-child(2n+2) {
   background-color: #e0ecf2;
@@ -415,6 +471,19 @@ table.data-list td {
     -moz-box-shadow: 0px 0px 12px #b2b2b2;
     -webkit-box-shadow: 0px 0px 12px #b2b2b2;
     box-shadow: 0px 0px 12px #b2b2b2;
+}
+
+.flashmessage {
+    width: 96%;
+    background: lightYellow;
+    border-top: 1px solid #E6DB55;
+    border-bottom: 1px solid #E6DB55;
+    font-style: italic;
+    padding: 8px 2%;
+    margin: 0 0 20px;
+}
+.flashmessage.success {
+    
 }
 
 .button {

@@ -14,34 +14,5 @@
         }
     }
 
-    if (TempData["error"] != null)
-    {
-        <script type="text/javascript" language="javascript">
-            $(document).ready(function () {
-                $('#close-button').mouseover(function () {
-                    $(this).attr("src", "/public/images/close-button-hover.png");
-                });
-                $('#close-button').mouseout(function () {
-                    $(this).attr("src", "/public/images/close-button.png");
-                });
-                $('#close-button').click(function () {
-                    $('#flashmessage').fadeOut(1000);
-                });
-                $('#flashmessage').fadeIn(1000);
-            });
-        </script>
-        <div id="flashmessage" class="flashmessage @style">
-            <img src="/public/images/close-button.png" alt="close" id="close-button" />
-            @message
-        </div>
-    }
-    else
-    {
-        <script type="text/javascript" language="javascript">
-            $(document).ready(function () {
-                $('#flashmessage').fadeIn(1000).delay(4000).fadeOut(1000);
-            });
-        </script>
-        <div id="flashmessage" class="flashmessage @style">@message</div>
-    }
+    <div id="flashmessage" class="flashmessage @style">@message</div>
 }

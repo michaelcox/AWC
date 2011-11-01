@@ -4,6 +4,126 @@
     ViewBag.Title = "A Wider Circle";
 }
 
-<h2>A Wider Circle</h2>
+<div class="dashboard two-col">
+    <h2>A Wider Circle</h2>
+    <div class="col">
+        <h3>Appointments</h3>
+        <table class="data-list">
+            <tr>
+                <th style="width: 60%;">Client Name</th>
+                <th>Scheduled Time</th>
+            </tr>
+            @*@foreach (var client in Model.Clients)
+            {
+                <tr>
+                    <td><a href="@Url.Action("BasicInfo", "Clients", new {id = client.ClientId})">@client.FirstName @client.LastName</a> <br />@Html.PhoneDisplay(client.PrimaryPhoneNumber) (@Html.PhoneType(client.PhoneNumberTypeId))</td>
+                    <td>@Html.DateTimeDisplay(@client.ScheduledDateTime)</td>
+                </tr>
+            }*@
+            <tr>
+                <td><a href="#">Shelly Jones</a></td>
+                <td>11/5/2011 9:30 AM</td>
+            </tr>
+            <tr>
+                <td><a href="#">Michael Cox</a></td>
+                <td>11/5/2011 10:30 AM</td>
+            </tr>
+            <tr>
+                <td><a href="#">Kevin Vess</a></td>
+                <td>11/5/2011 11:15 AM</td>
+            </tr>
+            <tr>
+                <td><a href="#">Matt Hodgson</a></td>
+                <td>11/5/2011 1:00 PM</td>
+            </tr>
+            <tr>
+                <td><a href="#">George Wallace</a></td>
+                <td>11/5/2011 3:30 PM</td>
+            </tr>
+        </table>
 
-<p>This will be the dashboard.</p>
+        <h3>Requested Items</h3>
+        <ul class="data-list">
+            <li><a href="#">4 Beds</a></li>
+            <li><a href="#">1 Kitchen Table</a></li>
+            <li><a href="#">8 Chairs</a></li>
+            <li><a href="#">2 Bed Frames</a></li>
+            <li><a href="#">8 Mattresses</a></li>
+            <li><a href="#">1 Desk</a></li>
+        </ul>
+
+        <h3>Clients Submitted by Partners</h3>
+        <table class="data-list">
+            <tr>
+                <th style="width: 60%;">Client Name</th>
+                <th>Partner</th>
+            </tr>
+            <tr>
+                <td><a href="#">Shelly Arthur</a></td>
+                <td>MC DHHS</td>
+            </tr>
+            <tr>
+                <td><a href="#">Michael Kane</a></td>
+                <td>PG County</td>
+            </tr>
+            <tr>
+                <td><a href="#">Cathy Bates</a></td>
+                <td>ABC</td>
+            </tr>
+        </table>
+        
+    </div>
+    <div class="col">
+        <h3>Open Appointments</h3>
+        <ul class="data-list">
+            <li><a href="#">Jan. 19, 2011 - 9:30 AM</a></li>
+            <li><a href="#">Jan. 19, 2011 - 10:30 AM</a></li>
+            <li><a href="#">Jan. 19, 2011 - 11:45 AM</a></li>
+            <li><a href="#">Jan. 19, 2011 - 1:00 PM</a></li>
+            <li><a href="#">Jan. 19, 2011 - 2:15 PM</a></li>
+            <li><a href="#">Jan. 19, 2011 - 4:30 PM</a></li>
+        </ul>
+
+        <a href="#" class="more">[view all (19) unconfirmed]</a>
+        <h3>2 Week Confirmations</h3>
+        <table class="data-list">
+            <tr>
+                <th style="width: 60%;">Client Name</th>
+                <th>Phone</th>
+            </tr>
+            <tr>
+                <td><a href="#">Shelly Arthur</a></td>
+                <td>(999) 999-9999</td>
+            </tr>
+            <tr>
+                <td><a href="#">Michael Cox</a></td>
+                <td>(999) 999-9999</td>
+            </tr>
+            <tr>
+                <td><a href="#">Kevin Vess</a></td>
+                <td>(999) 999-9999</td>
+            </tr>
+        </table>
+        
+        <a href="#" class="more">[view all (6) unconfirmed]</a>
+        <h3>2 Day Confirmations</h3>
+        <table class="data-list">
+            <tr>
+                <th style="width: 60%;">Client Name</th>
+                <th>Phone</th>
+            </tr>
+            <tr>
+                <td><a href="#">Shelly Arthur</a></td>
+                <td>(999) 999-9999</td>
+            </tr>
+            <tr>
+                <td><a href="#">Michael Cox</a></td>
+                <td>(999) 999-9999</td>
+            </tr>
+            <tr>
+                <td><a href="#">Kevin Vess</a></td>
+                <td>(999) 999-9999</td>
+            </tr>
+        </table>
+    </div>
+</div>

@@ -1,12 +1,5 @@
 ﻿@model AWC.WebUI.Models.ClientEditViewModel
 
-<script language="javascript" type="text/javascript">
-    $(document).ready(function () {
-        $("#PrimaryPhoneNumber").mask("(999) 999-9999");
-        $("#SecondaryPhoneNumber").mask("(999) 999-9999");
-    });
-</script>
-
 @Html.EditorFor(model => model.ClientId)
 
 <div class="block">
