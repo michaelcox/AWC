@@ -1,0 +1,49 @@
+﻿@using AWC.Domain
+@model AWC.WebUI.Models.AppointmentQuickViewModel
+
+@{
+    Layout = null;
+}
+
+<h3>Appointment Info:</h3>
+
+@if (Model.AppointmentId == null)
+{
+    // No open appointments
+    <p>No Open Appointments</p>
+}
+else if (Model.AppointmentStatusId.HasValue && Model.AppointmentStatusId.Value == (byte)Constants.AppointmentStatusId.NotScheduled)
+{
+    // On Waitlist
+    <p>On Waitlist</p>
+}
+else if (Model.AppointmentStatusId.HasValue && Model.AppointmentStatusId.Value != (byte)Constants.AppointmentStatusId.Closed
+&& Model.ScheduledDateTime.HasValue && Model.ScheduledDateTime > DateTime.UtcNow)
+{
+    // Scheduled
+    <p>
+    @Model.ScheduledDateTime.Value.ToLongDateString()
+    <span style="white-space: nowrap">at @Model.ScheduledDateTime.Value.ToShortTimeString()</span>
+    </p>
+    if (Model.SentLetterOrEmail)
+    {
+        <div>Sent Letter / Email</div>
+    }
+    if (Model.TwoWeekConfirmation.HasValue)
+    {
+        <div>Completed Two Day Confirmation (@Model.TwoWeekConfirmation.Value.ToString())</div>
+    }
+    else if (DateTime.UtcNow.AddDays(2) > Model.ScheduledDateTime.Value)
+    {
+        <div style="color:Red">Needs Two Week Confirmation!</div>
+    }
+    
+    if (Model.TwoDayConfirmation.HasValue)
+    {
+        <div>Completed Two Day Confirmation (@Model.TwoDayConfirmation.Value.ToString())</div>
+    }
+    else if (DateTime.UtcNow.AddDays(14) > Model.ScheduledDateTime.Value)
+    {
+        <div style="color:Red">Needs Two Day Confirmation!</div>
+    }
+}

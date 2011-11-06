@@ -268,6 +268,24 @@ namespace AWC.WebUI.Controllers
             return View(clientNotesViewModel);
         }
 
+        [ChildActionOnly]
+        public ActionResult AppointmentQuickView(int id)
+        {
+            var vm = new AppointmentQuickViewModel {ClientId = id};
+            var appt = _repository.Single<Appointment>(a => a.ClientId == id && a.AppointmentStatusId != (byte)Constants.AppointmentStatusId.Closed);
+            if (appt != null)
+            {
+                vm.AppointmentStatusId = appt.AppointmentStatusId;
+                vm.AppointmentId = appt.AppointmentId;
+                vm.CreatedDateTime = appt.CreatedDateTime;
+                vm.ScheduledDateTime = appt.ScheduledDateTime;
+                vm.SentLetterOrEmail = appt.SentLetterOrEmail;
+                vm.TwoDayConfirmation = appt.TwoDayConfirmation;
+                vm.TwoWeekConfirmation = appt.TwoWeekConfirmation;
+            }
+            return View(vm);
+        }
+
         [HttpPost]
         public ActionResult AddNote(ClientNote note, string refAction)
         {

@@ -18,5 +18,6 @@
 }
 </article>
 <aside class="notes">
+    @{Html.RenderAction("AppointmentQuickView", new { id = Model.ClientId });} <br />
     @{Html.RenderAction("ClientNotes", new { id = Model.ClientId, refAction = "BasicInfo" });}
 </aside>
