@@ -55,13 +55,13 @@ namespace AWC.WebUI.Controllers
                                     {
                                         id = c.ClientId,
                                         title = c.FirstName + " " + c.LastName,
-                                        start = c.ScheduledDateTime.ToString("s")
+                                        start = c.ScheduledDateTime.ToString("s"),
+                                        url = Url.Action("BasicInfo", "Clients", new {id = c.ClientId})
                                     };
 
 
 
             return Json(events, JsonRequestBehavior.AllowGet);
-            //return string.Format("{0}({1});", callback, "");
         }
 
         public ActionResult Create(int id)
