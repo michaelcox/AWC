@@ -25,6 +25,8 @@ else if (Model.AppointmentStatusId.HasValue && Model.AppointmentStatusId.Value !
     @Model.ScheduledDateTime.Value.ToLongDateString()
     <span style="white-space: nowrap">at @Model.ScheduledDateTime.Value.ToShortTimeString()</span>
     </p>
+    <p>@Html.ActionLink("Edit Appointment", "Calendar", "Schedule", new { id = Model.ClientId }, null)</p>
+    
     if (Model.SentLetterOrEmail)
     {
         <div>Sent Letter / Email</div>
@@ -33,16 +35,16 @@ else if (Model.AppointmentStatusId.HasValue && Model.AppointmentStatusId.Value !
     {
         <div>Completed Two Day Confirmation (@Model.TwoWeekConfirmation.Value.ToString())</div>
     }
-    else if (DateTime.UtcNow.AddDays(2) > Model.ScheduledDateTime.Value)
+    else if (DateTime.Today.ToUniversalTime().AddDays(15) > Model.ScheduledDateTime.Value)
     {
         <div style="color:Red">Needs Two Week Confirmation!</div>
     }
-    
+
     if (Model.TwoDayConfirmation.HasValue)
     {
         <div>Completed Two Day Confirmation (@Model.TwoDayConfirmation.Value.ToString())</div>
     }
-    else if (DateTime.UtcNow.AddDays(14) > Model.ScheduledDateTime.Value)
+    else if (DateTime.Today.ToUniversalTime().AddDays(3) > Model.ScheduledDateTime.Value)
     {
         <div style="color:Red">Needs Two Day Confirmation!</div>
     }

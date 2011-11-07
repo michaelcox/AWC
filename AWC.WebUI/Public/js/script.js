@@ -53,6 +53,7 @@ $(document).ready(function () {
                 {
                     url: '/Schedule/CalendarEvents',
                     type: 'GET',
+                    data: { id: getId() },
                     dataType: 'json'
                 }
             ],
@@ -73,7 +74,7 @@ $(document).ready(function () {
                     cache: false,
                     dataType: 'json',
                     type: 'POST',
-                    data: {id: event.id, dayDelta: dayDelta, minDelta: minuteDelta}
+                    data: { id: event.id, dayDelta: dayDelta, minDelta: minuteDelta }
                 });
             }
         },
@@ -205,4 +206,14 @@ function clearSearchFields() {
         if ($(this).val() == '')
             $(this).val(_defaultVal);
     });
+}
+
+function getId() {
+    var regex = new RegExp(/\d/);
+    var path = window.location.pathname;
+    var id = regex.exec(path);
+    if (id == null)
+        return 0;
+    else
+        return id[0];
 }

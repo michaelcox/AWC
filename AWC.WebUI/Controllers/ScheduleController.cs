@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using AWC.Domain;
 using AWC.Domain.Abstract;
 using AWC.Domain.Entities;
+using AWC.WebUI.Helpers;
 using AWC.WebUI.Infrastructure.Logging;
 using AWC.WebUI.Models;
 using Omu.ValueInjecter;
@@ -38,28 +39,28 @@ namespace AWC.WebUI.Controllers
             return View();
         }
 
-        public JsonResult CalendarEvents(int? start, int? end)
+        public JsonResult CalendarEvents(int? start, int? end, int? id)
         {
             DateTime t = DateTime.Today;
 
-            var startDate = start.HasValue ? ConvertFromUnixTimestamp(start.Value) : DateTime.Today;
+            var startDate = start.HasValue ? ConvertFromUnixTimestamp(start.Value).ToUniversalTime() : DateTime.Today.ToUniversalTime();
             var endDate = end.HasValue
-                              ? ConvertFromUnixTimestamp(end.Value)
-                              : new DateTime(t.Year, t.Month, 1, 11, 59, 59).AddMonths(3).AddDays(-1);
+                              ? ConvertFromUnixTimestamp(end.Value).ToUniversalTime()
+                              : new DateTime(t.Year, t.Month, 1, 11, 59, 59).AddMonths(3).AddDays(-1).ToUniversalTime();
 
             var clients = GetScheduledClients();
 
             // Pull events object specific to jQuery calendar format
+
             var events = from c in clients.Where(client => client.ScheduledDateTime >= startDate && client.ScheduledDateTime <= endDate).ToList()
-                         select new
-                                    {
-                                        id = c.AppointmentId,
-                                        title = c.FirstName + " " + c.LastName,
-                                        start = c.ScheduledDateTime.ToString("s"),
-                                        url = Url.Action("BasicInfo", "Clients", new {id = c.ClientId})
-                                    };
-
-
+                             select new
+                                        {
+                                            id = c.AppointmentId,
+                                            title = c.FirstName + " " + c.LastName,
+                                            start = TimeHelper.ConvertToLocal(c.ScheduledDateTime).ToString("s"),
+                                            url = Url.Action("BasicInfo", "Clients", new { id = c.ClientId }),
+                                            color = (id.HasValue && id.Value == c.ClientId) ? "#F16BB4" : "#14AFDB"
+                                        };
 
             return Json(events, JsonRequestBehavior.AllowGet);
         }
@@ -84,7 +85,7 @@ namespace AWC.WebUI.Controllers
                 if (appt == null) return Json(new { success = false });
 
                 appt.AppointmentStatusId = (byte) Constants.AppointmentStatusId.Scheduled;
-                appt.ScheduledDateTime = scheduledDate;
+                appt.ScheduledDateTime = scheduledDate.ToUniversalTime();
                 _repository.CommitChanges();
 
                 return Json(new {success = true});
@@ -106,6 +107,8 @@ namespace AWC.WebUI.Controllers
                 var newScheduledTime = appt.ScheduledDateTime.Value.AddDays(dayDelta).AddMinutes(minDelta);
                 appt.ScheduledDateTime = newScheduledTime;
                 appt.AppointmentStatusId = (byte) Constants.AppointmentStatusId.Rescheduled;
+                appt.TwoDayConfirmation = null;
+                appt.TwoWeekConfirmation = null;
                 _repository.CommitChanges();
 
                 return Json(new {success = true});
@@ -138,11 +141,6 @@ namespace AWC.WebUI.Controllers
                                   RequestedItems = a.RequestedItems,
                                   ClientNotes = c.ClientNotes
                               };
-        }
-
-        private string FormatDateToISO8601(DateTime dateTime)
-        {
-            return dateTime.ToString("yyyy-MM-dd") + "T" + dateTime.ToString("hh:mm:ss") + "Z";
         }
 
         private DateTime ConvertFromUnixTimestamp(int timestamp)

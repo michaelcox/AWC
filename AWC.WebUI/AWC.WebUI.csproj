@@ -100,6 +100,7 @@
     </Compile>
     <Compile Include="Helpers\HtmlExtensions.cs" />
     <Compile Include="Helpers\HtmlPrefixScopeExtensions.cs" />
+    <Compile Include="Helpers\TimeHelper.cs" />
     <Compile Include="Helpers\UsesCountiesOrgsDropdownAttribute.cs" />
     <Compile Include="Helpers\FlashHelper.cs" />
     <Compile Include="Helpers\UsesPartnerOrgsDropdownAttribute.cs" />

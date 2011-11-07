@@ -331,7 +331,7 @@ namespace AWC.WebUI.Controllers
                 vm.AppointmentStatusId = appt.AppointmentStatusId;
                 vm.AppointmentId = appt.AppointmentId;
                 vm.CreatedDateTime = appt.CreatedDateTime;
-                vm.ScheduledDateTime = appt.ScheduledDateTime;
+                vm.ScheduledDateTime = TimeHelper.ConvertToLocal(appt.ScheduledDateTime.Value);
                 vm.SentLetterOrEmail = appt.SentLetterOrEmail;
                 vm.TwoDayConfirmation = appt.TwoDayConfirmation;
                 vm.TwoWeekConfirmation = appt.TwoWeekConfirmation;
