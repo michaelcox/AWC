@@ -160,6 +160,23 @@ $(document).ready(function () {
     });
 
     $('#calendar').fullCalendar('rerenderEvents');
+
+    // Requested Items
+    $('#add_item').click(function (e) {
+        $.ajax({
+            url: '/Clients/1/RequestedItemTemplate',
+            cache: false,
+            dataType: 'html',
+            success: function (data) {
+                $('#requesteditems').append(data);
+            }
+        });
+        e.preventDefault();
+    });
+    $("a.deleteRow").live("click", function () {
+        $(this).parents("tr:first").remove();
+        return false;
+    });
 });
 function clearSearchFields() {
     var _field = $('.search input');

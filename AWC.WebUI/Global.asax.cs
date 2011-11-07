@@ -6,7 +6,6 @@ using AWC.Domain.Abstract;
 using AWC.Domain.Concrete;
 using AWC.WebUI.Infrastructure.Logging;
 using AWC.WebUI.Utils;
-using CommonServiceLocator.NinjectAdapter;
 using Ninject;
 using Ninject.Modules;
 using Ninject.Web.Mvc;
@@ -92,8 +91,6 @@ namespace AWC.WebUI
         {
             var kernel = new StandardKernel();
             kernel.Load(Assembly.GetExecutingAssembly());
-            // var locator = new NinjectServiceLocator(kernel);
-            // ServiceLocator.SetLocatorProvider(() => locator);
             return kernel;
         }
 

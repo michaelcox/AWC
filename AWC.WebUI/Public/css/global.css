@@ -518,3 +518,9 @@ table.data-list td {
     color: #fff;
     border-color: #444;
 }
+
+table#requesteditems input
+{
+    width: 100px;
+    margin-right: 20px;
+}

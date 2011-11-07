@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -30,7 +31,7 @@ namespace AWC.WebUI.Controllers
         public ActionResult Create()
         {
             return View(new ClientEditViewModel());
-        } 
+        }
 
         [HttpPost]
         [UsesCountiesDropdown]
@@ -49,8 +50,13 @@ namespace AWC.WebUI.Controllers
                     newClient.LastUpdatedDateTime = DateTime.UtcNow;
 
                     // Strip out extra characters from phone numbers
-                    newClient.PrimaryPhoneNumber = (!string.IsNullOrEmpty(newClient.PrimaryPhoneNumber)) ? Regex.Replace(newClient.PrimaryPhoneNumber, @"\D", string.Empty) : null;
-                    newClient.SecondaryPhoneNumber = (!string.IsNullOrEmpty(newClient.SecondaryPhoneNumber)) ? Regex.Replace(newClient.SecondaryPhoneNumber, @"\D", string.Empty) : null;
+                    newClient.PrimaryPhoneNumber = (!string.IsNullOrEmpty(newClient.PrimaryPhoneNumber))
+                                                       ? Regex.Replace(newClient.PrimaryPhoneNumber, @"\D", string.Empty)
+                                                       : null;
+                    newClient.SecondaryPhoneNumber = (!string.IsNullOrEmpty(newClient.SecondaryPhoneNumber))
+                                                         ? Regex.Replace(newClient.SecondaryPhoneNumber, @"\D",
+                                                                         string.Empty)
+                                                         : null;
 
                     _repository.Add(newClient);
 
@@ -65,13 +71,14 @@ namespace AWC.WebUI.Controllers
 
                     _repository.Add(appt);
                     _repository.CommitChanges();
-                    this.FlashSuccess(string.Format("A new client record for {0} {1} has been created successfully.", newClient.FirstName, newClient.LastName));
-                    return RedirectToAction("BasicInfo", new { id = newClient.ClientId });
+                    this.FlashSuccess(string.Format("A new client record for {0} {1} has been created successfully.",
+                                                    newClient.FirstName, newClient.LastName));
+                    return RedirectToAction("BasicInfo", new {id = newClient.ClientId});
                 }
                 this.FlashError("There were validation errors while trying to create the client record.");
                 _logger.Error(ModelState);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.Error(ex);
                 this.FlashError("There was an error while trying to create the client record.");
@@ -90,7 +97,9 @@ namespace AWC.WebUI.Controllers
                 var client = _repository.Single<Client>(c => c.ClientId == id);
 
                 // Load the current appointment
-                var appt = _repository.Single<Appointment>(a => a.ClientId == id && a.AppointmentId != (byte)Constants.AppointmentStatusId.Closed);
+                var appt =
+                    _repository.Single<Appointment>(
+                        a => a.ClientId == id && a.AppointmentId != (byte) Constants.AppointmentStatusId.Closed);
 
                 var clientEditViewModel = new ClientEditViewModel();
 
@@ -115,8 +124,12 @@ namespace AWC.WebUI.Controllers
             try
             {
                 // Strip out extra characters from phone numbers
-                client.PrimaryPhoneNumber = (!string.IsNullOrEmpty(client.PrimaryPhoneNumber)) ? Regex.Replace(client.PrimaryPhoneNumber, @"\D", string.Empty) : null;
-                client.SecondaryPhoneNumber = (!string.IsNullOrEmpty(client.SecondaryPhoneNumber)) ? Regex.Replace(client.SecondaryPhoneNumber, @"\D", string.Empty) : null;
+                client.PrimaryPhoneNumber = (!string.IsNullOrEmpty(client.PrimaryPhoneNumber))
+                                                ? Regex.Replace(client.PrimaryPhoneNumber, @"\D", string.Empty)
+                                                : null;
+                client.SecondaryPhoneNumber = (!string.IsNullOrEmpty(client.SecondaryPhoneNumber))
+                                                  ? Regex.Replace(client.SecondaryPhoneNumber, @"\D", string.Empty)
+                                                  : null;
 
                 var existingClient = _repository.Single<Client>(c => c.ClientId == client.ClientId);
                 if (ModelState.IsValid)
@@ -124,8 +137,9 @@ namespace AWC.WebUI.Controllers
                     existingClient.InjectFrom(client);
                     existingClient.LastUpdatedDateTime = DateTime.UtcNow;
                     _repository.CommitChanges();
-                    this.FlashSuccess(string.Format("The client record for {0} {1} has been updated successfully.", client.FirstName, client.LastName));
-                    return RedirectToAction("BasicInfo", new { id = client.ClientId });
+                    this.FlashSuccess(string.Format("The client record for {0} {1} has been updated successfully.",
+                                                    client.FirstName, client.LastName));
+                    return RedirectToAction("BasicInfo", new {id = client.ClientId});
                 }
 
                 this.FlashError("There were validation errors while trying to edit the client record.");
@@ -137,7 +151,8 @@ namespace AWC.WebUI.Controllers
                 {
                     foreach (var validationError in validationErrors.ValidationErrors)
                     {
-                        _logger.Error(string.Format("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage));
+                        _logger.Error(string.Format("Property: {0} Error: {1}", validationError.PropertyName,
+                                                    validationError.ErrorMessage));
                     }
                 }
             }
@@ -158,12 +173,12 @@ namespace AWC.WebUI.Controllers
                 Client client = _repository.Single<Client>(c => c.ClientId == id);
 
                 var partnerInfoViewModel = new PartnerInfoViewModel
-                {
-                    IsReplacingFurniture = client.IsReplacingFurniture,
-                    ClientId = client.ClientId,
-                    ClientFirstName = client.FirstName,
-                    ClientLastName = client.LastName
-                };
+                                               {
+                                                   IsReplacingFurniture = client.IsReplacingFurniture,
+                                                   ClientId = client.ClientId,
+                                                   ClientFirstName = client.FirstName,
+                                                   ClientLastName = client.LastName
+                                               };
 
                 // Client may not have a caseworker assigned if they were only just created
                 Caseworker caseworker = client.Caseworker;
@@ -194,7 +209,8 @@ namespace AWC.WebUI.Controllers
                     Caseworker caseworker;
                     if (partnerInfoViewModel.CaseworkerId > 0)
                     {
-                        caseworker = _repository.Single<Caseworker>(c => c.CaseworkerId == partnerInfoViewModel.CaseworkerId);
+                        caseworker =
+                            _repository.Single<Caseworker>(c => c.CaseworkerId == partnerInfoViewModel.CaseworkerId);
                     }
                     else
                     {
@@ -212,11 +228,12 @@ namespace AWC.WebUI.Controllers
 
                     _repository.CommitChanges();
 
-                    this.FlashSuccess(string.Format("The client record for {0} {1} has been updated successfully.", client.FirstName, client.LastName));
-                    return RedirectToAction("PartnerInfo", new { id = client.ClientId });
+                    this.FlashSuccess(string.Format("The client record for {0} {1} has been updated successfully.",
+                                                    client.FirstName, client.LastName));
+                    return RedirectToAction("PartnerInfo", new {id = client.ClientId});
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 this.FlashError("Unable to save changes to client record.");
                 _logger.Error(ex);
@@ -242,19 +259,55 @@ namespace AWC.WebUI.Controllers
             {
                 _logger.Error(ex);
                 this.FlashError("There was an error while trying to delete the client record.");
-                return RedirectToAction("BasicInfo", new { id });
+                return RedirectToAction("BasicInfo", new {id});
             }
         }
 
         public ActionResult Items(int id)
         {
-            var client = _repository.Single<Client>(c => c.ClientId == id);
-
             var rivm = new RequestedItemsViewModel();
-            rivm.InjectFrom(client);
+            var client = _repository.Single<Client>(c => c.ClientId == id);
+            if (client != null)
+            {
+                rivm.InjectFrom(client);
+                var appt = _repository.Single<Appointment>(a => a.AppointmentStatusId != (byte) Constants.AppointmentStatusId.Closed);
+                if (appt != null)
+                {
+                    rivm.InjectFrom(appt);
+                    var requestedItems = _repository.All<RequestedItem>().Where(r => r.AppointmentId == appt.AppointmentId);
+                    rivm.RequestedItems = new List<RequestedItem>();
+                    foreach (var item in requestedItems)
+                    {
+                        rivm.RequestedItems.Add(item);
+                    }
+                }
+            }
+
             return View(rivm);
         }
-    
+
+        [HttpPost]
+        public ActionResult Items(int clientId, int appointmentId, IEnumerable<RequestedItem> requestedItems)
+        {
+            // Clear existing items
+            var existingItems = _repository.All<RequestedItem>().Where(r => r.AppointmentId == appointmentId);
+            foreach (var item in existingItems)
+            {
+                _repository.Delete(item);
+            }
+
+            foreach(var item in requestedItems)
+            {
+                item.AppointmentId = appointmentId;
+                _repository.Add(item);
+            }
+
+            _repository.CommitChanges();
+
+            this.FlashSuccess("The Requested Items have been Saved Successfully.");
+            return RedirectToAction("Items", new {id = clientId});
+        }
+
         [ChildActionOnly]
         public ActionResult ClientNotes(int id, string refAction)
         {
@@ -284,6 +337,11 @@ namespace AWC.WebUI.Controllers
                 vm.TwoWeekConfirmation = appt.TwoWeekConfirmation;
             }
             return View(vm);
+        }
+
+        public ActionResult RequestedItemTemplate(int id)
+        {
+            return View("EditRequestedItem", new RequestedItem());
         }
 
         [HttpPost]

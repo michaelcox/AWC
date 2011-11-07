@@ -1,4 +1,5 @@
-﻿@model AWC.WebUI.Models.RequestedItemsViewModel
+﻿@using AWC.Domain.Entities
+@model AWC.WebUI.Models.RequestedItemsViewModel
 
 @{
     ViewBag.Title = "Requested Items";
@@ -8,4 +9,38 @@
 
 @{Html.RenderPartial("SubNavigation", Model.ClientId);}
 
-<p>The items the client requested will go here</p>
+<article>
+@using (Html.BeginForm())
+{
+    <input type="hidden" name="clientId" value="@Model.ClientId" />
+    <input type="hidden" name="appointmentId" value="@Model.AppointmentId" />
+    
+    Html.ValidationSummary(true);
+                                 
+    <div class="block">
+        <table id="requesteditems">
+            <tr>
+                <th>Item Name</th>
+                <th>Qty Requested</th>
+                <th>Qtq Received</th>
+                <th>Reason</th>
+            </tr>
+            @if (Model.RequestedItems != null && Model.RequestedItems.Count > 0)
+            {
+                foreach (var item in Model.RequestedItems)
+                {
+                    Html.RenderPartial("EditRequestedItem", item);
+                }
+            }
+            @{ Html.RenderPartial("EditRequestedItem", new RequestedItem()); }
+        </table>
+        <a href="#" id="add_item">Add New Item</a>
+    </div>
+
+    <input type="submit" value="Save" class="button" />
+}
+</article>
+<aside class="notes">
+    @{Html.RenderAction("AppointmentQuickView", new { id = Model.ClientId });} <br />
+    @{Html.RenderAction("ClientNotes", new { id = Model.ClientId, refAction = "BasicInfo" });}
+</aside>

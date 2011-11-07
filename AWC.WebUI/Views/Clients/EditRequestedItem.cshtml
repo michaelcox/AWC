@@ -1,9 +1,16 @@
 ﻿@model AWC.Domain.Entities.RequestedItem
+           
+@{
+    Layout = null;
+}
+
 
 <tr>
-    <td>@Html.EditorFor(model => model.ItemName)<br />@Html.ValidationMessageFor(model => model.ItemName)</td>
-    <td>@Html.EditorFor(model => model.QuantityRequested)<br />@Html.ValidationMessageFor(model => model.QuantityRequested)</td>
-    <td>@Html.EditorFor(model => model.Received)<br />@Html.ValidationMessageFor(model => model.Received)</td>
-    <td>@Html.EditorFor(model => model.QuantityReceived)<br />@Html.ValidationMessageFor(model => model.QuantityReceived)</td>
-    <td>@Html.EditorFor(model => model.ReasonForNonReceipt)<br />@Html.ValidationMessageFor(model => model.ReasonForNonReceipt)</td>
+    @using (Html.BeginCollectionItem("requestedItems")){
+        <td>@Html.EditorFor(model => model.ItemName)</td>
+        <td>@Html.EditorFor(model => model.QuantityRequested)</td>
+        <td>@Html.EditorFor(model => model.QuantityReceived)</td>
+        <td>@Html.EditorFor(model => model.ReasonForNonReceipt)</td>
+    }
+    <td><a href="#" class="deleteRow">Remove</a></td>
 </tr>
