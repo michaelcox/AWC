@@ -61,9 +61,25 @@ $(document).ready(function () {
             center: 'title',
             right: 'month,agendaWeek'
         },
+        disableResizing: true,
+        editable: true,
+        eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc) {
+
+            if (!confirm("Are you sure you want to move this appointment?")) {
+                revertFunc();
+            } else {
+                $.ajax({
+                    url: '/Schedule/Edit',
+                    cache: false,
+                    dataType: 'json',
+                    type: 'POST',
+                    data: {id: event.id, dayDelta: dayDelta, minDelta: minuteDelta}
+                });
+            }
+        },
         defaultEventMinutes: 30,
         firstDay: 1,
-        defaultView: 'month',
+        defaultView: 'agendaWeek',
         allDayDefault: false,
         ignoreTimezone: false,
         allDayText: 'Holidays', // Figuring all day events are imported from Google only
@@ -130,24 +146,20 @@ $(document).ready(function () {
             $(this).remove();
         },
         disableResizing: true,
+        editable: true,
         eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc) {
 
-            alert(
-                    event.title + " was moved " +
-                    dayDelta + " days and " +
-                    minuteDelta + " minutes."
-                );
-
-            if (allDay) {
-                alert("Event is now all-day");
-            } else {
-                alert("Event has a time-of-day");
-            }
-
-            if (!confirm("Are you sure about this change?")) {
+            if (!confirm("Are you sure you want to move this appointment?")) {
                 revertFunc();
+            } else {
+                $.ajax({
+                    url: '/Schedule/Edit',
+                    cache: false,
+                    dataType: 'json',
+                    type: 'POST',
+                    data: { id: event.id, dayDelta: dayDelta, minDelta: minuteDelta }
+                });
             }
-
         },
         defaultEventMinutes: 30,
         firstDay: 1,

@@ -53,7 +53,7 @@ namespace AWC.WebUI.Controllers
             var events = from c in clients.Where(client => client.ScheduledDateTime >= startDate && client.ScheduledDateTime <= endDate).ToList()
                          select new
                                     {
-                                        id = c.ClientId,
+                                        id = c.AppointmentId,
                                         title = c.FirstName + " " + c.LastName,
                                         start = c.ScheduledDateTime.ToString("s"),
                                         url = Url.Action("BasicInfo", "Clients", new {id = c.ClientId})
@@ -98,9 +98,19 @@ namespace AWC.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit()
+        public JsonResult Edit(int id, int dayDelta, int minDelta)
         {
-            return View();
+            var appt = _repository.Single<Appointment>(a => a.AppointmentId == id);
+            if (appt != null && appt.ScheduledDateTime.HasValue)
+            {
+                var newScheduledTime = appt.ScheduledDateTime.Value.AddDays(dayDelta).AddMinutes(minDelta);
+                appt.ScheduledDateTime = newScheduledTime;
+                appt.AppointmentStatusId = (byte) Constants.AppointmentStatusId.Rescheduled;
+                _repository.CommitChanges();
+
+                return Json(new {success = true});
+            }
+            return Json(new { success = false });
         }
 
         private IEnumerable<ScheduledClient> GetScheduledClients()
@@ -115,6 +125,8 @@ namespace AWC.WebUI.Controllers
                    select new ScheduledClient
                               {
                                   ClientId = c.ClientId,
+                                  AppointmentId = a.AppointmentId,
+                                  AppointmentStatusId = a.AppointmentStatusId,
                                   FirstName = c.FirstName,
                                   LastName = c.LastName,
                                   PrimaryPhoneNumber = c.PrimaryPhoneNumber,

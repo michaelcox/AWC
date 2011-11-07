@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using AWC.Domain.Entities;
 
 namespace AWC.WebUI.Models
@@ -14,6 +12,10 @@ namespace AWC.WebUI.Models
     public class ScheduledClient
     {
         public int ClientId { get; set; }
+
+        public int AppointmentId { get; set; }
+
+        public byte AppointmentStatusId { get; set; }
 
         public string FirstName { get; set; }
 
