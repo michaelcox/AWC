@@ -26,6 +26,16 @@ namespace AWC.WebUI.Controllers
             return Json(clientSearchResults, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult DistinctItems(string q)
+        {
+            List<string> items = (from i in _repository.All<RequestedItem>()
+                                  where i.ItemName == q || i.ItemName.Contains(q)
+                                  orderby i.ItemName ascending
+                                  select i.ItemName).Distinct().ToList();
+
+            return Json(items, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public RedirectToRouteResult Index(int clientId)
         {

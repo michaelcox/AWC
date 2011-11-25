@@ -270,11 +270,11 @@ namespace AWC.WebUI.Controllers
             if (client != null)
             {
                 rivm.InjectFrom(client);
-                var appt = _repository.Single<Appointment>(a => a.AppointmentStatusId != (byte) Constants.AppointmentStatusId.Closed);
+                var appt = _repository.Single<Appointment>(a => a.ClientId == id && a.AppointmentStatusId != (byte) Constants.AppointmentStatusId.Closed);
                 if (appt != null)
                 {
                     rivm.InjectFrom(appt);
-                    var requestedItems = _repository.All<RequestedItem>().Where(r => r.AppointmentId == appt.AppointmentId);
+                    var requestedItems = _repository.All<RequestedItem>().Where(r => r.AppointmentId == appt.AppointmentId).OrderByDescending(r => r.QuantityReceived).ThenBy(r => r.ItemName);
                     rivm.RequestedItems = new List<RequestedItem>();
                     foreach (var item in requestedItems)
                     {
@@ -331,7 +331,7 @@ namespace AWC.WebUI.Controllers
                 vm.AppointmentStatusId = appt.AppointmentStatusId;
                 vm.AppointmentId = appt.AppointmentId;
                 vm.CreatedDateTime = appt.CreatedDateTime;
-                vm.ScheduledDateTime = TimeHelper.ConvertToLocal(appt.ScheduledDateTime.Value);
+                vm.ScheduledDateTime = (appt.ScheduledDateTime.HasValue) ? TimeHelper.ConvertToLocal(appt.ScheduledDateTime.Value) : new DateTime?();
                 vm.SentLetterOrEmail = appt.SentLetterOrEmail;
                 vm.TwoDayConfirmation = appt.TwoDayConfirmation;
                 vm.TwoWeekConfirmation = appt.TwoWeekConfirmation;
@@ -341,7 +341,7 @@ namespace AWC.WebUI.Controllers
 
         public ActionResult RequestedItemTemplate(int id)
         {
-            return View("EditRequestedItem", new RequestedItem());
+            return View("EditRequestedItem", new RequestedItem{QuantityRequested = 1});
         }
 
         [HttpPost]

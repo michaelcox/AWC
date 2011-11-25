@@ -4,13 +4,23 @@
     Layout = null;
 }
 
+@if (Model.QuantityReceived == 0)
+{
+    <tr>
+        @using (Html.BeginCollectionItem("requestedItems"))
+        {
+            <td class="item_name">@Html.EditorFor(model => model.ItemName)</td>
+            <td>@Html.EditorFor(model => model.QuantityRequested)</td>
+        }
+        <td><a href="#" class="deleteRow">Remove</a></td>
+    </tr>
+}
+else
+{
+    <tr>
+        <td>@Model.ItemName</td>
+        <td>@Model.QuantityRequested</td>
+        <td><em>Received</em></td>
+    </tr>
+}
 
-<tr>
-    @using (Html.BeginCollectionItem("requestedItems")){
-        <td>@Html.EditorFor(model => model.ItemName)</td>
-        <td>@Html.EditorFor(model => model.QuantityRequested)</td>
-        <td>@Html.EditorFor(model => model.QuantityReceived)</td>
-        <td>@Html.EditorFor(model => model.ReasonForNonReceipt)</td>
-    }
-    <td><a href="#" class="deleteRow">Remove</a></td>
-</tr>

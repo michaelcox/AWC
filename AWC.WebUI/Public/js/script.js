@@ -177,20 +177,70 @@ $(document).ready(function () {
     // Requested Items
     $('#add_item').click(function (e) {
         $.ajax({
-            url: '/Clients/1/RequestedItemTemplate',
+            url: '/Clients/1/RequestedItemTemplate', // the "1" is ignored - hack to keep routes pretty
             cache: false,
             dataType: 'html',
             success: function (data) {
-                $('#requesteditems').append(data);
+                $('#requesteditems').append(data)
+                    .find('td.item_name > input').autocomplete({
+                    source: function (req, add) {
+
+                        var q = req.term;
+
+                        //pass request to server
+                        $.getJSON("/search/distinctitems?q=" + q, function (data) {
+
+                            //create array for response objects
+                            var suggestions = [];
+
+                            //process response
+                            $.each(data, function (i, val) {
+                                suggestions.push({ "label": val, "value": val });
+                            });
+
+                            //pass array to callback
+                            add(suggestions);
+                        });
+                    }
+                });
             }
         });
+        addAutoComplete();
         e.preventDefault();
     });
     $("a.deleteRow").live("click", function () {
         $(this).parents("tr:first").remove();
         return false;
     });
+    addAutoComplete();
 });
+
+function addAutoComplete() {
+    $('td.item_name > input').autocomplete({
+
+        //define callback to format results
+        source: function (req, add) {
+
+            var q = req.term;
+
+            //pass request to server
+            $.getJSON("/search/distinctitems?q=" + q, function (data) {
+
+                //create array for response objects
+                var suggestions = [];
+
+                //process response
+                $.each(data, function (i, val) {
+                    suggestions.push({ "label": val, "value": val});
+                });
+
+                //pass array to callback
+                add(suggestions);
+            });
+        }
+    });
+}
+
 function clearSearchFields() {
     var _field = $('.search input');
     var _defaultVal = _field.val();
