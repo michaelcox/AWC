@@ -1,13 +1,18 @@
-@model IEnumerable<AWC.Domain.Entities.RequestedItem>
+@model List<AWC.Domain.Entities.RequestedItem>
 
-@foreach (var item in Model)
+@for (int i = 0; i < Model.Count; i++)
 {
+    var item = Model[i];
     if (item.IsActive && (item.QuantityRequested > item.QuantityReceived))
     {
-        @item.QuantityRequested @item.ItemName@:,&nbsp;
+        <span style="white-space: nowrap">@item.QuantityRequested @item.ItemName</span>
     }
     else
     {
-        <span style="text-decoration: line-through;">@item.QuantityRequested @item.ItemName,&nbsp;</span>
+        <span class="completed">@item.QuantityRequested @item.ItemName</span>
+    }
+    if ((i + 1) < Model.Count)
+    {
+        <span>, &nbsp;</span>
     }
 }

@@ -27,21 +27,28 @@ namespace AWC.WebUI.Controllers
         public ActionResult Index()
         {
             // Load clients/appointments with eager loading
-            var clients = from c in _repository.All<Client>().Include("ClientNotes")
-                          join a in _repository.All<Appointment>().Include("RequestedItems") on c equals a.Client
+            var clients = (from c in _repository.All<Client>()
+                          join a in _repository.All<Appointment>() on c equals a.Client
                           where a.AppointmentStatusId == (byte)Constants.AppointmentStatusId.NotScheduled
                           orderby a.CreatedDateTime ascending
                           select new WaitlistClient
                           {
                               ClientId = c.ClientId,
+                              AppointmentId = a.AppointmentId,
                               CreatedDateTime = c.CreatedDateTime,
                               FirstName = c.FirstName,
                               LastName = c.LastName,
                               PrimaryPhoneNumber = c.PrimaryPhoneNumber,
-                              PhoneNumberTypeId = c.PrimaryPhoneTypeId,
-                              RequestedItems = a.RequestedItems,
-                              ClientNotes = c.ClientNotes
-                          };
+                              PhoneNumberTypeId = c.PrimaryPhoneTypeId
+                          }).ToList();
+
+            var requestedItems = _repository.All<RequestedItem>().ToList();
+
+            foreach (var client in clients)
+            {
+                client.RequestedItems = new List<RequestedItem>();
+                client.RequestedItems.AddRange(requestedItems.Where(r => r.AppointmentId == client.AppointmentId));
+            }
 
             var waitlistViewModel = new WaitListViewModel { Clients = clients };
 

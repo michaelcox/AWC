@@ -299,6 +299,7 @@ namespace AWC.WebUI.Controllers
             foreach(var item in requestedItems)
             {
                 item.AppointmentId = appointmentId;
+                item.IsActive = true;
                 _repository.Add(item);
             }
 
@@ -379,5 +380,43 @@ namespace AWC.WebUI.Controllers
             return PartialView("EditRequestedItem", new RequestedItem());
         }
     
+        [HttpPost]
+        public JsonResult CompletedTwoWeekConfirmation(int id, DateTime twoWeekConfirmation)
+        {
+            var appt = _repository.Single<Appointment>(a => a.AppointmentId == id);
+            if (appt != null && twoWeekConfirmation > DateTime.MinValue)
+            {
+                appt.TwoWeekConfirmation = twoWeekConfirmation;
+                return Json(new { success = true });
+            }
+
+            return Json(new {success = false});
+        }
+
+        [HttpPost]
+        public JsonResult CompletedTwoDayConfirmation(int id, DateTime twoDayConfirmation)
+        {
+            var appt = _repository.Single<Appointment>(a => a.AppointmentId == id);
+            if (appt != null && twoDayConfirmation > DateTime.MinValue)
+            {
+                appt.TwoDayConfirmation = twoDayConfirmation;
+                return Json(new { success = true });
+            }
+
+            return Json(new { success = false });
+        }
+
+        [HttpPost]
+        public JsonResult SentMailing(int id)
+        {
+            var appt = _repository.Single<Appointment>(a => a.AppointmentId == id);
+            if (appt != null)
+            {
+                appt.SentLetterOrEmail = true;
+                return Json(new { success = true });
+            }
+
+            return Json(new { success = false });
+        }
     }
 }

@@ -15,24 +15,25 @@
         <th>Scheduled Appt</th>
         <th>Client</th>
         <th>Requested Items</th>
-        <th>Notes</th>
         <th>Confirmations</th>
     </tr>
     @foreach (var client in Model.Clients)
     {
         <tr>
-            <td>@Html.DateTimeDisplay(@client.ScheduledDateTime)</td>
+            <td>@Html.DateTimeDisplay(@client.ScheduledDateTime, linebreak: true)</td>
             <td><a href="@Url.Action("BasicInfo", "Clients", new {id = client.ClientId})">@client.FirstName @client.LastName</a> <br />@Html.PhoneDisplay(client.PrimaryPhoneNumber) (@Html.PhoneType(client.PhoneNumberTypeId))</td>
             <td>
                  @{Html.RenderPartial("RequestedItems", client.RequestedItems);}
             </td>
             <td>
-                @{Html.RenderPartial("ClientNotes", client.ClientNotes);}
-            </td>
-            <td>
-                @Html.CheckBox("TwoWeekConfirmation", client.TwoWeekConfirmation.HasValue) Two Week Confirmation<br/>
-                @Html.CheckBox("TwoDayConfirmation", client.TwoDayConfirmation.HasValue) Two Day Confirmation<br/>
-                @Html.CheckBox("LetterEmail", client.SentLetterOrEmail) Sent Letter/Email
+                @{ string statusClass = (client.TwoWeekConfirmation.HasValue) ? "completed" : "not-completed"; }
+                <span class="@statusClass">Two Week Confirmation</span><br />
+                    
+                @{ statusClass = (client.TwoDayConfirmation.HasValue) ? "completed" : "not-completed"; }
+                <span class="@statusClass">Two Day Confirmation</span><br />
+
+                @{ statusClass = (client.SentLetterOrEmail) ? "completed" : "not-completed"; }
+                <span class="@statusClass">Sent Letter / Email</span>
             </td>
         </tr>
     }

@@ -33,8 +33,6 @@ namespace AWC.WebUI.Models
 
         public bool SentLetterOrEmail { get; set; }
 
-        public IEnumerable<RequestedItem> RequestedItems { get; set; }
-
-        public IEnumerable<ClientNote> ClientNotes { get; set; }
+        public List<RequestedItem> RequestedItems { get; set; }
     }
 }

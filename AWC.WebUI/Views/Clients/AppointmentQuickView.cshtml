@@ -18,19 +18,25 @@ else if (Model.AppointmentStatusId.HasValue && Model.AppointmentStatusId.Value =
     <p>On Waitlist</p>
 }
 else if (Model.AppointmentStatusId.HasValue && Model.AppointmentStatusId.Value != (byte)Constants.AppointmentStatusId.Closed
-&& Model.ScheduledDateTime.HasValue && Model.ScheduledDateTime > DateTime.UtcNow)
+&& Model.ScheduledDateTime.HasValue && Model.ScheduledDateTime >= DateTime.Today)
 {
     // Scheduled
+    <form method="POST" action="@Url.Action("Edit", "Schedule")">
+        @Html.EditorFor(m => m.ScheduledDateTime)
+        <input type="hidden" name="id" value="@Model.ClientId"/>
+        <input type="submit" value="Update"/>
+    </form>
     <p>
     @Model.ScheduledDateTime.Value.ToLongDateString()
     <span style="white-space: nowrap">at @Model.ScheduledDateTime.Value.ToShortTimeString()</span>
     </p>
-    <p>@Html.ActionLink("Edit Appointment", "Calendar", "Schedule", new { id = Model.ClientId }, null)</p>
+    <p>@Html.ActionLink("Show On Calendar", "Calendar", "Schedule", new { id = Model.ClientId }, null)</p>
     
     if (Model.SentLetterOrEmail)
     {
         <div>Sent Letter / Email</div>
     }
+    
     if (Model.TwoWeekConfirmation.HasValue)
     {
         <div>Completed Two Day Confirmation (@Model.TwoWeekConfirmation.Value.ToString())</div>
@@ -48,4 +54,11 @@ else if (Model.AppointmentStatusId.HasValue && Model.AppointmentStatusId.Value !
     {
         <div style="color:Red">Needs Two Day Confirmation!</div>
     }
-}
+} else if (Model.AppointmentStatusId.HasValue && (Model.AppointmentStatusId.Value == (byte)Constants.AppointmentStatusId.Closed
+|| Model.ScheduledDateTime.HasValue && Model.ScheduledDateTime < DateTime.Today))
+    {
+        <p>
+        @Model.ScheduledDateTime.Value.ToLongDateString()
+        <span style="white-space: nowrap">at @Model.ScheduledDateTime.Value.ToShortTimeString()</span>
+        </p>
+    }

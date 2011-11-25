@@ -30,10 +30,11 @@ namespace AWC.WebUI.Helpers
             return new MvcHtmlString(date.ToString("MM/dd/yyyy"));
         }
 
-        public static MvcHtmlString DateTimeDisplay(this HtmlHelper helper, DateTime gmtDateTime)
+        public static MvcHtmlString DateTimeDisplay(this HtmlHelper helper, DateTime gmtDateTime, bool linebreak = false)
         {
             DateTime dateTime = gmtDateTime.ToLocalTime();
-            return new MvcHtmlString(dateTime.ToShortDateString() + " " + dateTime.ToShortTimeString());
+            string space = (linebreak) ? "<br />" : " ";
+            return new MvcHtmlString(dateTime.ToShortDateString() + space + dateTime.ToShortTimeString());
         }
 
         public static MvcHtmlString PhoneType(this HtmlHelper helper, byte phoneNumberTypeId)

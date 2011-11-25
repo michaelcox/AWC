@@ -9,9 +9,9 @@ namespace AWC.WebUI.Controllers
     public class DashboardController : Controller
     {
 
-        public ActionResult Index()
+        public RedirectToRouteResult Index()
         {
-            return View();
+           return RedirectToAction("Create", "Clients");
         }
 
     }
