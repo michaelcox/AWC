@@ -50,7 +50,7 @@
     <div class="field-block phone">
         @Html.LabelFor(model => model.PrimaryPhoneNumber)
         @Html.DropDownListFor(model => model.PrimaryPhoneTypeId, new SelectList(ViewData["PhoneTypes"] as IEnumerable, "Value", "Name", Model.PrimaryPhoneTypeId))
-        @Html.EditorFor(model => model.PrimaryPhoneNumber)
+        @Html.TextBoxFor(model => model.PrimaryPhoneNumber, new {@class="phone"})
         @Html.ValidationMessageFor(model => model.PrimaryPhoneTypeId)
         @Html.ValidationMessageFor(model => model.PrimaryPhoneNumber)
     </div>
@@ -58,7 +58,7 @@
     <div class="field-block phone">
         @Html.LabelFor(model => model.SecondaryPhoneNumber)
         @Html.DropDownListFor(model => model.SecondaryPhoneTypeId, new SelectList(ViewData["PhoneTypes"] as IEnumerable, "Value", "Name", Model.SecondaryPhoneTypeId))
-        @Html.EditorFor(model => model.SecondaryPhoneNumber)
+        @Html.TextBoxFor(model => model.SecondaryPhoneNumber, new {@class="phone"})
         @Html.ValidationMessageFor(model => model.SecondaryPhoneTypeId)
         @Html.ValidationMessageFor(model => model.SecondaryPhoneNumber)
     </div>

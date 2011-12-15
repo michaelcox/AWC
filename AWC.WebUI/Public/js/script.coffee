@@ -1,4 +1,4 @@
-DEFAULT_SEARCH_VALUE = 'Search'
+﻿DEFAULT_SEARCH_VALUE = 'Client Search'
 
 addAutoClear = (inputBox, defaultValue) ->
 	inputBox.val(defaultValue)
@@ -9,40 +9,42 @@ addAutoClear = (inputBox, defaultValue) ->
 	inputBox.blur ->
 		inputBox.val(defaultValue) if (inputBox.val() is '')
 		
-searchClients = (searchTerm) ->
-	$.getJSON "/search?q=" + q, (data) ->
-		for result in data
+searchClients = (searchTerm, add) ->
+	$.getJSON "/search?q=" + searchTerm, (data) ->
+		r = for result in data
 			name = result.FirstName + " " + result.LastName
-			phoneNumber = "(" + val.PrimaryPhoneNumber.substring(0, 3) + ")";
-			phoneNumber += " " + val.PrimaryPhoneNumber.substring(3, 6) + "-";
-			phoneNumber += val.PrimaryPhoneNumber.substring(6);
+			phoneNumber = "(" + result.PrimaryPhoneNumber.substring(0, 3) + ")";
+			phoneNumber += " " + result.PrimaryPhoneNumber.substring(3, 6) + "-";
+			phoneNumber += result.PrimaryPhoneNumber.substring(6);
 			label = name + " - " + phoneNumber
 			id = result.ClientId
 			{label, value: label, id}
+		add(r)
 			
-getDistinctItems = (searchTerm) ->
-	$.getJSON "/search/distinctitems?q=" + q, (data) ->
-		for result in data
+getDistinctItems = (searchTerm, add) ->
+	$.getJSON "/search/distinctitems?q=" + searchTerm, (data) ->
+		r = for result in data
 			{label: result, value: result}
+		add(r)
 			
 getRequestedItemTemplate = ->
-	$.ajax ->
-		url: '/Clients/1/RequestedItemTemplate' # The "1" is ignored - hack to keep routes pretty
+	$.ajax
+		url: '/Clients/1/RequestedItemTemplate'  # The "1" is ignored - hack to keep routes pretty
 		cache: false
 		dataType: 'html'
 		success: (data) ->
 			$('#requesteditems').append(data)
 			
 scheduleClient = (clientId, date) ->
-	$.ajax ->
+	$.ajax
 		url: "/Schedule/Create"
 		type: "POST"
 		data: { id: clientId, scheduledDate: date.toUTCString() }
 		dataType: "json"
 
 moveClient = (eventId, dayDelta, minDelta) ->
-	$.ajax ->
-		url: '/Schedule/Edit',
+	$.ajax
+		url: '/Schedule/Move',
 		cache: false,
 		dataType: 'json',
 		type: 'POST',
@@ -53,7 +55,6 @@ getId = ->
 	id = regex.exec(window.location.pathname)
 	id?[0] ? 0
 
-# All the rest of the items run on page load
 jQuery ($) ->
 	
 	# Add nice UI functionality to clear the search box on focus
@@ -66,23 +67,27 @@ jQuery ($) ->
 	$('#flashmessage').fadeIn(1000).delay(4000).fadeOut(1000)
 	
 	# Add autocomplete functionality to search box
-	$('#search').autocomplete ->
-		source: (req, add) -> add searchClients(req.term)
-		select: (event, ui) -> $('searchClientId').val(ui.item.id)
+	$('#search').autocomplete
+		source: (req, add) -> searchClients(req.term, add)
+		select: (event, ui) -> $('#searchClientId').val(ui.item.id)
 	
 	# Add autocomplete functionality to all Requested Items
-	$('td.item_name > input').live 'autocomplete', ->
-		source: (req, add) -> add getDistinctItems(req.term)
+	$('td.item_name > input').live 'keyup.autocomplete', ->
+		$(this).autocomplete
+			source: (req, add) -> getDistinctItems(req.term, add)
 	
 	#Add click functionality to add new Requested Item
-	$('#add_item').click(getRequestedItemTemplate)
+	$('#add_item').click (e) ->
+		e.preventDefault()
+		getRequestedItemTemplate()
 	
 	#Add click functionality to remove an existing Requested Item
-	$('a.deleteRow').live 'click', ->
-		@parents('tr:first').remove()
+	$('a.deleteRow').live 'click', (e) ->
+		e.preventDefault()
+		$(this).parents('tr:first').remove()
 	
 	# Add functionality to generate the nice jQuery calendar and load the events
-	$('#calendar').fullCalendar ->
+	$('#calendar').fullCalendar
 		eventSources: [
 				url: 'http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/public/basic',
 				type: 'GET',
@@ -99,14 +104,14 @@ jQuery ($) ->
 			center: 'title',
 			right: 'today prev,next'
 		drop: (date, allDay) ->
-			eventObject = @data('eventObject')
+			eventObject = $(this).data('eventObject')
 			eventObject.start = date
 			eventObject.allDay = false
 			eventObject.editable = true
-			clientId = @attr('id').substring(5) 			#Grab the ID from the div
+			clientId = $(this).attr('id').substring(5) 			#Grab the ID from the div
 			scheduleClient clientId, date
 			$('#calendar').fullCalendar('renderEvent', eventObject, true)
-			@remove()
+			$(this).remove()
 		eventDrop: (event, dayDelta, minuteDelta, allDay, revertFunc) ->
 			if confirm "Are you sure you want to move this appointment?"
 				moveClient event.id, dayDelta, minuteDelta
@@ -124,6 +129,25 @@ jQuery ($) ->
 		minTime: 5
 		maxTime: 24
 		
-		
+	# Add ability to drag waitlist-clients
+	$('#waitlist-clients .waitlist-client').each ->
+		# Use the element's text as the event title
+		eventObject = { title: $.trim $(this).text() }
+
+		# Store the Event Object in the DOM element so we can get to it later
+		$(this).data 'eventObject', eventObject
+
+		# Make the event draggable using jQuery UI
+		$(this).draggable
+			zIndex: 999
+			revert: true		# Will cause the even to go back to its
+			revertDuration: 0	# original position after the drag
+
+	# Add warning message if someone uses the search form incorrectly
+	$('#searchForm').submit ->
+		if $('#searchClientId').val() == ""
+			alert('You must select a client from the dropdown options.')
+			return false
 
 	
+	return # Not necessary, but I think it's cleaner

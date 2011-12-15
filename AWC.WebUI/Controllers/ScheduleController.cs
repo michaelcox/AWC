@@ -107,7 +107,7 @@ namespace AWC.WebUI.Controllers
         }
 
         [HttpPost]
-        public JsonResult Edit(int id, int dayDelta, int minDelta)
+        public JsonResult Move(int id, int dayDelta, int minDelta)
         {
             var appt = _repository.Single<Appointment>(a => a.AppointmentId == id);
             if (appt != null && appt.ScheduledDateTime.HasValue)
