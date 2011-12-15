@@ -125,10 +125,10 @@ namespace AWC.WebUI.Controllers
         }
 
         [HttpPost]
-        public JsonResult Edit(int id, DateTime scheduledDateTime)
+        public JsonResult Edit(int id, DateTime localDateTime)
         {
             var appt = _repository.Single<Appointment>(a => a.AppointmentId == id);
-            appt.ScheduledDateTime = scheduledDateTime;
+            appt.ScheduledDateTime = localDateTime.ConvertToUtc();
             appt.AppointmentStatusId = (byte)Constants.AppointmentStatusId.Rescheduled;
             appt.TwoDayConfirmation = null;
             appt.TwoWeekConfirmation = null;

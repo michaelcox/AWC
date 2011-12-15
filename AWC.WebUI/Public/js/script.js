@@ -1,5 +1,5 @@
 (function() {
-  var DEFAULT_SEARCH_VALUE, addAutoClear, getDistinctItems, getId, getRequestedItemTemplate, moveClient, scheduleClient, searchClients;
+  var DEFAULT_SEARCH_VALUE, addAutoClear, editScheduledDateTime, getDistinctItems, getId, getRequestedItemTemplate, moveClient, scheduleClient, searchClients, updateScheduledDate;
 
   DEFAULT_SEARCH_VALUE = 'Client Search';
 
@@ -102,7 +102,38 @@
     return (_ref = id != null ? id[0] : void 0) != null ? _ref : 0;
   };
 
+  updateScheduledDate = function() {
+    var ampm, day, hour, min, month, year, _ref, _ref2, _ref3;
+    day = (_ref = $('#scheduledDate').datepicker('getDate')) != null ? _ref.getDate() : void 0;
+    month = ((_ref2 = $('#scheduledDate').datepicker('getDate')) != null ? _ref2.getMonth() : void 0) + 1;
+    year = (_ref3 = $('#scheduledDate').datepicker('getDate')) != null ? _ref3.getFullYear() : void 0;
+    hour = $('#scheduledHour').val();
+    min = $('#scheduledMinute').val();
+    ampm = $('#scheduledAmPm').val();
+    $('#ScheduledDateTime').val(month + '/' + day + '/' + year + ' ' + hour + ':' + min + ' ' + ampm);
+  };
+
+  editScheduledDateTime = function() {
+    var clientId, newDateTime;
+    clientId = $('#ClientId').val();
+    newDateTime = new Date($('#ScheduledDateTime').val());
+    return $.ajax({
+      url: "/Schedule/Edit",
+      type: "POST",
+      data: {
+        id: clientId,
+        localDateTime: newDateTime.toUTCString()
+      },
+      dataType: "json",
+      success: function() {
+        $('#scheduledDateFlash').html('Appointment date updated!');
+        return $('#scheduledDateFlash').fadeIn(1000).delay(4000).fadeOut(1000);
+      }
+    });
+  };
+
   jQuery(function($) {
+    var hour, initialDate, min, _i, _len, _ref;
     addAutoClear($('#search'), DEFAULT_SEARCH_VALUE);
     $('.phone').mask('(999) 999-9999');
     $('#flashmessage').fadeIn(1000).delay(4000).fadeOut(1000);
@@ -198,6 +229,31 @@
         return false;
       }
     });
+    $('#scheduledDate').datepicker({
+      defaultDate: $('#ScheduledDateTime').val(),
+      onSelect: updateScheduledDate
+    });
+    for (hour = 1; hour <= 12; hour++) {
+      $('#scheduledHour').append($("<option></option>").attr('value', hour).text(hour));
+    }
+    _ref = ['00', '30'];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      min = _ref[_i];
+      $('#scheduledMinute').append($("<option></option>").attr('value', min).text(min));
+    }
+    initialDate = new Date($('#ScheduledDateTime').val());
+    $('#scheduledMinute').val(initialDate.getMinutes());
+    if (initialDate.getHours() <= 12) {
+      $('#scheduledHour').val(initialDate.getHours());
+      $('#scheduledAmPm').val('AM');
+    } else {
+      $('#scheduledHour').val(initialDate.getHours() - 12);
+      $('#scheduledAmPm').val('PM');
+    }
+    $('#scheduledHour').change(updateScheduledDate);
+    $('#scheduledMinute').change(updateScheduledDate);
+    $('#scheduledAmPm').change(updateScheduledDate);
+    $('#updateScheduledDate').click(editScheduledDateTime);
   });
 
 }).call(this);

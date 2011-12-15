@@ -55,6 +55,28 @@ getId = ->
 	id = regex.exec(window.location.pathname)
 	id?[0] ? 0
 
+updateScheduledDate = ->
+	day = $('#scheduledDate').datepicker('getDate')?.getDate()
+	month = $('#scheduledDate').datepicker('getDate')?.getMonth() + 1
+	year = $('#scheduledDate').datepicker('getDate')?.getFullYear()
+	hour = $('#scheduledHour').val()
+	min = $('#scheduledMinute').val()
+	ampm = $('#scheduledAmPm').val()
+	$('#ScheduledDateTime').val(month + '/' + day + '/' + year + ' ' + hour + ':' + min + ' ' + ampm)
+	return
+
+editScheduledDateTime = ->
+	clientId = $('#ClientId').val()
+	newDateTime = new Date($('#ScheduledDateTime').val())
+	$.ajax
+		url: "/Schedule/Edit"
+		type: "POST"
+		data: { id: clientId, localDateTime: newDateTime.toUTCString() }
+		dataType: "json"
+		success: ->
+			$('#scheduledDateFlash').html('Appointment date updated!')
+			$('#scheduledDateFlash').fadeIn(1000).delay(4000).fadeOut(1000)
+
 jQuery ($) ->
 	
 	# Add nice UI functionality to clear the search box on focus
@@ -149,5 +171,34 @@ jQuery ($) ->
 			alert('You must select a client from the dropdown options.')
 			return false
 
+	# Use the jQuery UI date picker for Appointment Quick View
+	$('#scheduledDate').datepicker
+		defaultDate: $('#ScheduledDateTime').val()
+		onSelect: updateScheduledDate
+		
+	# Populate the Scheduled Date dropdown lists with times
+	for hour in [1..12]
+		$('#scheduledHour').append $("<option></option>").attr('value', hour).text(hour)
+
+	for min in ['00', '30']
+		$('#scheduledMinute').append $("<option></option>").attr('value', min).text(min)
+
+	# Set the initial value of the dropdown boxes for hour/min/ampm
+	initialDate = new Date($('#ScheduledDateTime').val())
+	$('#scheduledMinute').val(initialDate.getMinutes())
+	if (initialDate.getHours() <= 12)
+		$('#scheduledHour').val(initialDate.getHours())
+		$('#scheduledAmPm').val('AM')
+	else
+		$('#scheduledHour').val(initialDate.getHours() - 12)
+		$('#scheduledAmPm').val('PM')
 	
+	# Set the onChange event for the time dropdowns to set the hidden field
+	$('#scheduledHour').change updateScheduledDate
+	$('#scheduledMinute').change updateScheduledDate
+	$('#scheduledAmPm').change updateScheduledDate
+
+	# Add binding when you update the date
+	$('#updateScheduledDate').click editScheduledDateTime 
+
 	return # Not necessary, but I think it's cleaner

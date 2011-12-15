@@ -9,7 +9,7 @@
 @using (Html.BeginForm("AddNote", "Clients")) {
     @Html.ValidationSummary(true)
     
-    @Html.EditorFor(model => model.ClientId)
+    @Html.HiddenFor(model => model.ClientId, new{id="notesClientId"})
     @Html.EditorFor(model => model.RefAction)
     @Html.Hidden("ClientNoteId", 0)
     

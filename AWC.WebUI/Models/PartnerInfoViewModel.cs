@@ -29,7 +29,7 @@ namespace AWC.WebUI.Models
         public string LastName { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "Caseworker #")]
+        [Display(Name = "Caseworker Phone Number")]
         public string ExternalId { get; set; }
 
         [StringLength(50)]
