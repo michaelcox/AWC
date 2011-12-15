@@ -5,6 +5,7 @@ using AWC.Domain.Abstract;
 using AWC.Domain.Entities;
 using AWC.WebUI.Infrastructure.Logging;
 using AWC.WebUI.Models;
+using Newtonsoft.Json;
 using Omu.ValueInjecter;
 
 namespace AWC.WebUI.Controllers
@@ -26,14 +27,21 @@ namespace AWC.WebUI.Controllers
             return Json(clientSearchResults, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult DistinctItems(string q)
+        [ChildActionOnly]
+        public string DistinctItems(string q)
         {
-            List<string> items = (from i in _repository.All<RequestedItem>()
-                                  where i.ItemName == q || i.ItemName.Contains(q)
-                                  orderby i.ItemName ascending
-                                  select i.ItemName).Distinct().ToList();
+            var items = (from i in _repository.All<RequestedItem>()
+                         orderby i.ItemName ascending
+                         select i.ItemName);
 
-            return Json(items, JsonRequestBehavior.AllowGet);
+            if (!string.IsNullOrEmpty(q))
+            {
+                items = items.Where(i => i == q || i.Contains(q));
+            }
+
+            items = items.Distinct();
+
+            return JsonConvert.SerializeObject(items);
         }
 
         [HttpPost]

@@ -1,5 +1,5 @@
 (function() {
-  var DEFAULT_SEARCH_VALUE, addAutoClear, editScheduledDateTime, getDistinctItems, getId, getRequestedItemTemplate, moveClient, scheduleClient, searchClients, updateScheduledDate;
+  var DEFAULT_SEARCH_VALUE, addAutoClear, editScheduledDateTime, getId, getRequestedItemTemplate, moveClient, scheduleClient, searchClients, updateScheduledDate;
 
   DEFAULT_SEARCH_VALUE = 'Client Search';
 
@@ -13,7 +13,9 @@
     });
   };
 
-  searchClients = function(searchTerm, add) {
+  searchClients = function(req, add) {
+    var searchTerm;
+    searchTerm = req.term;
     return $.getJSON("/search?q=" + searchTerm, function(data) {
       var id, label, name, phoneNumber, r, result;
       r = (function() {
@@ -31,25 +33,6 @@
             label: label,
             value: label,
             id: id
-          });
-        }
-        return _results;
-      })();
-      return add(r);
-    });
-  };
-
-  getDistinctItems = function(searchTerm, add) {
-    return $.getJSON("/search/distinctitems?q=" + searchTerm, function(data) {
-      var r, result;
-      r = (function() {
-        var _i, _len, _results;
-        _results = [];
-        for (_i = 0, _len = data.length; _i < _len; _i++) {
-          result = data[_i];
-          _results.push({
-            label: result,
-            value: result
           });
         }
         return _results;
@@ -138,18 +121,18 @@
     $('.phone').mask('(999) 999-9999');
     $('#flashmessage').fadeIn(1000).delay(4000).fadeOut(1000);
     $('#search').autocomplete({
-      source: function(req, add) {
-        return searchClients(req.term, add);
-      },
+      source: searchClients,
       select: function(event, ui) {
         return $('#searchClientId').val(ui.item.id);
-      }
+      },
+      autoFocus: true
     });
     $('td.item_name > input').live('keyup.autocomplete', function() {
       return $(this).autocomplete({
-        source: function(req, add) {
-          return getDistinctItems(req.term, add);
-        }
+        source: window.distinctItems,
+        delay: 0,
+        minLength: 1,
+        autoFocus: true
       });
     });
     $('#add_item').click(function(e) {

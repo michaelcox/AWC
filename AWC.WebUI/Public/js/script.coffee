@@ -9,7 +9,8 @@ addAutoClear = (inputBox, defaultValue) ->
 	inputBox.blur ->
 		inputBox.val(defaultValue) if (inputBox.val() is '')
 		
-searchClients = (searchTerm, add) ->
+searchClients = (req, add) ->
+	searchTerm = req.term
 	$.getJSON "/search?q=" + searchTerm, (data) ->
 		r = for result in data
 			name = result.FirstName + " " + result.LastName
@@ -19,12 +20,6 @@ searchClients = (searchTerm, add) ->
 			label = name + " - " + phoneNumber
 			id = result.ClientId
 			{label, value: label, id}
-		add(r)
-			
-getDistinctItems = (searchTerm, add) ->
-	$.getJSON "/search/distinctitems?q=" + searchTerm, (data) ->
-		r = for result in data
-			{label: result, value: result}
 		add(r)
 			
 getRequestedItemTemplate = ->
@@ -90,13 +85,17 @@ jQuery ($) ->
 	
 	# Add autocomplete functionality to search box
 	$('#search').autocomplete
-		source: (req, add) -> searchClients(req.term, add)
+		source: searchClients
 		select: (event, ui) -> $('#searchClientId').val(ui.item.id)
+		autoFocus: true
 	
 	# Add autocomplete functionality to all Requested Items
 	$('td.item_name > input').live 'keyup.autocomplete', ->
 		$(this).autocomplete
-			source: (req, add) -> getDistinctItems(req.term, add)
+			source: window.distinctItems
+			delay: 0
+			minLength: 1
+			autoFocus: true
 	
 	#Add click functionality to add new Requested Item
 	$('#add_item').click (e) ->

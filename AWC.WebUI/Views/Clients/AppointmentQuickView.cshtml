@@ -23,14 +23,14 @@ else if (Model.AppointmentStatusId.HasValue && Model.AppointmentStatusId.Value !
     // Scheduled
     <p>@Html.ActionLink("Show On Full Schedule", "Calendar", "Schedule", new { id = Model.ClientId }, null)</p>
     <div id="scheduledDate"></div>
-    <select name="hours" id="scheduledHour"></select>
-    <select name="minutes" id="scheduledMinute"></select>
-    <select name="ampm" id="scheduledAmPm">
+    <select name="hours" id="scheduledHour" style="font-size: larger;"></select>
+    <select name="minutes" id="scheduledMinute" style="font-size: larger;"></select>
+    <select name="ampm" id="scheduledAmPm" style="font-size: larger;">
         <option value="AM">AM</option>
         <option value="PM">PM</option>
     </select>
     @Html.HiddenFor(m => m.ScheduledDateTime)
-    <button type="button" id="updateScheduledDate">Update Appt</button>
+    <button type="button" id="updateScheduledDate" class="button">Update</button>
     <div class="flashmessage" id="scheduledDateFlash" style="display: none;"></div>
 
     <p>

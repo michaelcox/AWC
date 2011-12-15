@@ -42,3 +42,8 @@
     @{Html.RenderAction("AppointmentQuickView", new { id = Model.ClientId });} <br />
     @{Html.RenderAction("ClientNotes", new { id = Model.ClientId, refAction = "BasicInfo" });}
 </aside>
+
+<script type="text/javascript">
+    // Load all unique item types to make the autocomplete faster
+    window.distinctItems = @{Html.RenderAction("DistinctItems", "Search");}
+</script>
