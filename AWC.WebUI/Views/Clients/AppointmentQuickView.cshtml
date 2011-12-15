@@ -18,7 +18,7 @@ else if (Model.AppointmentStatusId.HasValue && Model.AppointmentStatusId.Value =
     <p>On Waitlist</p>
 }
 else if (Model.AppointmentStatusId.HasValue && Model.AppointmentStatusId.Value != (byte)Constants.AppointmentStatusId.Closed
-&& Model.ScheduledDateTime.HasValue && Model.ScheduledDateTime >= DateTime.Today)
+&& Model.ScheduledDateTime.HasValue)
 {
     // Scheduled
     <p>@Html.ActionLink("Show On Full Schedule", "Calendar", "Schedule", new { id = Model.ClientId }, null)</p>
@@ -58,11 +58,3 @@ else if (Model.AppointmentStatusId.HasValue && Model.AppointmentStatusId.Value !
     }
     </p>
 }
-else if (Model.AppointmentStatusId.HasValue && (Model.AppointmentStatusId.Value == (byte)Constants.AppointmentStatusId.Closed
-|| Model.ScheduledDateTime.HasValue && Model.ScheduledDateTime < DateTime.Today))
-{
-        <p>
-        @Model.ScheduledDateTime.Value.ToLongDateString()
-        <span style="white-space: nowrap">at @Model.ScheduledDateTime.Value.ToShortTimeString()</span>
-        </p>
-    }

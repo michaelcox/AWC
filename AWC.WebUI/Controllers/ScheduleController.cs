@@ -27,7 +27,7 @@ namespace AWC.WebUI.Controllers
         public ActionResult Confirmed()
         {
             // Load clients/appointments with eager loading
-            List<ScheduledClient> clients = GetScheduledClients(all: true).ToList();
+            List<ScheduledClient> clients = GetScheduledClients(all: false).ToList();
 
             var requestedItems = _repository.All<RequestedItem>().ToList();
 
@@ -42,9 +42,15 @@ namespace AWC.WebUI.Controllers
             return View(scheduledViewModel);
         }
 
-        public ActionResult Calendar()
+        public ActionResult Calendar(int? id)
         {
-            return View();
+            DateTime? focusDateTime = null;
+            if (id.HasValue)
+            {
+                var clients = GetScheduledClients(all: true);
+                focusDateTime = clients.Where(c => c.ClientId == id).First().ScheduledDateTime;
+            }
+            return View(focusDateTime);
         }
 
         public JsonResult CalendarEvents(int? start, int? end, int? id)
@@ -65,7 +71,7 @@ namespace AWC.WebUI.Controllers
                                         {
                                             id = c.AppointmentId,
                                             title = c.FirstName + " " + c.LastName,
-                                            start = TimeHelper.ConvertToLocal(c.ScheduledDateTime).ToString("s"),
+                                            start = c.ScheduledDateTime.ConvertToLocal().ToString("s"),
                                             url = Url.Action("BasicInfo", "Clients", new { id = c.ClientId }),
                                             color = (id.HasValue && id.Value == c.ClientId) ? "#F16BB4" : "#14AFDB"
                                         };

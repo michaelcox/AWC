@@ -1,4 +1,5 @@
-﻿@{
+﻿@model DateTime?
+@{
     ViewBag.Title = "Schedule | Calendar View";
 }
 
@@ -10,3 +11,12 @@
     <div id='loading' style='display:none'>loading...</div> 
     <div id="calendar"></div>
 </div>
+
+
+@if (Model.HasValue)
+{
+    int month = (@Model.Value.Month - 1);
+    <input type="hidden" id="focusDate" value="@Model.Value.Year,@month,@Model.Value.Day"/>
+}
+
+

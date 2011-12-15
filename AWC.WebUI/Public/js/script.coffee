@@ -149,7 +149,15 @@ jQuery ($) ->
 		allDayText: 'Holidays' # Figuring all day events are imported from Google only
 		minTime: 5
 		maxTime: 24
-		
+				
+	# If there is a focus date specified on the calendar, jump to it
+	if $('#focusDate').length
+		[year, month, day] = $('#focusDate').val().split(',')
+		month = parseInt(month)
+		year = parseInt(year)
+		day = parseInt(day)
+		$('#calendar').fullCalendar('gotoDate', year, month, day)
+
 	# Add ability to drag waitlist-clients
 	$('#waitlist-clients .waitlist-client').each ->
 		# Use the element's text as the event title
@@ -174,6 +182,7 @@ jQuery ($) ->
 	$('#scheduledDate').datepicker
 		defaultDate: $('#ScheduledDateTime').val()
 		onSelect: updateScheduledDate
+		firstDay: 1
 		
 	# Populate the Scheduled Date dropdown lists with times
 	for hour in [1..12]
@@ -198,6 +207,6 @@ jQuery ($) ->
 	$('#scheduledAmPm').change updateScheduledDate
 
 	# Add binding when you update the date
-	$('#updateScheduledDate').click editScheduledDateTime 
+	$('#updateScheduledDate').click editScheduledDateTime
 
 	return # Not necessary, but I think it's cleaner

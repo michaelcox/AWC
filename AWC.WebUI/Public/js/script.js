@@ -116,7 +116,7 @@
   };
 
   jQuery(function($) {
-    var hour, initialDate, min, _i, _len, _ref;
+    var day, hour, initialDate, min, month, year, _i, _len, _ref, _ref2;
     addAutoClear($('#search'), DEFAULT_SEARCH_VALUE);
     $('.phone').mask('(999) 999-9999');
     $('#flashmessage').fadeIn(1000).delay(4000).fadeOut(1000);
@@ -194,6 +194,13 @@
       minTime: 5,
       maxTime: 24
     });
+    if ($('#focusDate').length) {
+      _ref = $('#focusDate').val().split(','), year = _ref[0], month = _ref[1], day = _ref[2];
+      month = parseInt(month);
+      year = parseInt(year);
+      day = parseInt(day);
+      $('#calendar').fullCalendar('gotoDate', year, month, day);
+    }
     $('#waitlist-clients .waitlist-client').each(function() {
       var eventObject;
       eventObject = {
@@ -214,14 +221,15 @@
     });
     $('#scheduledDate').datepicker({
       defaultDate: $('#ScheduledDateTime').val(),
-      onSelect: updateScheduledDate
+      onSelect: updateScheduledDate,
+      firstDay: 1
     });
     for (hour = 1; hour <= 12; hour++) {
       $('#scheduledHour').append($("<option></option>").attr('value', hour).text(hour));
     }
-    _ref = ['00', '30'];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      min = _ref[_i];
+    _ref2 = ['00', '30'];
+    for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+      min = _ref2[_i];
       $('#scheduledMinute').append($("<option></option>").attr('value', min).text(min));
     }
     initialDate = new Date($('#ScheduledDateTime').val());

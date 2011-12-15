@@ -253,6 +253,7 @@ header .search .btn-go {
     background: url(../images/bg-content-top.gif) no-repeat 0 0;
     padding: 30px 27px 20px;
     overflow: hidden;
+    min-height: 400px;
 }
 #content .b {
     width: 974px;
