@@ -21,7 +21,7 @@ else if (Model.AppointmentStatusId.HasValue && Model.AppointmentStatusId.Value !
 && Model.ScheduledDateTime.HasValue)
 {
     // Scheduled
-    <p>@Html.ActionLink("Show On Full Schedule", "Calendar", "Schedule", new { id = Model.ClientId }, null)</p>
+    <p>@Html.ActionLink("Show On Full Schedule", "Calendar", "Schedule", new { id = Model.ClientId }, null) &rarr;</p>
     <div id="scheduledDate"></div>
     <select name="hours" id="scheduledHour" style="font-size: larger;"></select>
     <select name="minutes" id="scheduledMinute" style="font-size: larger;"></select>
@@ -33,28 +33,17 @@ else if (Model.AppointmentStatusId.HasValue && Model.AppointmentStatusId.Value !
     <button type="button" id="updateScheduledDate" class="button">Update</button>
     <div class="flashmessage" id="scheduledDateFlash" style="display: none;"></div>
 
-    <p>
-    @if (Model.SentLetterOrEmail)
+    <br/><br />
+    
+    if (Model.ScheduledDateTime.Value > DateTime.Today)
     {
-        <div>Sent Letter / Email</div>
+        <h3>Action Items:</h3>
+        <input type="hidden" value="@Model.AppointmentId" id="appointmentId" name="appointmentId" />
+        <div id="todo">
+            <input type="checkbox" id="action_send_letter"/><span id="label_send_letter">Send Letter / Email</span><br />
+            <input type="checkbox" id="action_two_week" /><span id="label_two_week">Two Week Confirmation</span><br />
+            <input type="checkbox" id="action_two_day" /><span id="label_two_day">Two Day Confirmation</span><br />
+        </div>
     }
 
-    @if (Model.TwoWeekConfirmation.HasValue)
-    {
-        <div>Completed Two Day Confirmation (@Model.TwoWeekConfirmation.Value.ToString())</div>
-    }
-    else if (DateTime.Today.ToUniversalTime().AddDays(15) > Model.ScheduledDateTime.Value)
-    {
-        <div style="color:Red">Needs Two Week Confirmation!</div>
-    }
-
-    @if (Model.TwoDayConfirmation.HasValue)
-    {
-        <div>Completed Two Day Confirmation (@Model.TwoDayConfirmation.Value.ToString())</div>
-    }
-    else if (DateTime.Today.ToUniversalTime().AddDays(3) > Model.ScheduledDateTime.Value)
-    {
-        <div style="color:Red">Needs Two Day Confirmation!</div>
-    }
-    </p>
 }

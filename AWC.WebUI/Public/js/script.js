@@ -1,5 +1,5 @@
 (function() {
-  var DEFAULT_SEARCH_VALUE, addAutoClear, editScheduledDateTime, getId, getRequestedItemTemplate, moveClient, scheduleClient, searchClients, updateScheduledDate;
+  var DEFAULT_SEARCH_VALUE, addAutoClear, editScheduledDateTime, getId, getRequestedItemTemplate, markAction, moveClient, properlyHighlightToDoItems, scheduleClient, searchClients, updateScheduledDate;
 
   DEFAULT_SEARCH_VALUE = 'Client Search';
 
@@ -108,9 +108,67 @@
         localDateTime: newDateTime.toUTCString()
       },
       dataType: "json",
-      success: function() {
-        $('#scheduledDateFlash').html('Appointment date updated!');
+      success: function(data) {
+        var checkboxId, _i, _len, _ref;
+        if (data.success) {
+          $('#scheduledDateFlash').html('Appointment date updated!');
+          _ref = ['action_two_day', 'action_two_week'];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            checkboxId = _ref[_i];
+            $('#' + checkboxId).removeAttr('checked').removeAttr('disabled');
+          }
+          properlyHighlightToDoItems();
+        } else {
+          $('#scheduledDateFlash').html('ERROR SAVING');
+        }
         return $('#scheduledDateFlash').fadeIn(1000).delay(4000).fadeOut(1000);
+      },
+      error: function() {
+        $('#scheduledDateFlash').html('ERROR SAVING');
+        return $('#scheduledDateFlash').fadeIn(1000).delay(4000).fadeOut(1000);
+      }
+    });
+  };
+
+  markAction = function(action, checkboxId, labelId) {
+    var apptId;
+    apptId = $('#appointmentId').val();
+    return $.ajax({
+      url: window.location.pathname + "/" + action,
+      type: "POST",
+      data: {
+        apptId: apptId
+      },
+      dataType: "json",
+      success: function(data) {
+        if (data.success) {
+          return properlyHighlightToDoItems();
+        } else {
+          return $('#' + checkboxId).removeAttr('checked');
+        }
+      },
+      error: function() {
+        return $('#' + checkboxId).removeAttr('checked');
+      }
+    });
+  };
+
+  properlyHighlightToDoItems = function() {
+    var apptDate, currentTime, daysLeft, oneDay;
+    apptDate = new Date($('#ScheduledDateTime').val());
+    currentTime = new Date();
+    oneDay = 1000 * 60 * 60 * 24;
+    daysLeft = Math.ceil((apptDate.getTime() - currentTime.getTime()) / oneDay);
+    $('#todo span').each(function() {
+      return $(this).attr('class', 'default');
+    });
+    $('#label_send_letter').attr('class', 'needed');
+    if (daysLeft <= 3) $('#label_two_day').attr('class', 'needed');
+    if (daysLeft <= 15) $('#label_two_week').attr('class', 'needed');
+    return $('#todo input').each(function() {
+      if ($(this).is(':checked')) {
+        $(this).attr('disabled', 'disabled');
+        return $(this).next('span').attr('class', 'done');
       }
     });
   };
@@ -245,6 +303,18 @@
     $('#scheduledMinute').change(updateScheduledDate);
     $('#scheduledAmPm').change(updateScheduledDate);
     $('#updateScheduledDate').click(editScheduledDateTime);
+    if ($('#todo').length) {
+      properlyHighlightToDoItems();
+      $('#action_send_letter').change(function() {
+        return markAction('SentMailing', 'action_send_letter', 'label_send_letter');
+      });
+      $('#action_two_week').change(function() {
+        return markAction('CompletedTwoWeekConfirmation', 'action_two_week', 'label_two_week');
+      });
+      $('#action_two_day').change(function() {
+        return markAction('CompletedTwoDayConfirmation', 'action_two_day', 'label_two_day');
+      });
+    }
   });
 
 }).call(this);

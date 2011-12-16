@@ -381,25 +381,13 @@ namespace AWC.WebUI.Controllers
         }
     
         [HttpPost]
-        public JsonResult CompletedTwoWeekConfirmation(int id, DateTime twoWeekConfirmation)
+        public JsonResult CompletedTwoWeekConfirmation(int apptId)
         {
-            var appt = _repository.Single<Appointment>(a => a.AppointmentId == id);
-            if (appt != null && twoWeekConfirmation > DateTime.MinValue)
+            var appt = _repository.Single<Appointment>(a => a.AppointmentId == apptId);
+            if (appt != null)
             {
-                appt.TwoWeekConfirmation = twoWeekConfirmation;
-                return Json(new { success = true });
-            }
-
-            return Json(new {success = false});
-        }
-
-        [HttpPost]
-        public JsonResult CompletedTwoDayConfirmation(int id, DateTime twoDayConfirmation)
-        {
-            var appt = _repository.Single<Appointment>(a => a.AppointmentId == id);
-            if (appt != null && twoDayConfirmation > DateTime.MinValue)
-            {
-                appt.TwoDayConfirmation = twoDayConfirmation;
+                appt.TwoWeekConfirmation = DateTime.UtcNow;
+                _repository.CommitChanges();
                 return Json(new { success = true });
             }
 
@@ -407,12 +395,27 @@ namespace AWC.WebUI.Controllers
         }
 
         [HttpPost]
-        public JsonResult SentMailing(int id)
+        public JsonResult CompletedTwoDayConfirmation(int apptId)
         {
-            var appt = _repository.Single<Appointment>(a => a.AppointmentId == id);
+            var appt = _repository.Single<Appointment>(a => a.AppointmentId == apptId);
+            if (appt != null)
+            {
+                appt.TwoDayConfirmation = DateTime.UtcNow;
+                _repository.CommitChanges();
+                return Json(new { success = true });
+            }
+
+            return Json(new { success = false });
+        }
+
+        [HttpPost]
+        public JsonResult SentMailing(int apptId)
+        {
+            var appt = _repository.Single<Appointment>(a => a.AppointmentId == apptId);
             if (appt != null)
             {
                 appt.SentLetterOrEmail = true;
+                _repository.CommitChanges();
                 return Json(new { success = true });
             }
 

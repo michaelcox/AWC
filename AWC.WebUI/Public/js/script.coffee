@@ -68,10 +68,58 @@ editScheduledDateTime = ->
 		type: "POST"
 		data: { id: clientId, localDateTime: newDateTime.toUTCString() }
 		dataType: "json"
-		success: ->
-			$('#scheduledDateFlash').html('Appointment date updated!')
+		success: (data) ->
+			if data.success
+				$('#scheduledDateFlash').html('Appointment date updated!')
+				$('#' + checkboxId).removeAttr('checked').removeAttr('disabled') for checkboxId in ['action_two_day', 'action_two_week']
+				properlyHighlightToDoItems()
+			else
+				$('#scheduledDateFlash').html('ERROR SAVING')
+			$('#scheduledDateFlash').fadeIn(1000).delay(4000).fadeOut(1000)
+		error: ->
+			$('#scheduledDateFlash').html('ERROR SAVING')
 			$('#scheduledDateFlash').fadeIn(1000).delay(4000).fadeOut(1000)
 
+markAction = (action, checkboxId, labelId) ->
+	apptId = $('#appointmentId').val()
+	$.ajax
+		url: window.location.pathname + "/" + action
+		type: "POST"
+		data: { apptId }
+		dataType: "json"
+		success: (data) ->
+			if data.success
+				properlyHighlightToDoItems()
+			else
+				$('#' + checkboxId).removeAttr('checked');
+		error: ->
+			$('#' + checkboxId).removeAttr('checked');
+
+properlyHighlightToDoItems = ->
+	apptDate = new Date($('#ScheduledDateTime').val())
+	currentTime = new Date()
+	oneDay = 1000*60*60*24
+	daysLeft = Math.ceil((apptDate.getTime() - currentTime.getTime())/oneDay)
+
+	$('#todo span').each ->
+		$(this).attr('class', 'default')
+
+	# Always highlight the send letter
+	$('#label_send_letter').attr('class', 'needed')
+
+	# Highlight the others based on dates
+	$('#label_two_day').attr('class', 'needed') if daysLeft <= 3
+	$('#label_two_week').attr('class', 'needed') if daysLeft <= 15
+
+	# Disable if checked
+	$('#todo input').each ->
+		if $(this).is(':checked')
+			$(this).attr('disabled', 'disabled')
+			$(this).next('span').attr('class', 'done')
+
+
+
+# The following functions run on page load
 jQuery ($) ->
 	
 	# Add nice UI functionality to clear the search box on focus
@@ -208,5 +256,18 @@ jQuery ($) ->
 
 	# Add binding when you update the date
 	$('#updateScheduledDate').click editScheduledDateTime
+
+	# Add bindings to the ToDo list
+	if $('#todo').length
+		properlyHighlightToDoItems()
+		$('#action_send_letter').change ->
+			markAction 'SentMailing', 'action_send_letter', 'label_send_letter'
+		$('#action_two_week').change ->
+			markAction 'CompletedTwoWeekConfirmation', 'action_two_week', 'label_two_week'
+		$('#action_two_day').change ->
+			markAction 'CompletedTwoDayConfirmation', 'action_two_day', 'label_two_day'
+
+	
+	
 
 	return # Not necessary, but I think it's cleaner
