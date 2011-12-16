@@ -97,15 +97,14 @@
   };
 
   editScheduledDateTime = function() {
-    var clientId, newDateTime;
+    var clientId;
     clientId = $('#ClientId').val();
-    newDateTime = new Date($('#ScheduledDateTime').val());
     return $.ajax({
       url: "/Schedule/Edit",
       type: "POST",
       data: {
         id: clientId,
-        localDateTime: newDateTime.toUTCString()
+        dateString: $('#ScheduledDateTime').val()
       },
       dataType: "json",
       success: function(data) {

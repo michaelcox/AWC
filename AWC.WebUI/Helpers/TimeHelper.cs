@@ -14,9 +14,7 @@ namespace AWC.WebUI.Helpers
         public static DateTime ConvertToUtc(this DateTime localTime)
         {
             var localZone = TimeZoneInfo.FindSystemTimeZoneById(ConfigurationManager.AppSettings["TimezoneId"]);
-            var timeToConvert = new DateTime(localTime.Year, localTime.Month, localTime.Day, localTime.Hour,
-                                             localTime.Minute, localTime.Second, DateTimeKind.Unspecified);
-            return TimeZoneInfo.ConvertTimeToUtc(timeToConvert, localZone);
+            return TimeZoneInfo.ConvertTimeToUtc(localTime, localZone);
         }
     }
 }
