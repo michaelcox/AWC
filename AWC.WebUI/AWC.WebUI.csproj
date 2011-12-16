@@ -128,11 +128,9 @@
   <ItemGroup>
     <Content Include="App_Data\AWC.sdf" />
     <Content Include="Global.asax" />
+    <Content Include="Public\css\fullcalendar.css" />
+    <Content Include="Public\css\fullcalendar.print.css" />
     <Content Include="Public\css\global.css" />
-    <Content Include="Public\fullcalendar\fullcalendar.css" />
-    <Content Include="Public\fullcalendar\fullcalendar.min.js" />
-    <Content Include="Public\fullcalendar\fullcalendar.print.css" />
-    <Content Include="Public\fullcalendar\gcal.js" />
     <Content Include="Public\images\bg-content-top.gif" />
     <Content Include="Public\images\bg-content.gif" />
     <Content Include="Public\images\bg-global-li.gif" />
@@ -144,18 +142,19 @@
     <Content Include="Public\images\close-button.png" />
     <Content Include="Public\images\jbar-bg.png" />
     <Content Include="Public\images\logo.gif" />
-    <Content Include="Public\js\jquery.form.js" />
-    <Content Include="Public\js\jquery.maskedinput-1.3.min.js" />
-    <Content Include="Public\js\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Public\js\jquery.validate.min.js" />
-    <Content Include="Public\js\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Public\js\libs\jquery-1.6.2.min.js" />
-    <Content Include="Public\js\libs\modernizr-2.0.6.min.js" />
+    <Content Include="Public\js\libs\fullcalendar.min.js" />
+    <Content Include="Public\js\libs\gcal.js" />
+    <Content Include="Public\js\libs\jquery.maskedinput-1.3.js" />
+    <Content Include="Public\js\libs\jquery.validate.js" />
+    <Content Include="Public\js\libs\jquery.validate.unobtrusive.js" />
+    <Content Include="Public\js\plugins.js" />
+    <Content Include="Public\js\plugins.min.js" />
     <Content Include="Public\js\script.js">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>script.coffee</DependentUpon>
     </Content>
+    <Content Include="Public\js\script.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

@@ -39,3 +39,5 @@ thumbs.db
 _ReSharper.*
 *.resharper
 *.sdf
+plugins.min.js
+script.min.js

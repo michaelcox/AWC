@@ -8,8 +8,8 @@ namespace AWC.WebUI.Infrastructure.Logging
 
         private Logger _logger;
 
-        public NLogLogger() {
-            _logger = LogManager.GetCurrentClassLogger();
+        public NLogLogger(string currentClassName) {
+            _logger = LogManager.GetLogger(currentClassName);
         }
 
         public void Info(string message) {

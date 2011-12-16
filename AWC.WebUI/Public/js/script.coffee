@@ -228,7 +228,7 @@ jQuery ($) ->
 
 	# Use the jQuery UI date picker for Appointment Quick View
 	$('#scheduledDate').datepicker
-		defaultDate: $('#ScheduledDateTime').val()
+		defaultDate: new Date($('#ScheduledDateTime').val())
 		onSelect: updateScheduledDate
 		firstDay: 1
 		

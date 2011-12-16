@@ -101,7 +101,9 @@ namespace AWC.WebUI
         public override void Load()
         {
             Bind<IRepository>().To<EFRepository>().InRequestScope();
-            Bind<ILogger>().To<NLogLogger>().InRequestScope();
+            Bind<ILogger>().To<NLogLogger>().WithConstructorArgument("currentClassName",
+                                                                     x =>
+                                                                     x.Request.ParentContext.Request.Service.FullName);
         }
     }
 

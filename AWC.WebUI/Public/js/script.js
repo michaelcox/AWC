@@ -277,7 +277,7 @@
       }
     });
     $('#scheduledDate').datepicker({
-      defaultDate: $('#ScheduledDateTime').val(),
+      defaultDate: new Date($('#ScheduledDateTime').val()),
       onSelect: updateScheduledDate,
       firstDay: 1
     });
