@@ -166,13 +166,13 @@ namespace AWC.WebUI.Controllers
         }
 
         [UsesPartnerOrgsDropdown]
-        public ActionResult PartnerInfo(int id)
+        public ActionResult DemographicInfo(int id)
         {
             try
             {
                 Client client = _repository.Single<Client>(c => c.ClientId == id);
 
-                var partnerInfoViewModel = new PartnerInfoViewModel
+                var demographicInfoViewModel = new DemographicInfoViewModel
                                                {
                                                    IsReplacingFurniture = client.IsReplacingFurniture,
                                                    ClientId = client.ClientId,
@@ -184,10 +184,10 @@ namespace AWC.WebUI.Controllers
                 Caseworker caseworker = client.Caseworker;
                 if (caseworker != null)
                 {
-                    partnerInfoViewModel.InjectFrom(caseworker);
+                    demographicInfoViewModel.InjectFrom(caseworker);
                 }
 
-                return View(partnerInfoViewModel);
+                return View(demographicInfoViewModel);
             }
             catch (Exception ex)
             {
@@ -200,17 +200,17 @@ namespace AWC.WebUI.Controllers
 
         [HttpPost]
         [UsesPartnerOrgsDropdown]
-        public ActionResult PartnerInfo(PartnerInfoViewModel partnerInfoViewModel)
+        public ActionResult DemographicInfo(DemographicInfoViewModel demographicInfoViewModel)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     Caseworker caseworker;
-                    if (partnerInfoViewModel.CaseworkerId > 0)
+                    if (demographicInfoViewModel.CaseworkerId > 0)
                     {
                         caseworker =
-                            _repository.Single<Caseworker>(c => c.CaseworkerId == partnerInfoViewModel.CaseworkerId);
+                            _repository.Single<Caseworker>(c => c.CaseworkerId == demographicInfoViewModel.CaseworkerId);
                     }
                     else
                     {
@@ -218,11 +218,11 @@ namespace AWC.WebUI.Controllers
                         _repository.Add(caseworker);
                     }
 
-                    caseworker.InjectFrom(partnerInfoViewModel);
+                    caseworker.InjectFrom(demographicInfoViewModel);
                     _repository.CommitChanges();
 
-                    var client = _repository.Single<Client>(c => c.ClientId == partnerInfoViewModel.ClientId);
-                    client.IsReplacingFurniture = partnerInfoViewModel.IsReplacingFurniture;
+                    var client = _repository.Single<Client>(c => c.ClientId == demographicInfoViewModel.ClientId);
+                    client.IsReplacingFurniture = demographicInfoViewModel.IsReplacingFurniture;
                     client.CaseworkerId = caseworker.CaseworkerId;
                     client.LastUpdatedDateTime = DateTime.UtcNow;
 
@@ -230,7 +230,7 @@ namespace AWC.WebUI.Controllers
 
                     this.FlashSuccess(string.Format("The client record for {0} {1} has been updated successfully.",
                                                     client.FirstName, client.LastName));
-                    return RedirectToAction("PartnerInfo", new {id = client.ClientId});
+                    return RedirectToAction("DemographicInfo", new {id = client.ClientId});
                 }
             }
             catch (Exception ex)
@@ -239,7 +239,7 @@ namespace AWC.WebUI.Controllers
                 _logger.Error(ex);
             }
 
-            return View(partnerInfoViewModel);
+            return View(demographicInfoViewModel);
         }
 
         [HttpPost]
@@ -309,6 +309,8 @@ namespace AWC.WebUI.Controllers
             return RedirectToAction("Items", new {id = clientId});
         }
 
+        // Child Actions / Ajax Actions
+
         [ChildActionOnly]
         public ActionResult ClientNotes(int id, string refAction)
         {
@@ -370,7 +372,7 @@ namespace AWC.WebUI.Controllers
             }
 
             // Adding in some assurances they can't force a bad redirect
-            refAction = (refAction == "PartnerInfo") ? "PartnerInfo" : "BasicInfo";
+            refAction = (refAction == "DemographicInfo") ? "DemographicInfo" : "BasicInfo";
             return RedirectToAction(refAction, new { id = note.ClientId });
         }
     

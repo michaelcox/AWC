@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using AWC.Domain.Metadata;
 using System.Web.Mvc;
 
 namespace AWC.WebUI.Models
 {
-    public class PartnerInfoViewModel
+    public class DemographicInfoViewModel
     {
         [Required]
         [HiddenInput(DisplayValue = false)]

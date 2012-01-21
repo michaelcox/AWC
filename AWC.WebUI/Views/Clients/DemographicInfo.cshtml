@@ -1,4 +1,4 @@
-﻿@model AWC.WebUI.Models.PartnerInfoViewModel
+﻿@model AWC.WebUI.Models.DemographicInfoViewModel
 
 @{
     ViewBag.Title = string.Format("Partner Info for {0} {1}", Model.ClientFirstName, Model.ClientLastName);
@@ -66,5 +66,5 @@
 </article>
 <aside class="notes">
     @{Html.RenderAction("AppointmentQuickView", new { id = Model.ClientId });} <br />
-    @{Html.RenderAction("ClientNotes", new { clientId = Model.ClientId, refAction = "PartnerInfo"});}
+    @{Html.RenderAction("ClientNotes", new { clientId = Model.ClientId, refAction = "DemographicInfo"});}
 </aside>

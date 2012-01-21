@@ -116,7 +116,7 @@
     <Compile Include="Models\ClientEditViewModel.cs" />
     <Compile Include="Models\ClientNotesViewModel.cs" />
     <Compile Include="Models\LogOnModel.cs" />
-    <Compile Include="Models\PartnerInfoViewModel.cs" />
+    <Compile Include="Models\DemographicInfoViewModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\RequestedItemsViewModel.cs" />
     <Compile Include="Models\ScheduleViewModel.cs" />
@@ -234,7 +234,7 @@
     <Content Include="Views\Clients\ClientNotes.cshtml" />
     <Content Include="Views\Clients\EditRequestedItem.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\RadioButtons.cshtml" />
-    <Content Include="Views\Clients\PartnerInfo.cshtml" />
+    <Content Include="Views\Clients\DemographicInfo.cshtml" />
     <Content Include="Views\Schedule\Confirmed.cshtml" />
     <Content Include="Views\Schedule\Calendar.cshtml" />
     <Content Include="Views\Waitlist\Index.cshtml" />
