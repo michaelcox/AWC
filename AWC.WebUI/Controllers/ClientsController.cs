@@ -212,6 +212,7 @@ namespace AWC.WebUI.Controllers
                 if (ModelState.IsValid)
                 {
                     var client = _repository.Single<Client>(c => c.ClientId == demographicInfoViewModel.ClientId);
+                    
                     client.PartneringOrganization = demographicInfoViewModel.PartneringOrganization;
                     client.Department = demographicInfoViewModel.Department;
                     client.CaseworkerName = demographicInfoViewModel.CaseworkerName;
@@ -225,6 +226,20 @@ namespace AWC.WebUI.Controllers
                     client.HasDisability = demographicInfoViewModel.HasDisability;
 
                     // Ethnicities
+                    client.Ethnicities.Clear();
+                    var ethnicities = _repository.All<Ethnicity>();
+                    if (client.Ethnicities == null)
+                    {
+                        client.Ethnicities = new List<Ethnicity>();
+                    }
+                    if (demographicInfoViewModel.Ethnicities != null)
+                    {
+                        foreach (int ethnicityId in demographicInfoViewModel.Ethnicities)
+                        {
+                            client.Ethnicities.Add(ethnicities.Single(e => e.EthnicityId == ethnicityId));
+                        }
+                    }
+
 
                     // Incomes
                     
