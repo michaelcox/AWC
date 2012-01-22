@@ -240,9 +240,31 @@ namespace AWC.WebUI.Controllers
                         }
                     }
 
-
                     // Incomes
-                    
+                    if (demographicInfoViewModel.ResidentIncomes != null && demographicInfoViewModel.ResidentIncomes.Count > 0)
+                    {
+                        var existingIncomeLines = _repository.All<ResidentIncome>().Where(i => i.ClientId == demographicInfoViewModel.ClientId);
+                        foreach (var income in demographicInfoViewModel.ResidentIncomes)
+                        {
+                            if (!string.IsNullOrEmpty(income.ResidentName))
+                            {
+                                var existingIncomeLine = existingIncomeLines.SingleOrDefault(i => i.ResidentIncomeId == income.ResidentIncomeId);
+                                if (existingIncomeLine != null)
+                                {
+                                    existingIncomeLine.IsHeadOfHousehold = income.IsHeadOfHousehold;
+                                    existingIncomeLine.ResidentName = income.ResidentName;
+                                    existingIncomeLine.Relationship = income.Relationship;
+                                    existingIncomeLine.MonthlyIncome = income.MonthlyIncome;
+                                    existingIncomeLine.SourceOfIncome = income.SourceOfIncome;
+                                }
+                                else
+                                {
+                                    client.ResidentIncomes.Add(income);
+                                }
+                            }
+                        }
+                    }
+
                     client.LastUpdatedDateTime = DateTime.UtcNow;
 
                     _repository.CommitChanges();
