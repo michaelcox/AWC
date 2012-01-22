@@ -1,4 +1,5 @@
-﻿@model AWC.WebUI.Models.DemographicInfoViewModel
+﻿@using AWC.Domain.Entities
+@model AWC.WebUI.Models.DemographicInfoViewModel
 
 @{
     ViewBag.Title = string.Format("Partner Info for {0} {1}", Model.ClientFirstName, Model.ClientLastName);
@@ -9,7 +10,8 @@
 @{Html.RenderPartial("SubNavigation", Model.ClientId);}
 
 <article>
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
 
     @Html.EditorFor(model => model.ClientId)
     @Html.EditorFor(model => model.CaseworkerId)
@@ -17,6 +19,7 @@
     @Html.EditorFor(model => model.ClientLastName)
     
     <div class="block">
+        <h3>Caseworker Info</h3>
     
         <div class="field-block">
             @Html.LabelFor(model => model.PartneringOrgId)
@@ -31,20 +34,14 @@
         </div>
     
         <div class="field-block">
-            @Html.LabelFor(model => model.FirstName)
-            @Html.EditorFor(model => model.FirstName)
-            @Html.ValidationMessageFor(model => model.FirstName)
+            @Html.LabelFor(model => model.Name)
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
         </div>
     
         <div class="field-block">
-            @Html.LabelFor(model => model.LastName)
-            @Html.EditorFor(model => model.LastName)
-            @Html.ValidationMessageFor(model => model.LastName)
-        </div>
-    
-        <div class="field-block">
-            @Html.LabelFor(model => model.ExternalId)
-            @Html.EditorFor(model => model.ExternalId)
+            @Html.LabelFor(model => model.PhoneNumber)
+            @Html.EditorFor(model => model.PhoneNumber)
         </div>
     
         <div class="field-block">
@@ -52,19 +49,103 @@
             @Html.EditorFor(model => model.Email)
         </div>
     
+    </div>
+    
+    <div class="block">
+        <h3>Income</h3>
+
+        <p>Must be filled out for each of the <span style="text-decoration: underline;font-weight: bold;">@Model.TotalAdults</span> adult residents specified on the @Html.ActionLink("Basic Info", "BasicInfo") page.</p>
+    
+        <table class="incomes">
+            <tr>
+                <th>Head Of Household</th>
+                <th>Resident Name</th>
+                <th>Relationship</th>
+                <th>Monthly Income</th>
+                <th>Source of Income</th>
+            </tr>
+            @{
+                int totalIncomeLines = 0;
+                foreach(var residentIncome in Model.ResidentIncomes)
+                {
+                    Html.RenderPartial("EditResidentIncome", residentIncome);
+                    totalIncomeLines++;
+                }
+                if (totalIncomeLines < Model.TotalAdults)
+                {
+                    for (int i = totalIncomeLines; i < Model.TotalAdults; i++)
+                    {
+                        Html.RenderPartial("EditResidentIncome", new ResidentIncome());
+                    }
+                }
+            }
+            <tr>
+                <td colspan="3" style="text-align: right;">Total Yearly Household Income:</td>
+                <td id="totalIncome">$0</td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+        
+    </div>
+    
+    <div class="block">
+        <h3>Demographics</h3>
+        
         <div class="field-block">
             @Html.LabelFor(model => model.IsReplacingFurniture)
             <div class="list">
                 @Html.EditorFor(model => model.IsReplacingFurniture)
             </div>
         </div>
+
+        <div class="field-block">
+            @Html.LabelFor(model => model.FiledFederalIncomeTax)
+            <div class="list">
+                @Html.EditorFor(model => model.FiledFederalIncomeTax)
+            </div>
+        </div>
+
+        <div class="field-block">
+            <label>Please check ALL boxes that correspond to the client's ethnicity:</label><br/>
+            
+            <div class="list">
+                <input type="checkbox" name="Ethnicity"/> Asian <br/>
+                <input type="checkbox" name="Ethnicity"/> Black / African American <br/>
+                <input type="checkbox" name="Ethnicity"/> White <br/>
+                <input type="checkbox" name="Ethnicity"/> Native Hawaiin / Other Pacific Islander <br/>
+                <input type="checkbox" name="Ethnicity"/> Hispanic / Latino <br/>
+                <input type="checkbox" name="Ethnicity"/> Other <br/>
+                <input type="checkbox" name="Ethnicity"/> Chose not to disclose <br/>
+            </div>
+        </div>
+        
+        <div class="field-block">
+            <label>Please select the box that corresponds to the client's age:</label><br/>
+            
+            <div class="list">
+                <input type="radio" name="AgeRange" value="18-25"/> 18-25 <br/>
+                <input type="radio" name="AgeRange" value="26-35"/> 26-35 <br/>
+                <input type="radio" name="AgeRange" value="36-45"/> 36-45 <br/>
+                <input type="radio" name="AgeRange" value="46-55"/> 46-55 <br/>
+                <input type="radio" name="AgeRange" value="56-61"/> 56-61 <br/>
+                <input type="radio" name="AgeRange" value="62 and over"/> 62 and over <br/>
+            </div>
+        </div>
+        
+        <div class="field-block">
+            @Html.LabelFor(model => model.HasDisability)
+            <div class="list">
+                @Html.EditorFor(model => model.HasDisability)
+            </div>
+        </div>
+
     </div>
 
-    <input type="submit" value="Save" class="button" />
-    @*@Html.ActionLink("Cancel", "BasicInfo", new { id = Model.ClientId })*@
+    <input type="submit" value="Save Changes" class="button" />
+    @Html.ActionLink("Cancel", "BasicInfo", new { id = Model.ClientId })
 }
 </article>
 <aside class="notes">
     @{Html.RenderAction("AppointmentQuickView", new { id = Model.ClientId });} <br />
-    @{Html.RenderAction("ClientNotes", new { clientId = Model.ClientId, refAction = "DemographicInfo"});}
+    @{Html.RenderAction("ClientNotes", new { clientId = Model.ClientId, refAction = "DemographicInfo" });}
 </aside>

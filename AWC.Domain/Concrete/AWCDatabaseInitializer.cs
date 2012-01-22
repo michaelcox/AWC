@@ -17,6 +17,7 @@ namespace AWC.Domain.Concrete
         public DbSet<PartneringOrg> PartneringOrgs { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<AppointmentStatus> AppointmentStatuses { get; set; }
+        public DbSet<ResidentIncome> ResidentIncomes { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -54,6 +55,11 @@ namespace AWC.Domain.Concrete
                 .HasMany(c => c.RequestedItems)
                 .WithRequired(i => i.Appointment)
                 .HasForeignKey(c => c.AppointmentId);
+
+            modelBuilder.Entity<ResidentIncome>()
+                .HasRequired(i => i.Client)
+                .WithMany(c => c.ResidentIncomes)
+                .HasForeignKey(i => i.ClientId);
         }
     }
 

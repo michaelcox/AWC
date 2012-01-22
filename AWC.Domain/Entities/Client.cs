@@ -81,8 +81,11 @@ namespace AWC.Domain.Entities
 
         public virtual ICollection<Appointment> Appointments { get; set; }
 
+        public virtual ICollection<ResidentIncome> ResidentIncomes { get; set; } 
+
         public virtual UsState UsState { get; set; }
         
         public virtual County County { get; set; }
+
     }
 }

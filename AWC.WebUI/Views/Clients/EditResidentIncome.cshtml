@@ -1,0 +1,13 @@
+﻿@model AWC.Domain.Entities.ResidentIncome
+
+@{
+    Layout = null;
+}
+
+<tr>
+    <td>@Html.EditorFor(model => model.IsHeadOfHousehold)</td>
+    <td>@Html.EditorFor(model => model.ResidentName)</td>
+    <td>@Html.EditorFor(model => model.Relationship)</td>
+    <td class="monthlyIncome">@Html.EditorFor(model => model.MonthlyIncome)</td>
+    <td>@Html.EditorFor(model => model.SourceOfIncome)</td>
+</tr>

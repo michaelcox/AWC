@@ -541,3 +541,25 @@ div#todo span.default
 {
     color: #808080;
 }
+
+table.incomes {
+    width: 400px;
+    border: solid red;
+}
+
+table.incomes input[type="text"] {
+    width: 100px;
+}
+
+table.incomes input[type="checkbox"] {
+    width: 20px;
+}
+
+td#totalIncome {
+    text-align: right;
+    font-weight: bold;
+}
+
+td.monthlyIncome input {
+    text-align: right;
+}

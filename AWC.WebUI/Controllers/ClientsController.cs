@@ -170,14 +170,18 @@ namespace AWC.WebUI.Controllers
         {
             try
             {
-                Client client = _repository.Single<Client>(c => c.ClientId == id);
+                var client = _repository.Single<Client>(c => c.ClientId == id);
+
+                var incomes = _repository.All<ResidentIncome>().Where(i => i.ClientId == client.ClientId).ToList();
 
                 var demographicInfoViewModel = new DemographicInfoViewModel
                                                {
                                                    IsReplacingFurniture = client.IsReplacingFurniture,
+                                                   TotalAdults = client.NumberOfAdults,
                                                    ClientId = client.ClientId,
                                                    ClientFirstName = client.FirstName,
-                                                   ClientLastName = client.LastName
+                                                   ClientLastName = client.LastName,
+                                                   ResidentIncomes = incomes
                                                };
 
                 // Client may not have a caseworker assigned if they were only just created
