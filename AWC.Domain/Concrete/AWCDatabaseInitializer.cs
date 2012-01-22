@@ -18,6 +18,7 @@ namespace AWC.Domain.Concrete
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<AppointmentStatus> AppointmentStatuses { get; set; }
         public DbSet<ResidentIncome> ResidentIncomes { get; set; }
+        public DbSet<Ethnicity> Ethnicities { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -60,6 +61,10 @@ namespace AWC.Domain.Concrete
                 .HasRequired(i => i.Client)
                 .WithMany(c => c.ResidentIncomes)
                 .HasForeignKey(i => i.ClientId);
+
+            modelBuilder.Entity<Client>()
+                .HasMany(c => c.Ethnicities)
+                .WithMany(e => e.Clients);
         }
     }
 
@@ -90,6 +95,14 @@ namespace AWC.Domain.Concrete
             context.AppointmentStatuses.Add(new AppointmentStatus { AppointmentStatusId = 2, Name = "Scheduled" });
             context.AppointmentStatuses.Add(new AppointmentStatus { AppointmentStatusId = 3, Name = "Recheduled" });
             context.AppointmentStatuses.Add(new AppointmentStatus { AppointmentStatusId = 4, Name = "Closed" });
+
+            context.Ethnicities.Add(new Ethnicity {Name = "Asian"});
+            context.Ethnicities.Add(new Ethnicity { Name = "Black / African American" });
+            context.Ethnicities.Add(new Ethnicity { Name = "White" });
+            context.Ethnicities.Add(new Ethnicity { Name = "Native Hawaiin / Other Pacific Islander " });
+            context.Ethnicities.Add(new Ethnicity { Name = "Hispanic / Latino" });
+            context.Ethnicities.Add(new Ethnicity { Name = "Other" });
+            context.Ethnicities.Add(new Ethnicity { Name = "Chose not to disclose" });
 
             var client = new Client
                              {

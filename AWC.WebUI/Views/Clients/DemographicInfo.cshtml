@@ -15,17 +15,18 @@
 
     @Html.EditorFor(model => model.ClientId)
     @Html.EditorFor(model => model.CaseworkerId)
+    @Html.EditorFor(model => model.TotalAdults)
     @Html.EditorFor(model => model.ClientFirstName)
     @Html.EditorFor(model => model.ClientLastName)
+    
+    @Html.ValidationSummary()
     
     <div class="block">
         <h3>Caseworker Info</h3>
     
         <div class="field-block">
             @Html.LabelFor(model => model.PartneringOrgId)
-
             @Html.DropDownListFor(model => model.PartneringOrgId, new SelectList(ViewData["PartneringOrgs"] as IEnumerable, "PartneringOrgId", "OrganizationName", Model.PartneringOrgId), "Select Organization...")
-            @Html.ValidationMessageFor(model => model.PartneringOrgId)
         </div>
     
         <div class="field-block">
@@ -36,7 +37,6 @@
         <div class="field-block">
             @Html.LabelFor(model => model.Name)
             @Html.EditorFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
         </div>
     
         <div class="field-block">
@@ -66,11 +66,15 @@
             </tr>
             @{
                 int totalIncomeLines = 0;
-                foreach(var residentIncome in Model.ResidentIncomes)
+                if (Model.ResidentIncomes != null && Model.ResidentIncomes.Count > 0)
                 {
-                    Html.RenderPartial("EditResidentIncome", residentIncome);
-                    totalIncomeLines++;
+                    foreach (var residentIncome in Model.ResidentIncomes)
+                    {
+                        Html.RenderPartial("EditResidentIncome", residentIncome);
+                        totalIncomeLines++;
+                    }
                 }
+
                 if (totalIncomeLines < Model.TotalAdults)
                 {
                     for (int i = totalIncomeLines; i < Model.TotalAdults; i++)
@@ -109,13 +113,14 @@
             <label>Please check ALL boxes that correspond to the client's ethnicity:</label><br/>
             
             <div class="list">
-                <input type="checkbox" name="Ethnicity"/> Asian <br/>
-                <input type="checkbox" name="Ethnicity"/> Black / African American <br/>
-                <input type="checkbox" name="Ethnicity"/> White <br/>
-                <input type="checkbox" name="Ethnicity"/> Native Hawaiin / Other Pacific Islander <br/>
-                <input type="checkbox" name="Ethnicity"/> Hispanic / Latino <br/>
-                <input type="checkbox" name="Ethnicity"/> Other <br/>
-                <input type="checkbox" name="Ethnicity"/> Chose not to disclose <br/>
+                @{
+                    var ethnicities = (ViewData["Ethnicities"] != null) ? ViewData["Ethnicities"] as List<Ethnicity> : new List<Ethnicity>();
+                }
+                @foreach (var ethnicity in ethnicities)
+                {
+                    string isChecked = (Model.Ethnicities.Contains(ethnicity.EthnicityId)) ? "checked=checked" : "";
+                    <input type="checkbox" @isChecked name="Ethnicities" value="@ethnicity.EthnicityId"/>@ethnicity.Name<br/>
+                }
             </div>
         </div>
         

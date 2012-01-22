@@ -73,7 +73,12 @@ namespace AWC.Domain.Entities
         public bool IsReplacingFurniture { get; set; }
 
         public int? CaseworkerId { get; set; }
-        
+
+        [StringLength(20)]
+        public string AgeRange { get; set; }
+
+        public bool HasDisability { get; set; }
+
         // Virtual / Foreign Keys
         public virtual Caseworker Caseworker { get; set; }
 
@@ -81,7 +86,9 @@ namespace AWC.Domain.Entities
 
         public virtual ICollection<Appointment> Appointments { get; set; }
 
-        public virtual ICollection<ResidentIncome> ResidentIncomes { get; set; } 
+        public virtual ICollection<ResidentIncome> ResidentIncomes { get; set; }
+
+        public virtual ICollection<Ethnicity> Ethnicities { get; set; } 
 
         public virtual UsState UsState { get; set; }
         

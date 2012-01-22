@@ -5,9 +5,15 @@
 }
 
 <tr>
-    <td>@Html.EditorFor(model => model.IsHeadOfHousehold)</td>
-    <td>@Html.EditorFor(model => model.ResidentName)</td>
-    <td>@Html.EditorFor(model => model.Relationship)</td>
-    <td class="monthlyIncome">@Html.EditorFor(model => model.MonthlyIncome)</td>
-    <td>@Html.EditorFor(model => model.SourceOfIncome)</td>
+    @using (Html.BeginCollectionItem("requestedItems"))
+    {
+        <td>
+            @Html.HiddenFor(model => model.ResidentIncomeId)
+            @Html.CheckBoxFor(model => model.IsHeadOfHousehold)
+        </td>
+        <td>@Html.EditorFor(model => model.ResidentName)</td>
+        <td>@Html.EditorFor(model => model.Relationship)</td>
+        <td class="monthlyIncome">@Html.EditorFor(model => model.MonthlyIncome)</td>
+        <td>@Html.EditorFor(model => model.SourceOfIncome)</td>
+    }
 </tr>

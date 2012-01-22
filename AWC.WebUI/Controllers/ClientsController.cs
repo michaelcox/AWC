@@ -166,6 +166,7 @@ namespace AWC.WebUI.Controllers
         }
 
         [UsesPartnerOrgsDropdown]
+        [UsesEthnicities]
         public ActionResult DemographicInfo(int id)
         {
             try
@@ -174,6 +175,9 @@ namespace AWC.WebUI.Controllers
 
                 var incomes = _repository.All<ResidentIncome>().Where(i => i.ClientId == client.ClientId).ToList();
 
+                var ethnicities =
+                    _repository.All<Ethnicity>().Where(e => e.Clients.Select(c => c.ClientId).Contains(client.ClientId)).Select(e => e.EthnicityId).ToList();
+
                 var demographicInfoViewModel = new DemographicInfoViewModel
                                                {
                                                    IsReplacingFurniture = client.IsReplacingFurniture,
@@ -181,7 +185,10 @@ namespace AWC.WebUI.Controllers
                                                    ClientId = client.ClientId,
                                                    ClientFirstName = client.FirstName,
                                                    ClientLastName = client.LastName,
-                                                   ResidentIncomes = incomes
+                                                   ResidentIncomes = incomes,
+                                                   Ethnicities = ethnicities,
+                                                   AgeRange = client.AgeRange,
+                                                   HasDisability = client.HasDisability
                                                };
 
                 // Client may not have a caseworker assigned if they were only just created
@@ -204,6 +211,7 @@ namespace AWC.WebUI.Controllers
 
         [HttpPost]
         [UsesPartnerOrgsDropdown]
+        [UsesEthnicities]
         public ActionResult DemographicInfo(DemographicInfoViewModel demographicInfoViewModel)
         {
             try
@@ -241,6 +249,11 @@ namespace AWC.WebUI.Controllers
             {
                 this.FlashError("Unable to save changes to client record.");
                 _logger.Error(ex);
+
+                if (demographicInfoViewModel.Ethnicities == null)
+                {
+                    demographicInfoViewModel.Ethnicities = _repository.All<Ethnicity>().Where(e => e.Clients.Select(c => c.ClientId).Contains(demographicInfoViewModel.ClientId)).Select(e => e.EthnicityId).ToList();
+                }
             }
 
             return View(demographicInfoViewModel);

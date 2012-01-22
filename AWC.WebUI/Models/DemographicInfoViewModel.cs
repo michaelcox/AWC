@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using AWC.Domain.Entities;
 using AWC.Domain.Metadata;
@@ -9,7 +8,6 @@ namespace AWC.WebUI.Models
 {
     public class DemographicInfoViewModel
     {
-        [Required]
         [HiddenInput(DisplayValue = false)]
         public int CaseworkerId { get; set; }
 
@@ -18,7 +16,6 @@ namespace AWC.WebUI.Models
         public int ClientId { get; set; }
 
         [StringLength(50)]
-        [Required]
         [Display(Name = "Caseworker Name")]
         public string Name { get; set; }
 
@@ -34,11 +31,9 @@ namespace AWC.WebUI.Models
         [Display(Name = "Department / Division")]
         public string Department { get; set; }
 
-        [Required]
         [Display(Name = "Partnering Organization")]
         public int PartneringOrgId { get; set; }
 
-        [Required]
         [Display(Name = "Is the client replacing furniture?")]
         [Option(DisplayText = "Yes", Value = true)]
         [Option(DisplayText = "No", Value = false)]
@@ -51,7 +46,7 @@ namespace AWC.WebUI.Models
         [Option(DisplayText = "No", Value = false)]
         public bool FiledFederalIncomeTax { get; set; }
 
-        // Ethnicity
+        public List<int> Ethnicities { get; set; } 
 
         public string AgeRange { get; set; }
 
