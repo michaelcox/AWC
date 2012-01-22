@@ -21,15 +21,14 @@ namespace AWC.WebUI.Models
 
         [StringLength(50)]
         [Display(Name = "Caseworker Name")]
-        public string Name { get; set; }
+        public string CaseworkerName { get; set; }
 
-        [StringLength(10)]
         [Display(Name = "Caseworker Phone Number")]
-        public string PhoneNumber { get; set; }
+        public string CaseworkerPhoneNumber { get; set; }
 
         [StringLength(50)]
         [Display(Name = "Caseworker Email Address")]
-        public string Email { get; set; }
+        public string CaseworkerEmailAddress { get; set; }
 
         [StringLength(50)]
         [Display(Name = "Department / Division")]

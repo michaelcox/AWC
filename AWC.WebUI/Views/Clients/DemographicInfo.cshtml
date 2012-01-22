@@ -35,18 +35,18 @@
         </div>
     
         <div class="field-block">
-            @Html.LabelFor(model => model.Name)
-            @Html.EditorFor(model => model.Name)
+            @Html.LabelFor(model => model.CaseworkerName)
+            @Html.EditorFor(model => model.CaseworkerName)
         </div>
     
         <div class="field-block">
-            @Html.LabelFor(model => model.PhoneNumber)
-            @Html.EditorFor(model => model.PhoneNumber)
+            @Html.LabelFor(model => model.CaseworkerPhoneNumber)
+            @Html.TextBoxFor(model => model.CaseworkerPhoneNumber, new {@class="phone"})
         </div>
     
         <div class="field-block">
-            @Html.LabelFor(model => model.Email)
-            @Html.EditorFor(model => model.Email)
+            @Html.LabelFor(model => model.CaseworkerEmailAddress)
+            @Html.EditorFor(model => model.CaseworkerEmailAddress)
         </div>
     
     </div>
@@ -128,12 +128,23 @@
             <label>Please select the box that corresponds to the client's age:</label><br/>
             
             <div class="list">
-                <input type="radio" name="AgeRange" value="18-25"/> 18-25 <br/>
-                <input type="radio" name="AgeRange" value="26-35"/> 26-35 <br/>
-                <input type="radio" name="AgeRange" value="36-45"/> 36-45 <br/>
-                <input type="radio" name="AgeRange" value="46-55"/> 46-55 <br/>
-                <input type="radio" name="AgeRange" value="56-61"/> 56-61 <br/>
-                <input type="radio" name="AgeRange" value="62 and over"/> 62 and over <br/>
+                @{
+                    var ageRanges = new List<string>
+                                        {
+                                            "18-25",
+                                            "26-35",
+                                            "36-45",
+                                            "46-55",
+                                            "56-61",
+                                            "62 and over"
+                                        };
+                    
+                }
+                @foreach(var ageRange in ageRanges)
+                {
+                    string isChecked = (Model.AgeRange == ageRange) ? "checked" : "";
+                    <input type="radio" name="AgeRange" value="@ageRange" @isChecked />@ageRange<br/>
+                }
             </div>
         </div>
         

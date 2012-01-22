@@ -92,6 +92,8 @@ namespace AWC.Domain.Entities
 
         public bool HasDisability { get; set; }
 
+        public bool FiledFederalIncomeTax { get; set; }
+
         // Virtual / Foreign Keys
 
         public virtual ICollection<ClientNote> ClientNotes { get; set; }

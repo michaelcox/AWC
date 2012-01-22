@@ -177,19 +177,18 @@ namespace AWC.WebUI.Controllers
 
                 var ethnicities =
                     _repository.All<Ethnicity>().Where(e => e.Clients.Select(c => c.ClientId).Contains(client.ClientId)).Select(e => e.EthnicityId).ToList();
-
+                
                 var demographicInfoViewModel = new DemographicInfoViewModel
                                                {
-                                                   IsReplacingFurniture = client.IsReplacingFurniture,
                                                    TotalAdults = client.NumberOfAdults,
                                                    ClientId = client.ClientId,
                                                    ClientFirstName = client.FirstName,
                                                    ClientLastName = client.LastName,
                                                    ResidentIncomes = incomes,
                                                    Ethnicities = ethnicities,
-                                                   AgeRange = client.AgeRange,
-                                                   HasDisability = client.HasDisability
                                                };
+
+                demographicInfoViewModel.InjectFrom(client);
 
 
                 return View(demographicInfoViewModel);
@@ -212,10 +211,23 @@ namespace AWC.WebUI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _repository.CommitChanges();
-
                     var client = _repository.Single<Client>(c => c.ClientId == demographicInfoViewModel.ClientId);
+                    client.PartneringOrganization = demographicInfoViewModel.PartneringOrganization;
+                    client.Department = demographicInfoViewModel.Department;
+                    client.CaseworkerName = demographicInfoViewModel.CaseworkerName;
+                    client.CaseworkerPhoneNumber = (!string.IsNullOrEmpty(demographicInfoViewModel.CaseworkerPhoneNumber))
+                                                       ? Regex.Replace(demographicInfoViewModel.CaseworkerPhoneNumber, @"\D", string.Empty)
+                                                       : null;
+                    client.CaseworkerEmailAddress = demographicInfoViewModel.CaseworkerEmailAddress;
                     client.IsReplacingFurniture = demographicInfoViewModel.IsReplacingFurniture;
+                    client.FiledFederalIncomeTax = demographicInfoViewModel.FiledFederalIncomeTax;
+                    client.AgeRange = demographicInfoViewModel.AgeRange;
+                    client.HasDisability = demographicInfoViewModel.HasDisability;
+
+                    // Ethnicities
+
+                    // Incomes
+                    
                     client.LastUpdatedDateTime = DateTime.UtcNow;
 
                     _repository.CommitChanges();
