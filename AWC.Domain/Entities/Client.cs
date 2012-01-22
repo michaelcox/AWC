@@ -69,10 +69,23 @@ namespace AWC.Domain.Entities
         [StringLength(100)]
         public string ReferredFrom { get; set; }
 
-        [Required]
-        public bool IsReplacingFurniture { get; set; }
+        // Caseworker Info
+        [StringLength(50)]
+        public string PartneringOrganization { get; set; }
 
-        public int? CaseworkerId { get; set; }
+        [StringLength(50)]
+        public string Department { get; set; }
+
+        [StringLength(50)]
+        public string CaseworkerName { get; set; }
+
+        [StringLength(10)]
+        public string CaseworkerPhoneNumber { get; set; }
+
+        [StringLength(50)]
+        public string CaseworkerEmailAddress { get; set; }
+
+        public bool IsReplacingFurniture { get; set; }
 
         [StringLength(20)]
         public string AgeRange { get; set; }
@@ -80,7 +93,6 @@ namespace AWC.Domain.Entities
         public bool HasDisability { get; set; }
 
         // Virtual / Foreign Keys
-        public virtual Caseworker Caseworker { get; set; }
 
         public virtual ICollection<ClientNote> ClientNotes { get; set; }
 

@@ -55,12 +55,10 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Entities\Appointment.cs" />
     <Compile Include="Entities\AppointmentStatus.cs" />
-    <Compile Include="Entities\Caseworker.cs" />
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Entities\ClientNote.cs" />
     <Compile Include="Entities\County.cs" />
     <Compile Include="Entities\Ethnicity.cs" />
-    <Compile Include="Entities\PartneringOrg.cs" />
     <Compile Include="Entities\RequestedItem.cs" />
     <Compile Include="Entities\ResidentIncome.cs" />
     <Compile Include="Entities\User.cs" />

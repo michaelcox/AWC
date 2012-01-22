@@ -191,12 +191,6 @@ namespace AWC.WebUI.Controllers
                                                    HasDisability = client.HasDisability
                                                };
 
-                // Client may not have a caseworker assigned if they were only just created
-                Caseworker caseworker = client.Caseworker;
-                if (caseworker != null)
-                {
-                    demographicInfoViewModel.InjectFrom(caseworker);
-                }
 
                 return View(demographicInfoViewModel);
             }
@@ -218,24 +212,10 @@ namespace AWC.WebUI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    Caseworker caseworker;
-                    if (demographicInfoViewModel.CaseworkerId > 0)
-                    {
-                        caseworker =
-                            _repository.Single<Caseworker>(c => c.CaseworkerId == demographicInfoViewModel.CaseworkerId);
-                    }
-                    else
-                    {
-                        caseworker = new Caseworker();
-                        _repository.Add(caseworker);
-                    }
-
-                    caseworker.InjectFrom(demographicInfoViewModel);
                     _repository.CommitChanges();
 
                     var client = _repository.Single<Client>(c => c.ClientId == demographicInfoViewModel.ClientId);
                     client.IsReplacingFurniture = demographicInfoViewModel.IsReplacingFurniture;
-                    client.CaseworkerId = caseworker.CaseworkerId;
                     client.LastUpdatedDateTime = DateTime.UtcNow;
 
                     _repository.CommitChanges();

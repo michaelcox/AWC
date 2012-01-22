@@ -16,7 +16,8 @@ namespace AWC.WebUI.Helpers
             ViewResult viewResult = filterContext.Result as ViewResult;
             if (viewResult != null)
             {
-                viewResult.ViewData["PartneringOrgs"] = Repository.All<PartneringOrg>().OrderBy(c => c.OrganizationName).ToList();
+                viewResult.ViewData["PartneringOrgs"] =
+                    Repository.All<Client>().Select(c => c.PartneringOrganization).Distinct().Take(10).ToList();
             }
         }
     }

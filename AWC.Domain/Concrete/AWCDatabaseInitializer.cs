@@ -13,8 +13,6 @@ namespace AWC.Domain.Concrete
         public DbSet<County> Counties { get; set; }
         public DbSet<ClientNote> ClientNotes { get; set; }
         public DbSet<RequestedItem> RequestedItems { get; set; }
-        public DbSet<Caseworker> Caseworkers { get; set; }
-        public DbSet<PartneringOrg> PartneringOrgs { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<AppointmentStatus> AppointmentStatuses { get; set; }
         public DbSet<ResidentIncome> ResidentIncomes { get; set; }
@@ -36,16 +34,6 @@ namespace AWC.Domain.Concrete
                 .HasMany(c => c.ClientNotes)
                 .WithRequired(i => i.Client)
                 .HasForeignKey(c => c.ClientId);
-
-            modelBuilder.Entity<Client>()
-                .HasOptional(c => c.Caseworker)
-                .WithMany(c => c.Clients)
-                .HasForeignKey(c => c.CaseworkerId);
-
-            modelBuilder.Entity<Caseworker>()
-                .HasRequired(c => c.ParneringOrg)
-                .WithMany(p => p.Caseworkers)
-                .HasForeignKey(c => c.PartneringOrgId);
 
             modelBuilder.Entity<Appointment>()
                 .HasRequired(a => a.Client)
@@ -87,9 +75,6 @@ namespace AWC.Domain.Concrete
 
             context.Counties.Add(new County { CountyCode = "MC", CountyName = "Montgomery County" });
             context.Counties.Add(new County { CountyCode = "PG", CountyName = "Prince Georges County" });
-
-            context.PartneringOrgs.Add(new PartneringOrg { OrganizationName = "Health and Human Services"});
-            context.PartneringOrgs.Add(new PartneringOrg { OrganizationName = "Department of the Interior" });
 
             context.AppointmentStatuses.Add(new AppointmentStatus { AppointmentStatusId = 1, Name = "Not Scheduled"});
             context.AppointmentStatuses.Add(new AppointmentStatus { AppointmentStatusId = 2, Name = "Scheduled" });

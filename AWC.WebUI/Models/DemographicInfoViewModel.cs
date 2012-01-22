@@ -16,10 +16,14 @@ namespace AWC.WebUI.Models
         public int ClientId { get; set; }
 
         [StringLength(50)]
+        [Display(Name = "Partnering Organization")]
+        public string PartneringOrganization { get; set; }
+
+        [StringLength(50)]
         [Display(Name = "Caseworker Name")]
         public string Name { get; set; }
 
-        [StringLength(50)]
+        [StringLength(10)]
         [Display(Name = "Caseworker Phone Number")]
         public string PhoneNumber { get; set; }
 
@@ -27,12 +31,9 @@ namespace AWC.WebUI.Models
         [Display(Name = "Caseworker Email Address")]
         public string Email { get; set; }
 
-        [StringLength(100)]
+        [StringLength(50)]
         [Display(Name = "Department / Division")]
         public string Department { get; set; }
-
-        [Display(Name = "Partnering Organization")]
-        public int PartneringOrgId { get; set; }
 
         [Display(Name = "Is the client replacing furniture?")]
         [Option(DisplayText = "Yes", Value = true)]

@@ -25,8 +25,8 @@
         <h3>Caseworker Info</h3>
     
         <div class="field-block">
-            @Html.LabelFor(model => model.PartneringOrgId)
-            @Html.DropDownListFor(model => model.PartneringOrgId, new SelectList(ViewData["PartneringOrgs"] as IEnumerable, "PartneringOrgId", "OrganizationName", Model.PartneringOrgId), "Select Organization...")
+            @Html.LabelFor(model => model.PartneringOrganization)
+            @Html.EditorFor(model => model.PartneringOrganization)
         </div>
     
         <div class="field-block">
