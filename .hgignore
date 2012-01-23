@@ -41,3 +41,4 @@ _ReSharper.*
 *.sdf
 plugins.min.js
 script.min.js
+all.min.css
