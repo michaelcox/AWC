@@ -1,5 +1,4 @@
-﻿@using AWC.Domain.Entities
-@model AWC.WebUI.Models.RequestedItemsViewModel
+﻿@model AWC.WebUI.Models.RequestedItemsViewModel
 
 @{
     ViewBag.Title = string.Format("{0} {1}", Model.FirstName, Model.LastName);
@@ -19,32 +18,27 @@
                                  
     <div class="block">
         <h3>Requested Items</h3>
-        <table id="requesteditems">
+        <table id="requesteditems" width="100%">
             <tr>
-                <th>Item Name</th>
-                <th>Quantity Requested</th>
+                <th style="text-align: left;">Item</th>
+                <th>Qty Requested</th>
+                <th>Qty Received</th>
+                <th>Comments</th>
             </tr>
             @if (Model.RequestedItems != null && Model.RequestedItems.Count > 0)
             {
                 foreach (var item in Model.RequestedItems)
                 {
-                    Html.RenderPartial("EditRequestedItem", item);
+                    Html.RenderPartial("CheckOffRequestedItem", item);
                 }
             }
-            @{ Html.RenderPartial("EditRequestedItem", new RequestedItem {QuantityRequested = 1}); }
         </table>
-        <a href="#" id="add_item">Add New Item</a>
     </div>
 
-    <input type="submit" value="Save" class="button" />
+    <input type="submit" value="Save Changes" class="button" />
 }
 </article>
 <aside class="notes">
     @{Html.RenderAction("AppointmentQuickView", new { id = Model.ClientId });} <br />
     @{Html.RenderAction("ClientNotes", new { id = Model.ClientId, refAction = "BasicInfo" });}
 </aside>
-
-<script type="text/javascript">
-    // Load all unique item types to make the autocomplete faster
-    window.distinctItems = @{Html.RenderAction("DistinctItems", "Search");}
-</script>

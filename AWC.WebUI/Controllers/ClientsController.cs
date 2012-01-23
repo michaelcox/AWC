@@ -355,6 +355,57 @@ namespace AWC.WebUI.Controllers
             return RedirectToAction("Items", new {id = clientId});
         }
 
+        public ActionResult ClientReceipt(int id)
+        {
+            var rivm = new RequestedItemsViewModel();
+            var client = _repository.Single<Client>(c => c.ClientId == id);
+            if (client != null)
+            {
+                rivm.InjectFrom(client);
+                var appt = _repository.Single<Appointment>(a => a.ClientId == id && a.AppointmentStatusId != (byte)Constants.AppointmentStatusId.Closed);
+                if (appt != null)
+                {
+                    rivm.InjectFrom(appt);
+                    var requestedItems = _repository.All<RequestedItem>().Where(r => r.AppointmentId == appt.AppointmentId).OrderByDescending(r => r.QuantityReceived).ThenBy(r => r.ItemName);
+                    rivm.RequestedItems = new List<RequestedItem>();
+                    foreach (var item in requestedItems)
+                    {
+                        rivm.RequestedItems.Add(item);
+                    }
+                }
+            }
+
+            return View(rivm);
+        }
+
+        [HttpPost]
+        public ActionResult ClientReceipt(RequestedItemsViewModel rivm)
+        {
+            try
+            {
+                if (rivm.RequestedItems != null)
+                {
+                    foreach (var item in rivm.RequestedItems)
+                    {
+                        var existingItem = _repository.Single<RequestedItem>(i => i.RequestedItemId == item.RequestedItemId);
+                        existingItem.QuantityReceived = item.QuantityReceived;
+                        existingItem.ReasonForNonReceipt = item.ReasonForNonReceipt;
+                    }
+                }
+                _repository.CommitChanges();
+                this.FlashSuccess(string.Format("The client record for {0} {1} has been updated successfully.",
+                                                rivm.FirstName, rivm.LastName));
+                return RedirectToAction("ClientReceipt", new { id = rivm.ClientId });
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+                this.FlashError("Error while trying to update Requested Items for client.");
+            }
+            
+            return View(rivm);
+        }
+
         // Child Actions / Ajax Actions
 
         [ChildActionOnly]

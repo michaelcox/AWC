@@ -2,7 +2,7 @@
 @model AWC.WebUI.Models.DemographicInfoViewModel
 
 @{
-    ViewBag.Title = string.Format("Partner Info for {0} {1}", Model.ClientFirstName, Model.ClientLastName);
+    ViewBag.Title = string.Format("{0} {1}", Model.ClientFirstName, Model.ClientLastName);
 }
 
 <h2>Edit Record for <em>@Model.ClientFirstName @Model.ClientLastName</em></h2>
@@ -165,3 +165,19 @@
     @{Html.RenderAction("AppointmentQuickView", new { id = Model.ClientId });} <br />
     @{Html.RenderAction("ClientNotes", new { clientId = Model.ClientId, refAction = "DemographicInfo" });}
 </aside>
+
+@{
+    var orgs = ViewData["PartneringOrgs"] as List<string>;
+
+    for (int i = 0; i < orgs.Count; i++)
+    {
+        orgs[i] = "'" + orgs[i] + "'";
+    }
+    
+    var orgsList = (orgs != null) ? new MvcHtmlString(String.Join(",", orgs)) : new MvcHtmlString("");
+}
+
+<script type="text/javascript">
+    // Load all unique item types to make the autocomplete faster
+    window.orgs = [@orgsList];
+</script>

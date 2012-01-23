@@ -197,7 +197,8 @@
     var day, hour, initialDate, min, month, year, _i, _len, _ref, _ref2;
     addAutoClear($('#search'), DEFAULT_SEARCH_VALUE);
     $('.phone').mask('(999) 999-9999');
-    $('#flashmessage').fadeIn(1000).delay(4000).fadeOut(1000);
+    $('.success').fadeIn(1000).delay(4000).fadeOut(1000);
+    $('.info').fadeIn(1000).delay(4000).fadeOut(1000);
     $('#search').autocomplete({
       source: searchClients,
       select: function(event, ui) {
@@ -212,6 +213,12 @@
         minLength: 1,
         autoFocus: true
       });
+    });
+    $('#PartneringOrganization').autocomplete({
+      source: window.orgs,
+      delay: 0,
+      minLength: 1,
+      autoFocus: true
     });
     $('#add_item').click(function(e) {
       e.preventDefault();

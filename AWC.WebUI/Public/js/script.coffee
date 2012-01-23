@@ -144,7 +144,8 @@ jQuery ($) ->
 	$('.phone').mask('(999) 999-9999')
   
 	# If there is a Flash Message, fade it in and then out
-	$('#flashmessage').fadeIn(1000).delay(4000).fadeOut(1000)
+	$('.success').fadeIn(1000).delay(4000).fadeOut(1000)
+	$('.info').fadeIn(1000).delay(4000).fadeOut(1000)
 	
 	# Add autocomplete functionality to search box
 	$('#search').autocomplete
@@ -159,6 +160,13 @@ jQuery ($) ->
 			delay: 0
 			minLength: 1
 			autoFocus: true
+
+	# Add autocomplete to Partnering Orgs
+	$('#PartneringOrganization').autocomplete
+		source: window.orgs
+		delay: 0
+		minLength: 1
+		autoFocus: true
 	
 	#Add click functionality to add new Requested Item
 	$('#add_item').click (e) ->

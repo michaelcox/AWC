@@ -483,9 +483,21 @@ table.data-list td {
     padding: 8px 2%;
     margin: 0 0 20px;
 }
-.flashmessage.success {
-    
+.flashmessage.success 
+{
+    background-color: #CCFFCC;
+    border-top: 1px solid #008800;
+    border-bottom: 1px solid #008800;
 }
+
+.flashmessage.error 
+{
+    background-color: #FFCCCC;
+    border-top: 1px solid #880000;
+    border-bottom: 1px solid #880000;
+    font-weight: bold;
+}
+
 
 .button {
     color: #fff;
@@ -544,8 +556,7 @@ div#todo span.default
 }
 
 table.incomes {
-    width: 400px;
-    border: solid red;
+    width: 100%;
 }
 
 table.incomes input[type="text"] {
@@ -563,4 +574,12 @@ td#totalIncome {
 
 td.monthlyIncome input {
     text-align: right;
+}
+
+input.small {
+    width: 50px !important;
+}
+
+.center {
+    text-align: center;
 }

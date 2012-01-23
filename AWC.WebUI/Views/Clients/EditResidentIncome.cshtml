@@ -7,7 +7,7 @@
 <tr>
     @using (Html.BeginCollectionItem("ResidentIncomes"))
     {
-        <td>
+        <td class="center">
             @Html.HiddenFor(model => model.ResidentIncomeId)
             @Html.CheckBoxFor(model => model.IsHeadOfHousehold)
         </td>
