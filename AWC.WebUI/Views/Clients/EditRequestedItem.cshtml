@@ -9,18 +9,18 @@
     <tr>
         @using (Html.BeginCollectionItem("requestedItems"))
         {
+            <td class="quantity">@Html.EditorFor(model => model.QuantityRequested)</td>
             <td class="item_name">@Html.EditorFor(model => model.ItemName)</td>
-            <td>@Html.EditorFor(model => model.QuantityRequested)</td>
         }
-        <td><a href="#" class="deleteRow">Remove</a></td>
+        <td class="action"><a href="#" class="deleteRow" title="Remove">Remove</a></td>
     </tr>
 }
 else
 {
     <tr>
-        <td>@Model.ItemName</td>
-        <td>@Model.QuantityRequested</td>
-        <td><em>Received</em></td>
+        <td class="quantity">@Model.QuantityRequested</td>
+        <td class="item_name">@Model.ItemName</td>
+        <td class="action"><em class="check" title="Received">Received</em></td>
     </tr>
 }
 

@@ -21,8 +21,8 @@
         <h3>Requested Items</h3>
         <table id="requesteditems">
             <tr>
-                <th>Item Name</th>
-                <th>Quantity Requested</th>
+                <th>Quantity</th>
+                <th colspan="2">Item Name</th>
             </tr>
             @if (Model.RequestedItems != null && Model.RequestedItems.Count > 0)
             {
@@ -32,8 +32,10 @@
                 }
             }
             @{ Html.RenderPartial("EditRequestedItem", new RequestedItem {QuantityRequested = 1}); }
+            <tr>
+                <td colspan="3"><a href="#" id="add_item">Add New Item</a></td>
+            </tr>
         </table>
-        <a href="#" id="add_item">Add New Item</a>
     </div>
 
     <input type="submit" value="Save" class="button" />

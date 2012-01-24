@@ -177,7 +177,7 @@
     totalMonthlyIncome = 0;
     return $('td.monthlyIncome input').each(function(index, elem) {
       totalMonthlyIncome += parseFloat($(elem).val());
-      return $('td#totalIncome').text('$' + (totalMonthlyIncome * 12).formatMoney());
+      return $('#totalIncome').text('$' + (totalMonthlyIncome * 12).formatMoney());
     });
   };
 

@@ -122,7 +122,7 @@ sumIncomes = ->
 	totalMonthlyIncome = 0
 	$('td.monthlyIncome input').each (index, elem) ->
 		totalMonthlyIncome += parseFloat($(elem).val())
-		$('td#totalIncome').text('$' + (totalMonthlyIncome * 12).formatMoney())
+		$('#totalIncome').text('$' + (totalMonthlyIncome * 12).formatMoney())
 
 Number::formatMoney = (c, d, t) ->
 	n = this

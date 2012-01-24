@@ -443,14 +443,17 @@ table.data-list {
 table.data-list tr:nth-child(2n+2) {
   background-color: #e0ecf2;
 }
-table.data-list th {
+table.data-list th,
+table.incomes th,
+table#requesteditems th {
     font-style: italic;
     font-weight: normal;
     font-family: Georgia, serif;
     text-align: left;
     padding: 6px 15px;
 }
-table.data-list td {
+table.data-list td,
+table#requesteditems td {
     font: 13px/18px sans-serif;
     text-align: left;
     padding: 6px 15px;
@@ -472,6 +475,42 @@ table.data-list td {
     -moz-box-shadow: 0px 0px 12px #b2b2b2;
     -webkit-box-shadow: 0px 0px 12px #b2b2b2;
     box-shadow: 0px 0px 12px #b2b2b2;
+}
+
+table#requesteditems input{
+    margin-right: 0px;
+}
+table#requesteditems .quantity,
+table#requesteditems .quantity input{
+    width: 46px;
+    text-align: center;
+}
+table#requesteditems .item_name{
+    padding-right: 0;
+}
+table#requesteditems .item_name input{
+    width: 425px;
+}
+table#requesteditems .action{
+    text-align: center;
+    vertical-align: top;
+    padding-top: 11px;
+}
+.deleteRow {
+    width: 16px;
+    height: 16px;
+    background: url(../images/ico-delete.png) no-repeat 0 0;
+    font: 1px/1px sans-serif;
+    text-indent: -9999px;
+    display: block;
+}
+.check {
+    width: 16px;
+    height: 16px;
+    background: url(../images/ico-check.png) no-repeat 0 0;
+    font: 1px/1px sans-serif;
+    text-indent: -9999px;
+    display: block;
 }
 
 .flashmessage {
@@ -533,10 +572,6 @@ table.data-list td {
     border-color: #444;
 }
 
-table#requesteditems input
-{
-    margin-right: 20px;
-}
 
 div#todo span.done
 {
@@ -565,11 +600,6 @@ table.incomes input[type="text"] {
 
 table.incomes input[type="checkbox"] {
     width: 20px;
-}
-
-td#totalIncome {
-    text-align: right;
-    font-weight: bold;
 }
 
 td.monthlyIncome input {

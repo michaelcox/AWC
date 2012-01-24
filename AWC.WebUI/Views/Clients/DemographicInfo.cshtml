@@ -54,15 +54,15 @@
     <div class="block">
         <h3>Household Income</h3>
 
-        <p>Must be filled out for each of the <span style="text-decoration: underline;font-weight: bold;">@Model.TotalAdults</span> adult residents specified on the @Html.ActionLink("Basic Info", "BasicInfo") page.</p>
+        <p>Must be filled out for each of the <strong style="text-decoration:underline;">@Model.TotalAdults</strong> adult residents specified on the @Html.ActionLink("Basic Info", "BasicInfo") page.</p>
     
         <table class="incomes">
             <tr>
                 <th>Head Of Household</th>
                 <th>Resident Name</th>
                 <th>Relationship</th>
-                <th>Monthly Income</th>
                 <th>Source of Income</th>
+                <th>Monthly Income</th>
             </tr>
             @{
                 int totalIncomeLines = 0;
@@ -84,12 +84,9 @@
                 }
             }
             <tr>
-                <td colspan="3" style="text-align: right;">Total Yearly Household Income:</td>
-                <td id="totalIncome">$0</td>
-                <td>&nbsp;</td>
+                <td colspan="5" style="text-align:right;">Total Yearly Household Income: <strong id="totalIncome">$0</strong></td>
             </tr>
         </table>
-        
     </div>
     
     <div class="block">
