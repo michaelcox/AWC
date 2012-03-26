@@ -45,7 +45,6 @@ namespace AWC.WebUI.Controllers
                 {
                     var newClient = new Client();
                     newClient.InjectFrom(client);
-                    newClient.IsReplacingFurniture = false; // To be set on Partner Info page
                     newClient.CreatedDateTime = DateTime.UtcNow;
                     newClient.LastUpdatedDateTime = DateTime.UtcNow;
 
@@ -98,13 +97,15 @@ namespace AWC.WebUI.Controllers
 
                 // Load the current appointment
                 var appt =
-                    _repository.Single<Appointment>(
-                        a => a.ClientId == id && a.AppointmentId != (byte) Constants.AppointmentStatusId.Closed);
+                    _repository.All<Appointment>().Where(a => a.ClientId == id).OrderByDescending(a => a.CreatedDateTime).FirstOrDefault();
 
                 var clientEditViewModel = new ClientEditViewModel();
 
                 clientEditViewModel.InjectFrom(client);
-                clientEditViewModel.InjectFrom(appt);
+                if (appt != null)
+                {
+                    clientEditViewModel.InjectFrom(appt);
+                }
                 return View(clientEditViewModel);
             }
             catch (Exception ex)

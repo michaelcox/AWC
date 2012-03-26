@@ -66,6 +66,16 @@ namespace AWC.WebUI.Models
         [Option(DisplayText = "No", Value = false)]
         public string HighestLevelOfEducation { get; set; }
 
+        [Display(Name = "Does the client have health insurance?")]
+        [Option(DisplayText = "Yes", Value = true)]
+        [Option(DisplayText = "No", Value = false)]
+        public bool HasHealthInsurance { get; set; }
+
+        [Display(Name = "Does the client's CHILDREN have health insurance?")]
+        [Option(DisplayText = "Yes", Value = true)]
+        [Option(DisplayText = "No", Value = false)]
+        public bool HasChildHealthInsurance { get; set; }
+
         // Hidden Inputs
         [HiddenInput(DisplayValue = false)]
         public string ClientFirstName { get; set; }

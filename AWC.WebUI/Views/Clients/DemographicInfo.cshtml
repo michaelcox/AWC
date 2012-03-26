@@ -163,14 +163,14 @@
             <div class="list">
                 @{
                     var schoolLevels = new List<string>
-                                        {
-                                            "Elementary School",
-                                            "Middle School",
-                                            "High School",
-                                            "Community / Vocational College",
-                                            "4 Year College",
-                                            "Graduate School"
-                                        };
+                                           {
+                                               "Elementary School",
+                                               "Middle School",
+                                               "High School",
+                                               "Community / Vocational College",
+                                               "4 Year College",
+                                               "Graduate School"
+                                           };
                     
                 }
                 @foreach (var schoolLevel in schoolLevels)
@@ -178,6 +178,20 @@
                     string isChecked = (Model.SchoolLevel == schoolLevel) ? "checked" : "";
                     <input type="radio" name="SchoolLevel" value="@schoolLevel" @isChecked />@schoolLevel<br/>
                 }
+            </div>
+        </div>
+        
+        <div class="field-block">
+            @Html.LabelFor(model => model.HasHealthInsurance)
+            <div class="list">
+                @Html.EditorFor(model => model.HasHealthInsurance)
+            </div>
+        </div>
+        
+        <div class="field-block">
+            @Html.LabelFor(model => model.HasChildHealthInsurance)
+            <div class="list">
+                @Html.EditorFor(model => model.HasChildHealthInsurance)
             </div>
         </div>
 
