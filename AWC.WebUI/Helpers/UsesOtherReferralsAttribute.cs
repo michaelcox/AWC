@@ -6,7 +6,7 @@ using Ninject;
 
 namespace AWC.WebUI.Helpers
 {
-    public class UsesCountiesDropdownAttribute : ActionFilterAttribute
+    public class UsesOtherReferralsAttribute : ActionFilterAttribute
     {
         [Inject]
         public IRepository Repository { get; set; }
@@ -16,7 +16,8 @@ namespace AWC.WebUI.Helpers
             ViewResult viewResult = filterContext.Result as ViewResult;
             if (viewResult != null)
             {
-                viewResult.ViewData["Counties"] = Repository.All<County>().OrderBy(c => c.CountyName).ToList();
+                viewResult.ViewData["OtherReferrals"] =
+                    Repository.All<Client>().Where(c => c.OtherReferrals != null).Select(c => c.OtherReferrals).Distinct().Take(200).ToList();
             }
         }
     }

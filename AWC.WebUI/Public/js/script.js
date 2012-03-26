@@ -220,6 +220,12 @@
       minLength: 1,
       autoFocus: true
     });
+    $('#OtherReferrals').autocomplete({
+      source: window.otherReferrals,
+      delay: 0,
+      minLength: 1,
+      autoFocus: true
+    });
     $('#add_item').click(function(e) {
       e.preventDefault();
       return getRequestedItemTemplate();

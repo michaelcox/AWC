@@ -167,6 +167,7 @@ namespace AWC.WebUI.Controllers
 
         [UsesPartnerOrgsDropdown]
         [UsesEthnicities]
+        [UsesOtherReferrals]
         public ActionResult DemographicInfo(int id)
         {
             try
@@ -205,6 +206,7 @@ namespace AWC.WebUI.Controllers
         [HttpPost]
         [UsesPartnerOrgsDropdown]
         [UsesEthnicities]
+        [UsesOtherReferrals]
         public ActionResult DemographicInfo(DemographicInfoViewModel demographicInfoViewModel)
         {
             try

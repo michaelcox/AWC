@@ -17,7 +17,7 @@ namespace AWC.WebUI.Helpers
             if (viewResult != null)
             {
                 viewResult.ViewData["PartneringOrgs"] =
-                    Repository.All<Client>().Where(c => c.PartneringOrganization != null).Select(c => c.PartneringOrganization).Distinct().Take(10).ToList();
+                    Repository.All<Client>().Where(c => c.PartneringOrganization != null).Select(c => c.PartneringOrganization).Distinct().ToList();
             }
         }
     }

@@ -177,9 +177,20 @@
     }
     
     var orgsList = (orgs != null) ? new MvcHtmlString(String.Join(",", orgs)) : new MvcHtmlString("");
+    
+    // Other Referrals
+    var otherReferrals = ViewData["OtherReferrals"] as List<string>;
+
+    for (int i = 0; i < otherReferrals.Count; i++)
+    {
+        otherReferrals[i] = "'" + otherReferrals[i] + "'";
+    }
+
+    var otherReferralsList = (otherReferrals != null) ? new MvcHtmlString(String.Join(",", otherReferrals)) : new MvcHtmlString("");
 }
 
 <script type="text/javascript">
     // Load all unique item types to make the autocomplete faster
     window.orgs = [@orgsList];
+    window.otherReferrals = [@otherReferralsList];
 </script>

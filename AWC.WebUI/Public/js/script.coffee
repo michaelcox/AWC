@@ -167,6 +167,13 @@ jQuery ($) ->
 		delay: 0
 		minLength: 1
 		autoFocus: true
+
+	# Add autocomplete to Other Referrals
+	$('#OtherReferrals').autocomplete
+		source: window.otherReferrals
+		delay: 0
+		minLength: 1
+		autoFocus: true
 	
 	#Add click functionality to add new Requested Item
 	$('#add_item').click (e) ->
