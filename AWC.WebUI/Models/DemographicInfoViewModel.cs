@@ -20,6 +20,10 @@ namespace AWC.WebUI.Models
         public string PartneringOrganization { get; set; }
 
         [StringLength(50)]
+        [Display(Name = "Other Referrals")]
+        public string OtherReferrals { get; set; }
+
+        [StringLength(50)]
         [Display(Name = "Caseworker Name")]
         public string CaseworkerName { get; set; }
 

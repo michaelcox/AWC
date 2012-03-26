@@ -74,6 +74,9 @@ namespace AWC.Domain.Entities
         public string PartneringOrganization { get; set; }
 
         [StringLength(50)]
+        public string OtherReferrals { get; set; }
+
+        [StringLength(50)]
         public string Department { get; set; }
 
         [StringLength(50)]

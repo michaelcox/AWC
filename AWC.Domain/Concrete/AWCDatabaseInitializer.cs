@@ -65,7 +65,7 @@ namespace AWC.Domain.Concrete
         }
     }
 
-    public class AWCDatabaseInitializer : DropCreateDatabaseIfModelChanges<AWCDatabase>
+    public class AWCDatabaseInitializer : CreateDatabaseIfNotExists<AWCDatabase>
     {
         protected override void Seed(AWCDatabase context)
         {

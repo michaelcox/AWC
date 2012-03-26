@@ -214,6 +214,7 @@ namespace AWC.WebUI.Controllers
                     var client = _repository.Single<Client>(c => c.ClientId == demographicInfoViewModel.ClientId);
                     
                     client.PartneringOrganization = demographicInfoViewModel.PartneringOrganization;
+                    client.OtherReferrals = demographicInfoViewModel.OtherReferrals;
                     client.Department = demographicInfoViewModel.Department;
                     client.CaseworkerName = demographicInfoViewModel.CaseworkerName;
                     client.CaseworkerPhoneNumber = (!string.IsNullOrEmpty(demographicInfoViewModel.CaseworkerPhoneNumber))
