@@ -59,6 +59,14 @@ namespace AWC.WebUI.Models
         [Option(DisplayText = "No", Value = false)]
         public bool HasDisability { get; set; }
 
+        public string SchoolLevel { get; set; }
+
+        [Display(Name = "Please select the highest level of schooling completed:")]
+        [Option(DisplayText = "Yes", Value = true)]
+        [Option(DisplayText = "No", Value = false)]
+        public string HighestLevelOfEducation { get; set; }
+
+        // Hidden Inputs
         [HiddenInput(DisplayValue = false)]
         public string ClientFirstName { get; set; }
 

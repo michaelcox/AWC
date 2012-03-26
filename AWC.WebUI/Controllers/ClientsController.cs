@@ -226,6 +226,7 @@ namespace AWC.WebUI.Controllers
                     client.IsReplacingFurniture = demographicInfoViewModel.IsReplacingFurniture;
                     client.FiledFederalIncomeTax = demographicInfoViewModel.FiledFederalIncomeTax;
                     client.AgeRange = demographicInfoViewModel.AgeRange;
+                    client.SchoolLevel = demographicInfoViewModel.SchoolLevel;
                     client.HasDisability = demographicInfoViewModel.HasDisability;
 
                     // Ethnicities

@@ -97,6 +97,9 @@ namespace AWC.Domain.Entities
 
         public bool FiledFederalIncomeTax { get; set; }
 
+        [StringLength(50)]
+        public string SchoolLevel { get; set; }
+
         // Virtual / Foreign Keys
 
         public virtual ICollection<ClientNote> ClientNotes { get; set; }
