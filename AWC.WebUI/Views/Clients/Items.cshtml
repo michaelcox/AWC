@@ -20,10 +20,13 @@
     <div class="block">
         <h3>Requested Items</h3>
         <table id="requesteditems">
-            <tr>
-                <th>Quantity</th>
-                <th colspan="2">Item Name</th>
-            </tr>
+            <thead>
+                <tr>
+                    <th>Quantity</th>
+                    <th colspan="2">Item Name</th>
+                </tr>
+            </thead>
+            <tbody>
             @if (Model.RequestedItems != null && Model.RequestedItems.Count > 0)
             {
                 foreach (var item in Model.RequestedItems)
@@ -32,9 +35,12 @@
                 }
             }
             @{ Html.RenderPartial("EditRequestedItem", new RequestedItem {QuantityRequested = 1}); }
-            <tr>
-                <td colspan="3"><a href="#" id="add_item">Add New Item</a></td>
-            </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3"><a href="#" id="add_item">Add New Item</a></td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 

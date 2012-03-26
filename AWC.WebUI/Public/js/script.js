@@ -47,7 +47,7 @@
       cache: false,
       dataType: 'html',
       success: function(data) {
-        return $('#requesteditems').append(data);
+        return $('#requesteditems').find('tbody').append(data);
       }
     });
   };

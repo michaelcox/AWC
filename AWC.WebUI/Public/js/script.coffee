@@ -28,7 +28,7 @@ getRequestedItemTemplate = ->
 		cache: false
 		dataType: 'html'
 		success: (data) ->
-			$('#requesteditems').append(data)
+			$('#requesteditems').find('tbody').append(data)
 			
 scheduleClient = (clientId, date) ->
 	$.ajax
