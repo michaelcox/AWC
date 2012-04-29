@@ -9,16 +9,17 @@
 @{Html.RenderPartial("SubNavigation", Model.ClientId);}
 
 <article>
+    <div class="items-form">
 @using (Html.BeginForm())
 {
     <input type="hidden" name="clientId" value="@Model.ClientId" />
     <input type="hidden" name="appointmentId" value="@Model.AppointmentId" />
     
     Html.ValidationSummary(true);
-                                 
+
     <div class="block">
-        <h3>Requested Items</h3>
-        <table id="requesteditems" width="100%">
+        <h3>Receiving Requested Items</h3>
+        <table id="requesteditems" width="100%" class="items">
             <tr>
                 <th style="text-align: left;">Item</th>
                 <th>Qty Requested</th>
@@ -34,11 +35,88 @@
             }
         </table>
     </div>
+    <div class="block">
+        <h3>Receiving Additional Items</h3>
+        <table class="items">
+            <thead>
+                <tr>
+                    <th>Quantity</th>
+                    <th colspan="2">Item Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="quantity"><input class="text-box single-line" data-val="true" data-val-number="The field QuantityRequested must be a number." data-val-required="The QuantityRequested field is required." type="text" value="1"></td>
+                    <td class="item_name"><input class="text-box single-line" data-val="true" data-val-length="The field ItemName must be a string with a maximum length of 100." data-val-length-max="100" data-val-required="The ItemName field is required." type="text" value=""></td>
+                    <td class="action"><a href="#" class="deleteRow" title="Remove">Remove</a></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3"><a href="#" id="add_item">Add New Item</a></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 
-    <input type="submit" value="Save Changes" class="button" />
+    <input type="submit" value="Submit" class="button" />
 }
+    </div>
+    <div class="block static items-received">
+        <h3>Previously Received Items</h3>
+        <table class="items">
+            <thead>
+                <tr>
+                    <th colspan="2"><h4>April 15, 2012 - 4:30PM</h4></th>
+                </tr>
+                <tr>
+                    <th>Quantity</th>
+                    <th>Item Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="quantity"><strong>3</strong> out of 5</td>
+                    <td class="item_name">Beds</td>
+                </tr>
+                <tr>
+                    <td class="quantity"><strong>1</strong> out of 1</td>
+                    <td class="item_name">Desk</td>
+                </tr>
+                <tr>
+                    <td class="quantity"><strong>1</strong> out of 1</td>
+                    <td class="item_name">Coffee Maker</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="items">
+            <thead>
+                <tr>
+                    <th colspan="2"><h4>March 24, 2012 - 8:00AM</h4></th>
+                </tr>
+                <tr>
+                    <th>Quantity</th>
+                    <th>Item Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="quantity"><strong>2</strong> out of 5</td>
+                    <td class="item_name">Beds</td>
+                </tr>
+                <tr>
+                    <td class="quantity"><strong>1</strong> out of 1</td>
+                    <td class="item_name">Kitchen Table</td>
+                </tr>
+                <tr class="incomplete">
+                    <td class="quantity"><strong>4</strong> out of 6</td>
+                    <td class="item_name">Kitchen Chairs</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </article>
-<aside class="notes">
-    @{Html.RenderAction("AppointmentQuickView", new { id = Model.ClientId });} <br />
+<aside>
+    @{Html.RenderAction("AppointmentQuickView", new { id = Model.ClientId });}
     @{Html.RenderAction("ClientNotes", new { id = Model.ClientId, refAction = "BasicInfo" });}
 </aside>

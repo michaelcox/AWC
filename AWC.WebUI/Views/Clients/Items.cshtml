@@ -10,6 +10,7 @@
 @{Html.RenderPartial("SubNavigation", Model.ClientId);}
 
 <article>
+    <div class="items-form">
 @using (Html.BeginForm())
 {
     <input type="hidden" name="clientId" value="@Model.ClientId" />
@@ -19,7 +20,7 @@
                                  
     <div class="block">
         <h3>Requested Items</h3>
-        <table id="requesteditems">
+        <table id="requesteditems" class="items">
             <thead>
                 <tr>
                     <th>Quantity</th>
@@ -46,9 +47,63 @@
 
     <input type="submit" value="Save" class="button" />
 }
+    </div>
+    <div class="block static items-received">
+        <h3>Previously Received Items</h3>
+        <table class="items">
+            <thead>
+                <tr>
+                    <th colspan="2"><h4>April 15, 2012 - 4:30PM</h4></th>
+                </tr>
+                <tr>
+                    <th>Quantity</th>
+                    <th>Item Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="quantity"><strong>3</strong> out of 5</td>
+                    <td class="item_name">Beds</td>
+                </tr>
+                <tr>
+                    <td class="quantity"><strong>1</strong> out of 1</td>
+                    <td class="item_name">Desk</td>
+                </tr>
+                <tr>
+                    <td class="quantity"><strong>1</strong> out of 1</td>
+                    <td class="item_name">Coffee Maker</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="items">
+            <thead>
+                <tr>
+                    <th colspan="2"><h4>March 24, 2012 - 8:00AM</h4></th>
+                </tr>
+                <tr>
+                    <th>Quantity</th>
+                    <th>Item Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="quantity"><strong>2</strong> out of 5</td>
+                    <td class="item_name">Beds</td>
+                </tr>
+                <tr>
+                    <td class="quantity"><strong>1</strong> out of 1</td>
+                    <td class="item_name">Kitchen Table</td>
+                </tr>
+                <tr class="incomplete">
+                    <td class="quantity"><strong>4</strong> out of 6</td>
+                    <td class="item_name">Kitchen Chairs</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </article>
-<aside class="notes">
-    @{Html.RenderAction("AppointmentQuickView", new { id = Model.ClientId });} <br />
+<aside>
+    @{Html.RenderAction("AppointmentQuickView", new { id = Model.ClientId });}
     @{Html.RenderAction("ClientNotes", new { id = Model.ClientId, refAction = "BasicInfo" });}
 </aside>
 

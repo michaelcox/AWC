@@ -1,4 +1,4 @@
-set PATH=%~dp0;"C:\Program Files (x86)\Microsoft\Microsoft Ajax Minifier\"
+set PATH=%~dp0;"C:\Program Files\Microsoft\Microsoft Ajax Minifier"
 
 ajaxmin -clobber AWC.WebUI\Public\js\script.js -o AWC.WebUI\Public\js\script.min.js
 

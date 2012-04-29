@@ -8,13 +8,13 @@
             @Html.HiddenFor(model => model.ItemName)
             @Model.ItemName
         </td>
-        <td class="center">
+        <td class="qty">
             @Html.HiddenFor(model => model.QuantityRequested)
             @Model.QuantityRequested
         </td>
-        <td class="center">
+        <td class="qty">
             @Html.TextBoxFor(model => model.QuantityReceived, new {@class = "small"})
         </td>
-        <td style="text-align: right;">@Html.EditorFor(model => model.ReasonForNonReceipt)</td>
+        <td class="comments">@Html.EditorFor(model => model.ReasonForNonReceipt)</td>
     }
 </tr>

@@ -3,31 +3,30 @@
 @{
     Layout = null;
 }
+<div class="notes">
+    <h3>Notes:</h3>
 
-<h3>Notes:</h3>
-
-@using (Html.BeginForm("AddNote", "Clients")) {
-    @Html.ValidationSummary(true)
+    @using (Html.BeginForm("AddNote", "Clients")) {
+        @Html.ValidationSummary(true)
     
-    @Html.HiddenFor(model => model.ClientId, new{id="notesClientId"})
-    @Html.EditorFor(model => model.RefAction)
-    @Html.Hidden("ClientNoteId", 0)
+        @Html.HiddenFor(model => model.ClientId, new{id="notesClientId"})
+        @Html.EditorFor(model => model.RefAction)
+        @Html.Hidden("ClientNoteId", 0)
     
-    <div class="field-block">
-        @Html.TextAreaFor(model => model.Body)
-        @Html.ValidationMessageFor(model => model.Body)
-    </div>
-    <input type="submit" value="Add Note" class="button" />
-}
+        <div class="field-block">
+            @Html.TextAreaFor(model => model.Body)
+            @Html.ValidationMessageFor(model => model.Body)
+        </div>
+        <input type="submit" value="Add Note" class="button" />
+    }
 
-<ul>
-@foreach (var item in Model.ClientNotes)
-{
-    <li class="note">
-        <em>Posted on @Html.DateTimeDisplay(item.PostedDateTime)</em>
-        <pre>@item.Body</pre>
-    </li>
-}
-</ul>
-
-
+    <ul>
+    @foreach (var item in Model.ClientNotes)
+    {
+        <li class="note">
+            <em>Posted on @Html.DateTimeDisplay(item.PostedDateTime)</em>
+            <pre>@item.Body</pre>
+        </li>
+    }
+    </ul>
+</div>

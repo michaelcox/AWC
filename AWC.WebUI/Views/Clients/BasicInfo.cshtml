@@ -17,7 +17,7 @@
     <input type="submit" value="Save" class="button" />
 }
 </article>
-<aside class="notes">
-    @{Html.RenderAction("AppointmentQuickView", new { id = Model.ClientId });} <br />
+<aside>
+    @{Html.RenderAction("AppointmentQuickView", new { id = Model.ClientId });}
     @{Html.RenderAction("ClientNotes", new { id = Model.ClientId, refAction = "BasicInfo" });}
 </aside>

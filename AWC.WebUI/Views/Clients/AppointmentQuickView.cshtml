@@ -5,45 +5,54 @@
     Layout = null;
 }
 
-<h3>Appointment Info:</h3>
+<div class="current-appointment">
+    <h3>Appointment Info:</h3>
 
-@if (Model.AppointmentId == null)
-{
-    // No open appointments
-    <p>No Open Appointments</p>
-}
-else if (Model.AppointmentStatusId.HasValue && Model.AppointmentStatusId.Value == (byte)Constants.AppointmentStatusId.NotScheduled)
-{
-    // On Waitlist
-    <p>On Waitlist</p>
-}
-else if (Model.AppointmentStatusId.HasValue && Model.AppointmentStatusId.Value != (byte)Constants.AppointmentStatusId.Closed
-&& Model.ScheduledDateTime.HasValue)
-{
-    // Scheduled
-    <p>@Html.ActionLink("Show On Full Schedule", "Calendar", "Schedule", new { id = Model.ClientId }, null) &rarr;</p>
-    <div id="scheduledDate"></div>
-    <select name="hours" id="scheduledHour" style="font-size: larger;"></select>
-    <select name="minutes" id="scheduledMinute" style="font-size: larger;"></select>
-    <select name="ampm" id="scheduledAmPm" style="font-size: larger;">
-        <option value="AM">AM</option>
-        <option value="PM">PM</option>
-    </select>
-    @Html.HiddenFor(m => m.ScheduledDateTime)
-    <button type="button" id="updateScheduledDate" class="button">Update</button>
-    <div class="flashmessage" id="scheduledDateFlash" style="display: none;"></div>
-
-    <br/><br />
-    
-    if (Model.ScheduledDateTime.Value > DateTime.Today)
+    @if (Model.AppointmentId == null)
     {
-        <h3>Action Items:</h3>
-        <input type="hidden" value="@Model.AppointmentId" id="appointmentId" name="appointmentId" />
-        <div id="todo">
-            <input type="checkbox" id="action_send_letter"/><span id="label_send_letter">Send Letter / Email</span><br />
-            <input type="checkbox" id="action_two_week" /><span id="label_two_week">Two Week Confirmation</span><br />
-            <input type="checkbox" id="action_two_day" /><span id="label_two_day">Two Day Confirmation</span><br />
-        </div>
+        // No open appointments
+        <p>No Open Appointments</p>
     }
+    else if (Model.AppointmentStatusId.HasValue && Model.AppointmentStatusId.Value == (byte)Constants.AppointmentStatusId.NotScheduled)
+    {
+        // On Waitlist
+        <p>On Waitlist</p>
+    }
+    else if (Model.AppointmentStatusId.HasValue && Model.AppointmentStatusId.Value != (byte)Constants.AppointmentStatusId.Closed
+    && Model.ScheduledDateTime.HasValue)
+    {
+        // Scheduled
+        <p>@Html.ActionLink("Show On Full Schedule", "Calendar", "Schedule", new { id = Model.ClientId }, null) &rarr;</p>
+        <div id="scheduledDate"></div>
+        <select name="hours" id="scheduledHour" style="font-size:14px;"></select>
+        <select name="minutes" id="scheduledMinute" style="font-size:14px;"></select>
+        <select name="ampm" id="scheduledAmPm" style="font-size:14px;">
+            <option value="AM">AM</option>
+            <option value="PM">PM</option>
+        </select>
+        @Html.HiddenFor(m => m.ScheduledDateTime)
+        <button type="button" id="updateScheduledDate" class="button" style="margin:0 0 0 10px;">Reschedule</button>
+        <div class="flashmessage" id="scheduledDateFlash" style="display: none;"></div>
 
-}
+        if (Model.ScheduledDateTime.Value > DateTime.Today)
+        {
+            <div class="action-items">
+                <h3>Action Items:</h3>
+                <input type="hidden" value="@Model.AppointmentId" id="appointmentId" name="appointmentId" />
+                <div id="todo">
+                    <input type="checkbox" id="action_send_letter"/><span id="label_send_letter">Send Letter / Email</span><br />
+                    <input type="checkbox" id="action_two_week" /><span id="label_two_week">Two Week Confirmation</span><br />
+                    <input type="checkbox" id="action_two_day" /><span id="label_two_day">Two Day Confirmation</span><br />
+                </div>
+            </div>
+        }
+
+    }
+</div>
+<div class="appointment-archive">
+    <h3>Past Appointments:</h3>
+    <ul>
+        <li>4/22/2012 8:00 PM</li>
+        <li>4/16/2012 4:30 PM</li>
+    </ul>
+</div>
