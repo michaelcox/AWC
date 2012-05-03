@@ -65,6 +65,11 @@ namespace AWC.WebUI
                 new { controller = "Account", action = "LogOn" }
             );
 
+            routes.MapRoute(
+                "External", // Route name
+                "External/{action}", // URL with parameters
+                new { controller = "External", action = "PartnerForm" }
+            );
 
             routes.MapRoute(
                 "Homepage", // Route name

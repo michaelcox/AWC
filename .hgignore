@@ -39,6 +39,7 @@ thumbs.db
 _ReSharper.*
 *.resharper
 *.sdf
+*.ncrunch*
 plugins.min.js
 script.min.js
 all.min.css
