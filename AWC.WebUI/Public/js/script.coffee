@@ -184,6 +184,16 @@ jQuery ($) ->
 	$('a.deleteRow').live 'click', (e) ->
 		e.preventDefault()
 		$(this).parents('tr:first').remove()
+
+	# Only show 'Reason for Returning' if a Previous Client
+	$('input[name="IsPreviousClient"]').click ->
+		showHideReasonForReturning()
+		$('input[name="ReasonForReturning"]').focus()
+
+	showHideReasonForReturning = ->
+		$('[data-type="ReasonForReturning"]').toggle($('input[name="IsPreviousClient"]:checked').val())
+
+	showHideReasonForReturning()
 	
 	# Add functionality to generate the nice jQuery calendar and load the events
 	$('#calendar').fullCalendar

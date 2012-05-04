@@ -68,6 +68,9 @@ namespace AWC.WebUI.Models
         [Option(DisplayText = "Yes", Value = true)]
         public bool IsPreviousClient { get; set; }
 
+        [Display(Name = "Reason For Returning?")]
+        public string ReasonForReturning { get; set; }
+
         [Display(Name = "Number of Adults")]
         [Integer(ErrorMessage = "Please enter a valid number.")]
         [Max(10, ErrorMessage = "There are too many adults specified.")]

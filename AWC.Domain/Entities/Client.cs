@@ -62,6 +62,8 @@ namespace AWC.Domain.Entities
 
         public bool IsPreviousClient { get; set; }
 
+        public string ReasonForReturning { get; set; }
+
         public short NumberOfAdults { get; set; }
 
         public short NumberOfChildren { get; set; }

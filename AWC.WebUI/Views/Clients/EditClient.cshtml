@@ -24,6 +24,12 @@
         </div>
         @Html.ValidationMessageFor(model => model.IsPreviousClient)
     </div>
+    
+    <div class="field-block" data-type="ReasonForReturning">
+        @Html.LabelFor(model => model.ReasonForReturning)
+        @Html.EditorFor(model => model.ReasonForReturning)
+        @Html.ValidationMessageFor(model => model.ReasonForReturning)
+    </div>
 
     <div class="field-block">
         @Html.LabelFor(model => model.NumberOfAdults)

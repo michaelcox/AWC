@@ -194,7 +194,7 @@
   };
 
   jQuery(function($) {
-    var day, hour, initialDate, min, month, year, _i, _len, _ref, _ref2;
+    var day, hour, initialDate, min, month, showHideReasonForReturning, year, _i, _len, _ref, _ref2;
     addAutoClear($('#search'), DEFAULT_SEARCH_VALUE);
     $('.phone').mask('(999) 999-9999');
     $('.success').fadeIn(1000).delay(4000).fadeOut(1000);
@@ -234,6 +234,14 @@
       e.preventDefault();
       return $(this).parents('tr:first').remove();
     });
+    $('input[name="IsPreviousClient"]').click(function() {
+      showHideReasonForReturning();
+      return $('input[name="ReasonForReturning"]').focus();
+    });
+    showHideReasonForReturning = function() {
+      return $('[data-type="ReasonForReturning"]').toggle($('input[name="IsPreviousClient"]:checked').val());
+    };
+    showHideReasonForReturning();
     $('#calendar').fullCalendar({
       eventSources: [
         {
