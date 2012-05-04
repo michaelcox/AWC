@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AWC.WebUI.Models
 {
@@ -12,5 +13,12 @@ namespace AWC.WebUI.Models
         public DateTime? TwoDayConfirmation { get; set; }
         public bool SentLetterOrEmail { get; set; }
         public byte? AppointmentStatusId { get; set; }
+        public List<OldAppointment> OldAppointments { get; set; }
+
+        public class OldAppointment
+        {
+            public DateTime ScheduledDateTime { get; set; }
+            public string Status { get; set; }
+        }
     }
 }

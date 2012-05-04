@@ -430,7 +430,11 @@ namespace AWC.WebUI.Controllers
         public ActionResult AppointmentQuickView(int id)
         {
             var vm = new AppointmentQuickViewModel {ClientId = id};
-            var appt = _repository.Single<Appointment>(a => a.ClientId == id && a.AppointmentStatusId != (byte)Constants.AppointmentStatusId.Closed);
+            var appts = _repository.All<Appointment>().Where(a => a.ClientId == id).OrderByDescending(a => a.ScheduledDateTime);
+            var appt =
+                appts.First(a => a.AppointmentStatusId == (byte) Constants.AppointmentStatusId.Scheduled ||
+                                 a.AppointmentStatusId == (byte) Constants.AppointmentStatusId.NotScheduled);
+
             if (appt != null)
             {
                 vm.AppointmentStatusId = appt.AppointmentStatusId;
@@ -440,7 +444,21 @@ namespace AWC.WebUI.Controllers
                 vm.SentLetterOrEmail = appt.SentLetterOrEmail;
                 vm.TwoDayConfirmation = appt.TwoDayConfirmation;
                 vm.TwoWeekConfirmation = appt.TwoWeekConfirmation;
+                vm.OldAppointments = new List<AppointmentQuickViewModel.OldAppointment>();
             }
+
+            foreach (var appointment in appts.Where(a => a.AppointmentId != appt.AppointmentId))
+            {
+                if (appointment.ScheduledDateTime.HasValue)
+                {
+                    vm.OldAppointments.Add(new AppointmentQuickViewModel.OldAppointment
+                    {
+                        ScheduledDateTime = TimeHelper.ConvertToLocal(appointment.ScheduledDateTime.Value),
+                        Status = appointment.AppointmentStatus.Name
+                    });
+                }
+            }
+
             return View(vm);
         }
 

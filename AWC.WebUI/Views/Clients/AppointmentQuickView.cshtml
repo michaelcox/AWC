@@ -52,7 +52,9 @@
 <div class="appointment-archive">
     <h3>Past Appointments:</h3>
     <ul>
-        <li>4/22/2012 8:00 PM</li>
-        <li>4/16/2012 4:30 PM</li>
+        @foreach(var oldAppt in Model.OldAppointments)
+        {
+            <li>@oldAppt.ScheduledDateTime.ToString() - @oldAppt.Status</li>
+        }
     </ul>
 </div>
