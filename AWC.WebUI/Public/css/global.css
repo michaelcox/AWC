@@ -108,16 +108,20 @@ textarea {
 }
 
 /* default */
-body{
-	background-color: #b1d4e5;
+body.external-page {
+    background: transparent;
+    padding: 1em;
+}
+body {
+	background: #b1d4e5;
     font: 14px/18px sans-serif;
 	color: #58585a;
 }
-a{
+a {
 	color:#14afdb;
 	text-decoration:none;
 }
-a:hover{text-decoration:underline;}
+a:hover { text-decoration:underline; }
 p { margin: 0 0 12px; }
 
 /* layout */
@@ -606,6 +610,66 @@ table.items .action{
     font-weight: bold;
 }
 
+/* external page for iframe */
+.external-page h1 {
+    font:normal 24px/30px Georgia, serif;
+    color: #58585a;
+    margin: 0 0 18px;
+    padding: 0 0 7px;
+    border-bottom: 2px solid #58585a;
+}
+.external-page h2 {
+    font:normal 18px/24px Georgia, serif;
+    color: #58585a;
+    margin: 0 0 12px;
+    padding: 0 0 4px;
+    border-bottom: 1px solid #ccc;
+}
+.external-page .entry {
+    margin: 0 0 30px;
+}
+.external-page .note {
+    color: #787878;
+    font-style: italic;
+    font-size: .9em;
+}
+.external-page .req {
+    color: Red;
+    font-weight: bold;
+    font-style: normal;
+}
+.external-page .field-block {
+    margin: 0 0 10px;
+    position: relative;
+}
+.external-page .field-block .req {
+    position: absolute;
+    top: 2px;
+    left: -10px;
+}
+.external-page .field-block label,
+.external-page .field-block.radio label.title {
+    display: block;
+}
+.external-page .field-block label em {
+    font-size: .9em;
+}
+.external-page .field-block.radio label {
+    display: inline;
+}
+.external-page .field-block.radio input {
+    width: auto;
+}
+.external-page .field-block textarea {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100px;
+}
+.external-page form .block label {
+    width: auto;
+    text-align: left;
+    float: none;
+}
 
 .button {
     color: #fff;

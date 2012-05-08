@@ -3,14 +3,174 @@
 }
 
 <!DOCTYPE html>
-
 <html>
 <head>
-    <title>PartnerForm</title>
+    <title>Agency Referral Form</title>
+
+    <link rel="stylesheet" href="@Url.Content("~/Public/css/global.css")" />
 </head>
-<body>
+<body class="external-page">
     <div>
-        
+        <div class="entry">
+            <h1>Agency Referral Form</h1>
+            <p>It is our pleasure to serve you and your client. If you provide services for this client and they are in need of furniture, please fill out this form and include anything that might be important for us to consider when scheduling their appointment. It would be helpful to us if you could indicate the sense of urgency. Keep in mind that the needs of all of our clients are great, but certainly there are some situations that warrant a quicker response than others.</p>
+            <p>We will do our best to schedule your client as quickly as possible. If the client is not receiving services through your organization, please give the client our phone number (301-608-3504) and ask them to call us directly. We are happy to help them. A Wider Circle is open 7 days a week to provide assistance for those in need. Please call Gail if you have any questions.</p>
+        </div>
+
+        <form action="#" method="post">
+            <p class="note"><span class="req">*</span> = Required</p>
+
+            <div class="block">
+                <h2>Client Details</h2>
+                
+                <div class="field-block">
+                    <label for="q1"><span class="req">*</span> First Name:</label>
+                    <input type="text" id="q1" name="q1" value="" />
+                </div>
+
+                <div class="field-block">
+                    <label for="q2"><span class="req">*</span> Last Name:</label>
+                    <input type="text" id="q2" name="q2" value="" />
+                </div>
+
+                <div class="field-block radio">
+                    <label class="title"><span class="req">*</span> Is the client replacing furniture?</label>
+                    <input type="radio" id="q3_yes" name="q3" value="Yes" /> <label for="q3_yes">Yes</label>
+                    <input type="radio" id="q3_no" name="q3" value="No" /> <label for="q3_no">No</label>
+                </div>
+
+                <div class="field-block radio">
+                    <label class="title"><span class="req">*</span> Has the client received furniture from A Wider Circle before?</label>
+                    <input type="radio" id="q4_yes" name="q4" value="Yes" /> <label for="q4_yes">Yes</label>
+                    <input type="radio" id="q4_no" name="q4" value="No" /> <label for="q4_no">No</label>
+                </div>
+                
+                <div class="field-block">
+                    <label for="q5"><span class="req">*</span> Number of adults living in the home:<br />
+                    <em>Anyone over the age of 18</em></label>
+                    <input type="text" id="q5" name="q5" value="0" />
+                </div>
+                
+                <div class="field-block">
+                    <label for="q6"><span class="req">*</span> Number of children living in the home:<br />
+                    <em>Anyone under the age of 18</em></label>
+                    <input type="text" id="q6" name="q6" value="0" />
+                </div>
+                
+                <div class="field-block">
+                    <label for="q7"><span class="req">*</span> Items Requested:<br />
+                    <em>Please indicate the number of beds (twins or adult size), dining chairs, end tables, and dressers (up to 2) a client needs. Indicate whether they need a sofa, coffee table, dining table, bookshelf, desk, or armchair.</em></label>
+                    <textarea id="q7" name="q7"></textarea>
+                </div>
+                
+                <div class="field-block">
+                    <label for="q8">Notes:<br />
+                    <em>Please indicate the clients current situation such as where they are sleeping now if requesting a bed, moving date, due date if pregnant, reunification issue or any other information about the client you feel is important to share.</em></label>
+                    <textarea id="q8" name="q8"></textarea>
+                </div>
+            </div>
+            <div class="block">
+                <h2>Client Contact Information</h2>
+                
+                <div class="field-block">
+                    <label for="q9"><span class="req">*</span> Primary Phone Number:</label>
+                    <input type="text" id="q9" name="q9" value="" />
+                </div>
+                
+                <div class="field-block">
+                    <label for="q10">Secondary Phone Number:</label>
+                    <input type="text" id="q10" name="q10" value="" />
+                </div>
+                
+                <div class="field-block">
+                    <label for="q11">Email Address:</label>
+                    <input type="text" id="q11" name="q11" value="" />
+                </div>
+            </div>
+            <div class="block">
+                <h2>Client Address</h2>
+
+                <div class="field-block">
+                    <label for="q12"><span class="req">*</span> Address Line 1:</label>
+                    <input type="text" id="q12" name="q12" value="" />
+                </div>
+                
+                <div class="field-block">
+                    <label for="q13">Address Line 2:</label>
+                    <input type="text" id="q13" name="q13" value="" />
+                </div>
+                
+                <div class="field-block">
+                    <label for="q14"><span class="req">*</span> City:</label>
+                    <input type="text" id="q14" name="q14" value="" />
+                </div>
+                
+                <div class="field-block">
+                    <label for="q15"><span class="req">*</span> State:</label>
+                    <select id="q15" name="q15">
+                        <option value="">Select State...</option>
+                        <option value="DC">District of Columbia</option>
+                        <option value="MD">Maryland</option>
+                        <option value="VA">Virginia</option>
+                    </select>
+                </div>
+                
+                <div class="field-block">
+                    <label for="q16"><span class="req">*</span> Zip Code:</label>
+                    <input type="text" id="q16" name="q16" value="" />
+                </div>
+                
+                <div class="field-block">
+                    <label for="q17"><span class="req">*</span> County:</label>
+                    <select id="q17" name="q17">
+                        <option value="">Select County...</option>
+                        <option value="MC">Montgomery County</option>
+                        <option value="PG">Prince Georges County</option>
+                    </select>
+                </div>
+            </div>
+            <div class="block">
+                <h2>Caseworker Information</h2>
+                
+                <div class="field-block">
+                    <label for="q18"><span class="req">*</span> Partnering Organization:</label>
+                    <input type="text" id="q18" name="q18" value="" />
+                </div>
+                
+                <div class="field-block">
+                    <label for="q19"><span class="req">*</span> Caseworker Name:</label>
+                    <input type="text" id="q19" name="q19" value="" />
+                </div>
+                
+                <div class="field-block">
+                    <label for="q20"><span class="req">*</span> Caseworker Organization:</label>
+                    <input type="text" id="q20" name="q20" value="" />
+                </div>
+                
+                <div class="field-block">
+                    <label for="q21"><span class="req">*</span> Caseworker Phone Number:</label>
+                    <input type="text" id="q21" name="q21" value="" />
+                </div>
+                
+                <div class="field-block">
+                    <label for="q22">Caseworker Email Address:</label>
+                    <input type="text" id="q22" name="q22" value="" />
+                </div>
+                
+                <div class="field-block radio">
+                    <label class="title"><span class="req">*</span> Have you done a home visit?</label>
+                    <input type="radio" id="q23_yes" name="q23" value="Yes" /> <label for="q23_yes">Yes</label>
+                    <input type="radio" id="q23_no" name="q23" value="No" /> <label for="q23_no">No</label>
+                </div>
+                
+                <div class="field-block">
+                    <label for="q24">What services do you provide for this client?</label>
+                    <textarea id="q24" name="q24"></textarea>
+                </div>
+            </div>
+            
+            <input type="submit" value="Submit" class="button">
+        </form>
     </div>
 </body>
 </html>
