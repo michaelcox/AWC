@@ -122,6 +122,7 @@
     <Compile Include="Models\ClientNotesViewModel.cs" />
     <Compile Include="Models\LogOnModel.cs" />
     <Compile Include="Models\DemographicInfoViewModel.cs" />
+    <Compile Include="Models\PreviousItemsViewModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\RequestedItemsViewModel.cs" />
     <Compile Include="Models\ScheduleViewModel.cs" />

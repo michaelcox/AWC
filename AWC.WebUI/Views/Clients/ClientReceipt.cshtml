@@ -62,59 +62,37 @@
     <input type="submit" value="Submit" class="button" />
 }
     </div>
-    <div class="block static items-received">
-        <h3>Previously Received Items</h3>
-        <table class="items">
-            <thead>
-                <tr>
-                    <th colspan="2"><h4>April 15, 2012 - 4:30PM</h4></th>
-                </tr>
-                <tr>
-                    <th>Quantity</th>
-                    <th>Item Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="quantity"><strong>3</strong> out of 5</td>
-                    <td class="item_name">Beds</td>
-                </tr>
-                <tr>
-                    <td class="quantity"><strong>1</strong> out of 1</td>
-                    <td class="item_name">Desk</td>
-                </tr>
-                <tr>
-                    <td class="quantity"><strong>1</strong> out of 1</td>
-                    <td class="item_name">Coffee Maker</td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="items">
-            <thead>
-                <tr>
-                    <th colspan="2"><h4>March 24, 2012 - 8:00AM</h4></th>
-                </tr>
-                <tr>
-                    <th>Quantity</th>
-                    <th>Item Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="quantity"><strong>2</strong> out of 5</td>
-                    <td class="item_name">Beds</td>
-                </tr>
-                <tr>
-                    <td class="quantity"><strong>1</strong> out of 1</td>
-                    <td class="item_name">Kitchen Table</td>
-                </tr>
-                <tr class="incomplete">
-                    <td class="quantity"><strong>4</strong> out of 6</td>
-                    <td class="item_name">Kitchen Chairs</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    
+    @if (Model.PreviousItems != null && Model.PreviousItems.Count > 0)
+    {
+        <div class="block static items-received">
+            <h3>Previously Received Items</h3>
+            @foreach (var previousAppointment in @Model.PreviousItems)
+            {
+                <table class="items">
+                    <thead>
+                        <tr>
+                            <th colspan="2"><h4>@previousAppointment.AppointmentDateTime.ToString("D") &mdash; @previousAppointment.AppointmentDateTime.ToString("T")</h4></th>
+                        </tr>
+                        <tr>
+                            <th>Quantity</th>
+                            <th>Item Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in previousAppointment.RequestedItems)
+                        {
+                            <tr>
+                                <td class="quantity"><strong>@item.QuantityReceived</strong> out of @item.QuantityRequested</td>
+                                <td class="item_name">@item.ItemName</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    }
+
 </article>
 <aside>
     @{Html.RenderAction("AppointmentQuickView", new { id = Model.ClientId });}

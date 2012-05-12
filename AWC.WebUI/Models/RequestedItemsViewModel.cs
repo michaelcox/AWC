@@ -16,5 +16,7 @@ namespace AWC.WebUI.Models
         public string LastName { get; set; }
 
         public List<RequestedItem> RequestedItems { get; set; }
+
+        public List<PreviousItemsViewModel> PreviousItems { get; set; } 
     }
 }

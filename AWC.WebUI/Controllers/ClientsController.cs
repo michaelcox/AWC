@@ -317,6 +317,7 @@ namespace AWC.WebUI.Controllers
         public ActionResult Items(int id)
         {
             var rivm = new RequestedItemsViewModel();
+            rivm.PreviousItems = new List<PreviousItemsViewModel>();
             var client = _repository.Single<Client>(c => c.ClientId == id);
             if (client != null)
             {
@@ -330,6 +331,21 @@ namespace AWC.WebUI.Controllers
                     foreach (var item in requestedItems)
                     {
                         rivm.RequestedItems.Add(item);
+                    }
+                }
+                var pastAppts = _repository.All<Appointment>().Where(a => a.ClientId == id && a.AppointmentId != appt.AppointmentId).OrderByDescending(a => a.ScheduledDateTime);
+                if (pastAppts.Any())
+                {
+                    foreach (var appointment in pastAppts)
+                    {
+                        var pastApptViewModel = new PreviousItemsViewModel();
+                        pastApptViewModel.AppointmentDateTime = appointment.ScheduledDateTime.Value;
+                        pastApptViewModel.RequestedItems = _repository.All<RequestedItem>().Where(r => r.AppointmentId == appointment.AppointmentId).OrderByDescending(r => r.QuantityReceived).ThenBy(r => r.ItemName).ToList();
+
+                        if (pastApptViewModel.RequestedItems != null && pastApptViewModel.RequestedItems.Count > 0)
+                        {
+                            rivm.PreviousItems.Add(pastApptViewModel);
+                        }
                     }
                 }
             }
@@ -363,11 +379,12 @@ namespace AWC.WebUI.Controllers
         public ActionResult ClientReceipt(int id)
         {
             var rivm = new RequestedItemsViewModel();
+            rivm.PreviousItems = new List<PreviousItemsViewModel>();
             var client = _repository.Single<Client>(c => c.ClientId == id);
             if (client != null)
             {
                 rivm.InjectFrom(client);
-                var appt = _repository.Single<Appointment>(a => a.ClientId == id && a.AppointmentStatusId != (byte)Constants.AppointmentStatusId.Closed);
+                var appt = _repository.Single<Appointment>(a => a.ClientId == id && a.AppointmentStatusId == (byte)Constants.AppointmentStatusId.Scheduled);
                 if (appt != null)
                 {
                     rivm.InjectFrom(appt);
@@ -376,6 +393,21 @@ namespace AWC.WebUI.Controllers
                     foreach (var item in requestedItems)
                     {
                         rivm.RequestedItems.Add(item);
+                    }
+                }
+                var pastAppts = _repository.All<Appointment>().Where(a => a.ClientId == id && a.AppointmentId != appt.AppointmentId).OrderByDescending(a => a.ScheduledDateTime);
+                if (pastAppts.Any())
+                {
+                    foreach (var appointment in pastAppts)
+                    {
+                        var pastApptViewModel = new PreviousItemsViewModel();
+                        pastApptViewModel.AppointmentDateTime = appointment.ScheduledDateTime.Value;
+                        pastApptViewModel.RequestedItems = _repository.All<RequestedItem>().Where(r => r.AppointmentId == appointment.AppointmentId).OrderByDescending(r => r.QuantityReceived).ThenBy(r => r.ItemName).ToList();
+                        
+                        if (pastApptViewModel.RequestedItems != null && pastApptViewModel.RequestedItems.Count > 0)
+                        {
+                            rivm.PreviousItems.Add(pastApptViewModel);
+                        }
                     }
                 }
             }
