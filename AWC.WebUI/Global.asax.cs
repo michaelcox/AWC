@@ -32,7 +32,7 @@ namespace AWC.WebUI
             routes.MapRoute(
                 "Schedule", // Route name
                 "Schedule/{action}/{id}", // URL with parameters
-                new { controller = "Schedule", action = "Confirmed", id = UrlParameter.Optional }
+                new { controller = "Schedule", action = "Index", id = UrlParameter.Optional }
             );
 
             routes.MapRoute(

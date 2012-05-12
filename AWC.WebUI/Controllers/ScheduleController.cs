@@ -24,22 +24,51 @@ namespace AWC.WebUI.Controllers
             _logger = logger;
         }
 
-        public ActionResult Confirmed()
+        public ActionResult Index()
         {
-            // Load clients/appointments with eager loading
-            List<ScheduledClient> clients = GetScheduledClients(all: false).ToList();
+            return RedirectToActionPermanent("ThisWeek");
+        }
 
-            var requestedItems = _repository.All<RequestedItem>().ToList();
+        public ActionResult ThisWeek()
+        {
+            DateTime endDate;
 
-            foreach (var client in clients)
+            // "This Week" means Sunday, unless today is Sunday
+            if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
             {
-                client.RequestedItems = new List<RequestedItem>();
-                client.RequestedItems.AddRange(requestedItems.Where(r => r.AppointmentId == client.AppointmentId));
+                endDate = DateTime.Today.AddDays(7);
             }
+            else
+            {
+                DateTime tmpDate = DateTime.Today;
+                while (tmpDate.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    tmpDate = tmpDate.AddDays(1);
+                }
+                endDate = tmpDate;
+            }
+            return View("Confirmed", GetScheduleForDates(DateTime.Today, endDate));
+        }
 
-            var scheduledViewModel = new ScheduleViewModel {Clients = clients};
+        public ActionResult Today()
+        {
+            return View("Confirmed", GetScheduleForDates(DateTime.Today, DateTime.Today));
+        }
 
-            return View(scheduledViewModel);
+        public ActionResult ThisMonth()
+        {
+            DateTime startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 0, 0, 0);
+            DateTime endDate =  new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1, 0, 0, 0).AddMonths(1).AddDays(-1);
+
+            return View("Confirmed", GetScheduleForDates(startDate, endDate));
+        }
+
+        public ActionResult ThisYear()
+        {
+            DateTime startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 0, 0, 0);
+            DateTime endDate = new DateTime(DateTime.Today.Year, 12, 31, 23, 59, 59);
+
+            return View("Confirmed", GetScheduleForDates(startDate, endDate));
         }
 
         public ActionResult Calendar(int? id)
@@ -47,7 +76,7 @@ namespace AWC.WebUI.Controllers
             DateTime? focusDateTime = null;
             if (id.HasValue)
             {
-                var clients = GetScheduledClients(all: true);
+                var clients = GetScheduledClients(DateTime.Today, DateTime.Today.AddYears(1));
                 focusDateTime = clients.Where(c => c.ClientId == id).First().ScheduledDateTime;
             }
             return View(focusDateTime);
@@ -62,7 +91,7 @@ namespace AWC.WebUI.Controllers
                               ? ConvertFromUnixTimestamp(end.Value).ToUniversalTime()
                               : new DateTime(t.Year, t.Month, 1, 11, 59, 59).AddMonths(3).AddDays(-1).ToUniversalTime();
 
-            var clients = GetScheduledClients(all: true);
+            var clients = GetScheduledClients(DateTime.Today, DateTime.Today.AddYears(1));
 
             // Pull events object specific to jQuery calendar format
 
@@ -170,15 +199,37 @@ namespace AWC.WebUI.Controllers
             return Json(new {success = true});
         }
 
-        private List<ScheduledClient> GetScheduledClients(bool all)
+        private ScheduleViewModel GetScheduleForDates(DateTime startDateTime, DateTime endDateTime)
+        {
+            // Put Start at the beginning of the day, End at the end
+            startDateTime = new DateTime(startDateTime.Year, startDateTime.Month, startDateTime.Day, 0, 0, 0);
+            endDateTime = new DateTime(endDateTime.Year, endDateTime.Month, endDateTime.Day, 23, 59, 59);
+
+            // Load clients/appointments with eager loading
+            List<ScheduledClient> clients = GetScheduledClients(startDateTime, endDateTime);
+
+            var requestedItems = _repository.All<RequestedItem>().ToList();
+
+            foreach (var client in clients)
+            {
+                client.RequestedItems = new List<RequestedItem>();
+                client.RequestedItems.AddRange(requestedItems.Where(r => r.AppointmentId == client.AppointmentId));
+            }
+
+            var scheduledViewModel = new ScheduleViewModel { Clients = clients };
+
+            return scheduledViewModel;
+        }
+
+        private List<ScheduledClient> GetScheduledClients(DateTime startDateTime, DateTime endDateTime)
         {
             var s = from c in _repository.All<Client>()
                     join a in _repository.All<Appointment>() on c equals a.Client
                     where
-                        (a.AppointmentStatusId == (byte) Constants.AppointmentStatusId.Scheduled ||
-                         a.AppointmentStatusId == (byte) Constants.AppointmentStatusId.Rescheduled)
+                        a.AppointmentStatusId == (byte) Constants.AppointmentStatusId.Scheduled
                         && a.ScheduledDateTime.HasValue
-                    orderby a.ScheduledDateTime descending
+                        && a.ScheduledDateTime >= startDateTime && a.ScheduledDateTime <= endDateTime
+                    orderby a.ScheduledDateTime ascending 
                     select new ScheduledClient
                                {
                                    ClientId = c.ClientId,
@@ -194,7 +245,7 @@ namespace AWC.WebUI.Controllers
                                    SentLetterOrEmail = a.SentLetterOrEmail
                                };
 
-            return (all) ? s.ToList() : s.Where(c => c.ScheduledDateTime > DateTime.Today).ToList();
+            return s.ToList();
         }
 
         private DateTime ConvertFromUnixTimestamp(int timestamp)
