@@ -424,9 +424,22 @@ namespace AWC.WebUI.Controllers
                 {
                     foreach (var item in rivm.RequestedItems)
                     {
-                        var existingItem = _repository.Single<RequestedItem>(i => i.RequestedItemId == item.RequestedItemId);
-                        existingItem.QuantityReceived = item.QuantityReceived;
-                        existingItem.ReasonForNonReceipt = item.ReasonForNonReceipt;
+                        if (item.RequestedItemId > 0)
+                        {
+                            var existingItem = _repository.Single<RequestedItem>(i => i.RequestedItemId == item.RequestedItemId);
+                            if (existingItem != null)
+                            {
+                                existingItem.QuantityReceived = item.QuantityReceived;
+                                existingItem.ReasonForNonReceipt = item.ReasonForNonReceipt;
+                            }
+                        }
+                        else
+                        {
+                            item.AppointmentId = rivm.AppointmentId;
+                            item.QuantityReceived = item.QuantityRequested;
+                            item.IsActive = true;
+                            _repository.Add(item);
+                        }
                     }
                 }
                 _repository.CommitChanges();

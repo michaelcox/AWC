@@ -1,4 +1,5 @@
-﻿@model AWC.WebUI.Models.RequestedItemsViewModel
+﻿@using AWC.Domain.Entities
+@model AWC.WebUI.Models.RequestedItemsViewModel
 
 @{
     ViewBag.Title = string.Format("{0} {1}", Model.FirstName, Model.LastName);
@@ -19,7 +20,7 @@
 
     <div class="block">
         <h3>Receiving Requested Items</h3>
-        <table id="requesteditems" width="100%" class="items">
+        <table width="100%" class="items">
             <tr>
                 <th style="text-align: left;">Item</th>
                 <th>Qty Requested</th>
@@ -37,7 +38,7 @@
     </div>
     <div class="block">
         <h3>Receiving Additional Items</h3>
-        <table class="items">
+        <table id="requesteditems" class="items">
             <thead>
                 <tr>
                     <th>Quantity</th>
@@ -45,11 +46,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td class="quantity"><input class="text-box single-line" data-val="true" data-val-number="The field QuantityRequested must be a number." data-val-required="The QuantityRequested field is required." type="text" value="1"></td>
-                    <td class="item_name"><input class="text-box single-line" data-val="true" data-val-length="The field ItemName must be a string with a maximum length of 100." data-val-length-max="100" data-val-required="The ItemName field is required." type="text" value=""></td>
-                    <td class="action"><a href="#" class="deleteRow" title="Remove">Remove</a></td>
-                </tr>
+                @{ Html.RenderPartial("EditRequestedItem", new RequestedItem { QuantityRequested = 1 }); }
             </tbody>
             <tfoot>
                 <tr>
@@ -98,3 +95,8 @@
     @{Html.RenderAction("AppointmentQuickView", new { id = Model.ClientId });}
     @{Html.RenderAction("ClientNotes", new { id = Model.ClientId, refAction = "BasicInfo" });}
 </aside>
+
+<script type="text/javascript">
+    // Load all unique item types to make the autocomplete faster
+    window.distinctItems = @{Html.RenderAction("DistinctItems", "Search");}
+</script>
