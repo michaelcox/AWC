@@ -39,10 +39,13 @@
             <div class="action-items">
                 <h3>Action Items:</h3>
                 <input type="hidden" value="@Model.AppointmentId" id="appointmentId" name="appointmentId" />
-                <div id="todo">
-                    <input type="checkbox" id="action_send_letter"/><span id="label_send_letter">Send Letter / Email</span><br />
-                    <input type="checkbox" id="action_two_week" /><span id="label_two_week">Two Week Confirmation</span><br />
-                    <input type="checkbox" id="action_two_day" /><span id="label_two_day">Two Day Confirmation</span><br />
+            <div id="todo">
+                @{ string sentLetterChecked = (Model.SentLetterOrEmail) ? "checked=\"checked\"" : ""; }
+                @{ string twoWeekChecked = (Model.TwoWeekConfirmation.HasValue) ? "checked=\"checked\"" : ""; }
+                @{ string twoDayChecked = (Model.TwoDayConfirmation.HasValue) ? "checked=\"checked\"" : ""; }
+                <input type="checkbox" id="action_send_letter" @sentLetterChecked/><span id="label_send_letter">Send Letter / Email</span><br />
+                <input type="checkbox" id="action_two_week" @twoWeekChecked /><span id="label_two_week">Two Week Confirmation</span><br />
+                <input type="checkbox" id="action_two_day" @twoDayChecked /><span id="label_two_day">Two Day Confirmation</span><br />
                 </div>
             </div>
         }

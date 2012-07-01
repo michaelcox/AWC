@@ -12,7 +12,7 @@
 
 @if (Model.Clients.Count() == 0)
 {
-    <p>There are no clients currently on the schedule.</p>
+    <p>There are no clients currently on the schedule for the selected timeframe.</p>
 }
 else
 {
@@ -32,14 +32,14 @@ else
                      @{Html.RenderPartial("RequestedItems", client.RequestedItems);}
                 </td>
                 <td>
-                    @{ string statusClass = (client.TwoWeekConfirmation.HasValue) ? "completed" : "not-completed"; }
-                    <span class="@statusClass">Two Week Confirmation</span><br />
-                    
-                    @{ statusClass = (client.TwoDayConfirmation.HasValue) ? "completed" : "not-completed"; }
-                    <span class="@statusClass">Two Day Confirmation</span><br />
+                    @{ string statusClass = (client.SentLetterOrEmail) ? "done" : "not-completed"; }
+                    <span class="@statusClass no-break">Sent Letter</span>
 
-                    @{ statusClass = (client.SentLetterOrEmail) ? "completed" : "not-completed"; }
-                    <span class="@statusClass">Sent Letter / Email</span>
+                    @{ statusClass = (client.TwoWeekConfirmation.HasValue) ? "done" : "not-completed"; }
+                    <span class="@statusClass no-break">Two Week</span><br />
+                    
+                    @{ statusClass = (client.TwoDayConfirmation.HasValue) ? "done" : "not-completed"; }
+                    <span class="@statusClass no-break">Two Day</span><br />
                 </td>
             </tr>
         }

@@ -706,10 +706,10 @@ table.items .action{
 }
 
 
-div#todo span.done
+span.done
 {
     text-decoration: line-through;
-    color: #D0D0D0;
+    color: #C0C0C0;
 }
 
 div#todo span.needed
@@ -745,4 +745,8 @@ input.small {
 
 .center {
     text-align: center !important;
+}
+
+.no-break {
+    white-space: nowrap;
 }
