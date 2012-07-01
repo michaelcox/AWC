@@ -1,6 +1,9 @@
 ﻿<nav class="menu">
     <ul>
-        @Html.ActionMenuItem("List View", "Confirmed", "Schedule", false, null)
+        @Html.ActionMenuItem("Today", "Today", "Schedule", false, null)
+        @Html.ActionMenuItem("This Week", "ThisWeek", "Schedule", false, null)
+        @Html.ActionMenuItem("This Month", "ThisMonth", "Schedule", false, null)
+        @Html.ActionMenuItem("This Year", "ThisYear", "Schedule", false, null)
         @Html.ActionMenuItem("Calendar View", "Calendar", "Schedule", false, null)
     </ul>
 </nav>

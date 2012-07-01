@@ -10,55 +10,58 @@
 @{Html.RenderPartial("SubNavigation", Model.ClientId);}
 
 <article>
-    <div class="items-form">
-@using (Html.BeginForm())
-{
-    <input type="hidden" name="clientId" value="@Model.ClientId" />
-    <input type="hidden" name="appointmentId" value="@Model.AppointmentId" />
-    
-    Html.ValidationSummary(true);
-
-    <div class="block">
-        <h3>Receiving Requested Items</h3>
-        <table width="100%" class="items">
-            <tr>
-                <th style="text-align: left;">Item</th>
-                <th>Qty Requested</th>
-                <th>Qty Received</th>
-                <th>Comments</th>
-            </tr>
-            @if (Model.RequestedItems != null && Model.RequestedItems.Count > 0)
-            {
-                foreach (var item in Model.RequestedItems)
+        @if (Model.AppointmentId > 0)
+        {
+            <div class="items-form">
+                @using (Html.BeginForm())
                 {
-                    Html.RenderPartial("CheckOffRequestedItem", item);
-                }
-            }
-        </table>
-    </div>
-    <div class="block">
-        <h3>Receiving Additional Items</h3>
-        <table id="requesteditems" class="items">
-            <thead>
-                <tr>
-                    <th>Quantity</th>
-                    <th colspan="2">Item Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                @{ Html.RenderPartial("EditRequestedItem", new RequestedItem { QuantityRequested = 1 }); }
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="3"><a href="#" id="add_item">Add New Item</a></td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
+                    <input type="hidden" name="clientId" value="@Model.ClientId" />
+                    <input type="hidden" name="appointmentId" value="@Model.AppointmentId" />
 
-    <input type="submit" value="Submit" class="button" />
-}
-    </div>
+                    Html.ValidationSummary(true);
+
+                    <div class="block">
+                        <h3>Receiving Requested Items</h3>
+                        <table width="100%" class="items">
+                            <tr>
+                                <th style="text-align: left;">Item</th>
+                                <th>Qty Requested</th>
+                                <th>Qty Received</th>
+                                <th>Comments</th>
+                            </tr>
+                            @if (Model.RequestedItems != null && Model.RequestedItems.Count > 0)
+                            {
+                                foreach (var item in Model.RequestedItems)
+                                {
+                                    Html.RenderPartial("CheckOffRequestedItem", item);
+                                }
+                            }
+                        </table>
+                    </div>
+                    <div class="block">
+                        <h3>Receiving Additional Items</h3>
+                        <table id="requesteditems" class="items">
+                            <thead>
+                                <tr>
+                                    <th>Quantity</th>
+                                    <th colspan="2">Item Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ Html.RenderPartial("EditRequestedItem", new RequestedItem {QuantityRequested = 1}); }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3"><a href="#" id="add_item">Add New Item</a></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <input type="submit" value="Submit" class="button" />
+                }
+            </div>
+        }
     
     @if (Model.PreviousItems != null && Model.PreviousItems.Count > 0)
     {
@@ -69,7 +72,14 @@
                 <table class="items">
                     <thead>
                         <tr>
-                            <th colspan="2"><h4>@previousAppointment.AppointmentDateTime.ToString("D") &mdash; @previousAppointment.AppointmentDateTime.ToString("T")</h4></th>
+                            @if (previousAppointment.AppointmentDateTime.HasValue)
+                            {
+                                <th colspan="2"><h4>@previousAppointment.AppointmentDateTime.Value.ToString("D") &mdash; @previousAppointment.AppointmentDateTime.Value.ToString("T")</h4></th>
+                            }
+                            else
+                            {
+                                <th colspan="2"><h4>Never Scheduled</h4></th>
+                            }
                         </tr>
                         <tr>
                             <th>Quantity</th>

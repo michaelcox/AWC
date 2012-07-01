@@ -6,7 +6,7 @@ namespace AWC.WebUI.Models
 {
     public class PreviousItemsViewModel
     {
-        public DateTime AppointmentDateTime { get; set; }
+        public DateTime? AppointmentDateTime { get; set; }
         public List<RequestedItem> RequestedItems { get; set; }
     }
 }

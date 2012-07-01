@@ -316,15 +316,17 @@ namespace AWC.WebUI.Controllers
 
         public ActionResult Items(int id)
         {
-            var rivm = new RequestedItemsViewModel();
+            var rivm = new RequestedItemsViewModel{AppointmentId = 0};
             rivm.PreviousItems = new List<PreviousItemsViewModel>();
             var client = _repository.Single<Client>(c => c.ClientId == id);
+            int activeAppointmentId = 0;
             if (client != null)
             {
                 rivm.InjectFrom(client);
-                var appt = _repository.Single<Appointment>(a => a.ClientId == id && a.AppointmentStatusId != (byte) Constants.AppointmentStatusId.Closed);
+                var appt = _repository.Single<Appointment>(a => a.ClientId == id && (a.AppointmentStatusId == (byte)Constants.AppointmentStatusId.Scheduled || a.AppointmentStatusId == (byte)Constants.AppointmentStatusId.NotScheduled));
                 if (appt != null)
                 {
+                    activeAppointmentId = appt.AppointmentId;
                     rivm.InjectFrom(appt);
                     var requestedItems = _repository.All<RequestedItem>().Where(r => r.AppointmentId == appt.AppointmentId).OrderByDescending(r => r.QuantityReceived).ThenBy(r => r.ItemName);
                     rivm.RequestedItems = new List<RequestedItem>();
@@ -333,13 +335,14 @@ namespace AWC.WebUI.Controllers
                         rivm.RequestedItems.Add(item);
                     }
                 }
-                var pastAppts = _repository.All<Appointment>().Where(a => a.ClientId == id && a.AppointmentId != appt.AppointmentId).OrderByDescending(a => a.ScheduledDateTime);
+                var pastAppts = _repository.All<Appointment>().Where(a => a.ClientId == id && a.AppointmentId != activeAppointmentId).OrderByDescending(a => a.ScheduledDateTime);
                 if (pastAppts.Any())
                 {
-                    foreach (var appointment in pastAppts)
+                    var pa = pastAppts.ToList();
+                    foreach (var appointment in pa)
                     {
                         var pastApptViewModel = new PreviousItemsViewModel();
-                        pastApptViewModel.AppointmentDateTime = appointment.ScheduledDateTime.Value;
+                        pastApptViewModel.AppointmentDateTime = appointment.ScheduledDateTime;
                         pastApptViewModel.RequestedItems = _repository.All<RequestedItem>().Where(r => r.AppointmentId == appointment.AppointmentId).OrderByDescending(r => r.QuantityReceived).ThenBy(r => r.ItemName).ToList();
 
                         if (pastApptViewModel.RequestedItems != null && pastApptViewModel.RequestedItems.Count > 0)
@@ -378,30 +381,32 @@ namespace AWC.WebUI.Controllers
 
         public ActionResult ClientReceipt(int id)
         {
-            var rivm = new RequestedItemsViewModel();
+            var rivm = new RequestedItemsViewModel{AppointmentId = 0};
             rivm.PreviousItems = new List<PreviousItemsViewModel>();
             var client = _repository.Single<Client>(c => c.ClientId == id);
+            int activeAppointmentId = 0;
             if (client != null)
             {
                 rivm.InjectFrom(client);
-                var appt = _repository.Single<Appointment>(a => a.ClientId == id && a.AppointmentStatusId == (byte)Constants.AppointmentStatusId.Scheduled);
+                var appt = _repository.Single<Appointment>(a => a.ClientId == id && (a.AppointmentStatusId == (byte)Constants.AppointmentStatusId.Scheduled || a.AppointmentStatusId == (byte)Constants.AppointmentStatusId.NotScheduled));
                 if (appt != null)
                 {
+                    activeAppointmentId = appt.AppointmentId;
                     rivm.InjectFrom(appt);
-                    var requestedItems = _repository.All<RequestedItem>().Where(r => r.AppointmentId == appt.AppointmentId).OrderByDescending(r => r.QuantityReceived).ThenBy(r => r.ItemName);
+                    var requestedItems = _repository.All<RequestedItem>().Where(r => r.AppointmentId == activeAppointmentId).OrderByDescending(r => r.QuantityReceived).ThenBy(r => r.ItemName);
                     rivm.RequestedItems = new List<RequestedItem>();
                     foreach (var item in requestedItems)
                     {
                         rivm.RequestedItems.Add(item);
                     }
                 }
-                var pastAppts = _repository.All<Appointment>().Where(a => a.ClientId == id && a.AppointmentId != appt.AppointmentId).OrderByDescending(a => a.ScheduledDateTime);
+                var pastAppts = _repository.All<Appointment>().Where(a => a.ClientId == id && a.AppointmentId != activeAppointmentId).OrderByDescending(a => a.ScheduledDateTime).ToList();
                 if (pastAppts.Any())
                 {
                     foreach (var appointment in pastAppts)
                     {
                         var pastApptViewModel = new PreviousItemsViewModel();
-                        pastApptViewModel.AppointmentDateTime = appointment.ScheduledDateTime.Value;
+                        pastApptViewModel.AppointmentDateTime = appointment.ScheduledDateTime;
                         pastApptViewModel.RequestedItems = _repository.All<RequestedItem>().Where(r => r.AppointmentId == appointment.AppointmentId).OrderByDescending(r => r.QuantityReceived).ThenBy(r => r.ItemName).ToList();
                         
                         if (pastApptViewModel.RequestedItems != null && pastApptViewModel.RequestedItems.Count > 0)
@@ -474,12 +479,13 @@ namespace AWC.WebUI.Controllers
         [ChildActionOnly]
         public ActionResult AppointmentQuickView(int id)
         {
-            var vm = new AppointmentQuickViewModel {ClientId = id};
-            var appts = _repository.All<Appointment>().Where(a => a.ClientId == id).OrderByDescending(a => a.ScheduledDateTime);
+            var vm = new AppointmentQuickViewModel {ClientId = id, OldAppointments = new List<AppointmentQuickViewModel.OldAppointment>()};
+            var appts = _repository.All<Appointment>().Where(a => a.ClientId == id).OrderByDescending(a => a.ScheduledDateTime).ToList();
             var appt =
-                appts.First(a => a.AppointmentStatusId == (byte) Constants.AppointmentStatusId.Scheduled ||
+                appts.FirstOrDefault(a => a.AppointmentStatusId == (byte) Constants.AppointmentStatusId.Scheduled ||
                                  a.AppointmentStatusId == (byte) Constants.AppointmentStatusId.NotScheduled);
 
+            int activeAppointmentId = 0;
             if (appt != null)
             {
                 vm.AppointmentStatusId = appt.AppointmentStatusId;
@@ -490,9 +496,10 @@ namespace AWC.WebUI.Controllers
                 vm.TwoDayConfirmation = appt.TwoDayConfirmation;
                 vm.TwoWeekConfirmation = appt.TwoWeekConfirmation;
                 vm.OldAppointments = new List<AppointmentQuickViewModel.OldAppointment>();
+                activeAppointmentId = appt.AppointmentId;
             }
 
-            foreach (var appointment in appts.Where(a => a.AppointmentId != appt.AppointmentId))
+            foreach (var appointment in appts.Where(a => a.AppointmentId != activeAppointmentId))
             {
                 if (appointment.ScheduledDateTime.HasValue)
                 {
