@@ -191,7 +191,7 @@ jQuery ($) ->
 		$('input[name="ReasonForReturning"]').focus()
 
 	showHideReasonForReturning = ->
-		$('[data-type="ReasonForReturning"]').toggle($('input[name="IsPreviousClient"]:checked').val())
+		if $('input[name="IsPreviousClient"]:checked').val() == 'True' then $('[data-type="ReasonForReturning"]').show() else $('[data-type="ReasonForReturning"]').hide()
 
 	showHideReasonForReturning()
 	

@@ -239,7 +239,11 @@
       return $('input[name="ReasonForReturning"]').focus();
     });
     showHideReasonForReturning = function() {
-      return $('[data-type="ReasonForReturning"]').toggle($('input[name="IsPreviousClient"]:checked').val());
+      if ($('input[name="IsPreviousClient"]:checked').val() === 'True') {
+        return $('[data-type="ReasonForReturning"]').show();
+      } else {
+        return $('[data-type="ReasonForReturning"]').hide();
+      }
     };
     showHideReasonForReturning();
     $('#calendar').fullCalendar({
