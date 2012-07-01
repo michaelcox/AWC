@@ -19,25 +19,31 @@
                     <input type="hidden" name="appointmentId" value="@Model.AppointmentId" />
 
                     Html.ValidationSummary(true);
-
-                    <div class="block">
-                        <h3>Receiving Requested Items</h3>
-                        <table width="100%" class="items">
-                            <tr>
-                                <th style="text-align: left;">Item</th>
-                                <th>Qty Requested</th>
-                                <th>Qty Received</th>
-                                <th>Comments</th>
-                            </tr>
-                            @if (Model.RequestedItems != null && Model.RequestedItems.Count > 0)
-                            {
-                                foreach (var item in Model.RequestedItems)
+                    if(Model.RequestedItems != null && Model.RequestedItems.Count > 0)
+                    {
+                        <div class="block">
+                            <h3>Receiving Requested Items</h3>
+                            <table width="100%" class="items">
+                                <tr>
+                                    <th style="text-align: left;">Item</th>
+                                    <th>Qty Requested</th>
+                                    <th>Qty Received</th>
+                                    <th>Comments</th>
+                                </tr>
+                                @if (Model.RequestedItems != null && Model.RequestedItems.Count > 0)
                                 {
-                                    Html.RenderPartial("CheckOffRequestedItem", item);
+                                    foreach (var item in Model.RequestedItems)
+                                    {
+                                        Html.RenderPartial("CheckOffRequestedItem", item);
+                                    }
                                 }
-                            }
-                        </table>
-                    </div>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="block">No items have been requested yet.</div>
+                    }
                     <div class="block">
                         <h3>Receiving Additional Items</h3>
                         <table id="requesteditems" class="items">
@@ -48,7 +54,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @{ Html.RenderPartial("EditRequestedItem", new RequestedItem {QuantityRequested = 1}); }
+                                @{ Html.RenderPartial("EditRequestedItem", new RequestedItem { QuantityRequested = 1 }); }
                             </tbody>
                             <tfoot>
                                 <tr>
