@@ -10,7 +10,6 @@ namespace AWC.Domain.Entities
         [Required]
         public int AppointmentId { get; set; }
 
-        [Required(AllowEmptyStrings = false)]
         [StringLength(100)]
         public string ItemName { get; set; }
 

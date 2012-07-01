@@ -368,9 +368,12 @@ namespace AWC.WebUI.Controllers
 
             foreach(var item in requestedItems)
             {
-                item.AppointmentId = appointmentId;
-                item.IsActive = true;
-                _repository.Add(item);
+                if (!string.IsNullOrEmpty(item.ItemName) && !string.IsNullOrEmpty(item.ItemName.Trim()))
+                {
+                    item.AppointmentId = appointmentId;
+                    item.IsActive = true;
+                    _repository.Add(item);
+                }
             }
 
             _repository.CommitChanges();
@@ -440,10 +443,13 @@ namespace AWC.WebUI.Controllers
                         }
                         else
                         {
-                            item.AppointmentId = rivm.AppointmentId;
-                            item.QuantityReceived = item.QuantityRequested;
-                            item.IsActive = true;
-                            _repository.Add(item);
+                            if (!string.IsNullOrEmpty(item.ItemName) && !string.IsNullOrEmpty(item.ItemName.Trim()))
+                            {
+                                item.AppointmentId = rivm.AppointmentId;
+                                item.QuantityReceived = item.QuantityRequested;
+                                item.IsActive = true;
+                                _repository.Add(item);
+                            }
                         }
                     }
                 }

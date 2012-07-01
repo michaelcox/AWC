@@ -5,11 +5,11 @@
     var item = Model[i];
     if (item.IsActive && (item.QuantityRequested > item.QuantityReceived))
     {
-        <span style="white-space: nowrap">@item.QuantityRequested @item.ItemName</span>
+        <span class="no-break">@item.QuantityRequested @item.ItemName</span>
     }
     else
     {
-        <span class="done">@item.QuantityRequested @item.ItemName</span>
+        <span class="no-break done">@item.QuantityRequested @item.ItemName</span>
     }
     if ((i + 1) < Model.Count)
     {
