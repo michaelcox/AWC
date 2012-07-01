@@ -100,7 +100,9 @@ namespace AWC.WebUI.Controllers
                                         {
                                             id = c.AppointmentId,
                                             title = c.FirstName + " " + c.LastName,
+                                            allDay = false,
                                             start = c.ScheduledDateTime.ConvertToLocal().ToString("s"),
+                                            editable = true,
                                             url = Url.Action("BasicInfo", "Clients", new { id = c.ClientId }),
                                             color = (id.HasValue && id.Value == c.ClientId) ? "#F16BB4" : "#14AFDB"
                                         };

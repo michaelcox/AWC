@@ -30,12 +30,13 @@ getRequestedItemTemplate = ->
 		success: (data) ->
 			$('#requesteditems').find('tbody').append(data)
 			
-scheduleClient = (clientId, date) ->
+scheduleClient = (clientId, date, callback) ->
 	$.ajax
 		url: "/Schedule/Create"
 		type: "POST"
 		data: { id: clientId, scheduledDate: date.toUTCString() }
 		dataType: "json"
+		success: callback
 
 moveClient = (eventId, dayDelta, minDelta) ->
 	$.ajax
@@ -214,25 +215,26 @@ jQuery ($) ->
 			right: 'today prev,next'
 		drop: (date, allDay) ->
 			eventObject = $(this).data('eventObject')
-			eventObject.start = date
-			eventObject.allDay = false
-			eventObject.editable = true
-			clientId = $(this).attr('id').substring(5) 			#Grab the ID from the div
+			clientId = +$(this).attr('id').substring(5) 			#Grab the ID from the div
+			newEventObject = $.extend({}, eventObject)
+			newEventObject.start = date
+			newEventObject.allDay = false
+			newEventObject.id = clientId
+			newEventObject.url = '/Clients/' + clientId
 			scheduleClient clientId, date
-			$('#calendar').fullCalendar('renderEvent', eventObject, true)
+			$('#calendar').fullCalendar('renderEvent', newEventObject)
 			$(this).remove()
-		eventDrop: (event, dayDelta, minuteDelta, allDay, revertFunc) ->
+		eventDrop: (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) ->
 			if confirm "Are you sure you want to move this appointment?"
 				moveClient event.id, dayDelta, minuteDelta
 			else
 				revertFunc()
+		defaultView: 'agendaWeek'
 		disableResizing: true
 		editable: true
 		droppable: true
 		defaultEventMinutes: 30
 		firstDay: 1
-		defaultView: 'agendaWeek'
-		allDayDefault: false
 		ignoreTimezone: false
 		allDayText: 'Holidays' # Figuring all day events are imported from Google only
 		minTime: 5

@@ -52,7 +52,7 @@
     });
   };
 
-  scheduleClient = function(clientId, date) {
+  scheduleClient = function(clientId, date, callback) {
     return $.ajax({
       url: "/Schedule/Create",
       type: "POST",
@@ -60,7 +60,8 @@
         id: clientId,
         scheduledDate: date.toUTCString()
       },
-      dataType: "json"
+      dataType: "json",
+      success: callback
     });
   };
 
@@ -268,30 +269,31 @@
         right: 'today prev,next'
       },
       drop: function(date, allDay) {
-        var clientId, eventObject;
+        var clientId, eventObject, newEventObject;
         eventObject = $(this).data('eventObject');
-        eventObject.start = date;
-        eventObject.allDay = false;
-        eventObject.editable = true;
-        clientId = $(this).attr('id').substring(5);
+        clientId = +$(this).attr('id').substring(5);
+        newEventObject = $.extend({}, eventObject);
+        newEventObject.start = date;
+        newEventObject.allDay = false;
+        newEventObject.id = clientId;
+        newEventObject.url = '/Clients/' + clientId;
         scheduleClient(clientId, date);
-        $('#calendar').fullCalendar('renderEvent', eventObject, true);
+        $('#calendar').fullCalendar('renderEvent', newEventObject);
         return $(this).remove();
       },
-      eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc) {
+      eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
         if (confirm("Are you sure you want to move this appointment?")) {
           return moveClient(event.id, dayDelta, minuteDelta);
         } else {
           return revertFunc();
         }
       },
+      defaultView: 'agendaWeek',
       disableResizing: true,
       editable: true,
       droppable: true,
       defaultEventMinutes: 30,
       firstDay: 1,
-      defaultView: 'agendaWeek',
-      allDayDefault: false,
       ignoreTimezone: false,
       allDayText: 'Holidays',
       minTime: 5,
