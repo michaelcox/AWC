@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -23,11 +24,57 @@ namespace AWC.WebUI.Controllers
         }
 
         [UsesCountiesDropdown]
-        public ActionResult CountyDistribution(int? month, int? year, string countyCode)
+        public ActionResult CountyDistribution(int? month, int? year, string countyCode, bool? download)
         {
             var report = new List<CountyDistributionReportViewModel>();
 
             if (month.HasValue && month.Value > 0 && year.HasValue && year.Value >= 2012 && !string.IsNullOrEmpty(countyCode))
+            {
+                report = GetCountyDistributionReport(month.Value, year.Value, countyCode);
+
+                if (download.HasValue && download.Value == true)
+                {
+                    // Turn it into a datatable, so it can be downloaded as a CSV
+                    var dt = new DataTable();
+                    dt.Columns.Add(new DataColumn("Date"));
+                    dt.Columns.Add(new DataColumn("FirstName"));
+                    dt.Columns.Add(new DataColumn("LastName"));
+                    dt.Columns.Add(new DataColumn("NumberOfAdults"));
+                    dt.Columns.Add(new DataColumn("NumberOfChildren"));
+                    dt.Columns.Add(new DataColumn("City"));
+                    dt.Columns.Add(new DataColumn("State"));
+                    dt.Columns.Add(new DataColumn("ReceivedItems"));
+
+                    foreach (var vm in report)
+                    {
+                        var row = dt.NewRow();
+                        row["Date"] = vm.ReceivedDateTime.ToShortDateString();
+                        row["FirstName"] = vm.FirstName;
+                        row["LastName"] = vm.LastName;
+                        row["NumberOfAdults"] = vm.NumberOfAdults;
+                        row["NumberOfChildren"] = vm.NumberOfChildren;
+                        row["City"] = vm.City;
+                        row["State"] = vm.StateCode;
+                        row["ReceivedItems"] = vm.ReceivedItems;
+                        dt.Rows.Add(row);
+                    }
+
+                    return new CsvActionResult(dt)
+                    {
+                        FileDownloadName = ("awc-countydist-" + countyCode + "-" + month.Value + "-" + year.Value + ".csv").ToLower()
+                    };
+                }
+            }
+
+            return View(report);
+        }
+
+
+        private List<CountyDistributionReportViewModel> GetCountyDistributionReport(int month, int year, string countyCode)
+        {
+            var report = new List<CountyDistributionReportViewModel>();
+
+            if (month > 0 && year >= 2012 && !string.IsNullOrEmpty(countyCode))
             {
                 // Get all appointments that were completed this selected month
                 var appointments =
@@ -72,7 +119,7 @@ namespace AWC.WebUI.Controllers
                                 {
                                     vm.ReceivedItems += item.QuantityReceived + " " + item.ItemName + ", ";
                                 }
-                                vm.ReceivedItems =  vm.ReceivedItems.TrimEnd(',', ' ');
+                                vm.ReceivedItems = vm.ReceivedItems.TrimEnd(',', ' ');
 
                                 // Only add people to the report who have received items
                                 report.Add(vm);
@@ -83,7 +130,8 @@ namespace AWC.WebUI.Controllers
 
             }
 
-            return View(report);
+            return report;
         }
+    
     }
 }

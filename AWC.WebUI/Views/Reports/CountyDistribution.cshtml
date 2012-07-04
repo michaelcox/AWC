@@ -30,6 +30,8 @@
 
 @if (Model != null && Model.Any())
 {
+    <div class="download"><img src="/Public/images/table_excel.png"/><a href="?CountyCode=@Request.QueryString["CountyCode"]&month=@Request.QueryString["month"]&year=@Request.QueryString["year"]&download=true">Download to Excel</a></div>
+    
     <table class="data-list">
         <thead>
             <tr>

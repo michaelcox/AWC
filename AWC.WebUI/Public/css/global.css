@@ -750,3 +750,14 @@ input.small {
 .no-break {
     white-space: nowrap;
 }
+
+div.download {
+    float: right;
+    margin-bottom: 20px;
+}
+div.download img 
+{
+    position: relative;
+    left: -5px;
+    top: 3px;
+}
