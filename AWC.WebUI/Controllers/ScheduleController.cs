@@ -150,23 +150,7 @@ namespace AWC.WebUI.Controllers
             if (appt != null && appt.ScheduledDateTime.HasValue)
             {
                 var newScheduledTime = appt.ScheduledDateTime.Value.AddDays(dayDelta).AddMinutes(minDelta);
-
-                // If not a change within the same day, create a copy with a status of Rescheduled
-                if (newScheduledTime.Date != appt.ScheduledDateTime.Value.Date)
-                {
-                    var rescheduledAppointment = new Appointment();
-                    rescheduledAppointment.InjectFrom(appt);
-                    rescheduledAppointment.AppointmentId = 0;
-                    rescheduledAppointment.AppointmentStatusId = (byte)Constants.AppointmentStatusId.Rescheduled;
-                    _repository.Add(rescheduledAppointment);
-                }
-
-                appt.ScheduledDateTime = newScheduledTime;
-                appt.AppointmentStatusId = (byte) Constants.AppointmentStatusId.Scheduled;
-                appt.TwoDayConfirmation = null;
-                appt.TwoWeekConfirmation = null;
-                _repository.CommitChanges();
-
+                MoveAppointment(id, newScheduledTime);
                 return Json(new {success = true});
             }
             return Json(new { success = false });
@@ -176,28 +160,7 @@ namespace AWC.WebUI.Controllers
         public JsonResult Edit(int id, string dateString)
         {
             var utcDateTime = DateTime.Parse(dateString).ConvertToUtc();
-            var appt = _repository.Single<Appointment>(a => a.AppointmentId == id);
-
-            // If not a change within the same day, create a copy with a status of Rescheduled
-            if (utcDateTime.Date != appt.ScheduledDateTime.Value.Date)
-            {
-                var rescheduledAppointment = new Appointment();
-                rescheduledAppointment.InjectFrom(appt);
-                rescheduledAppointment.AppointmentId = 0;
-                rescheduledAppointment.AppointmentStatus = null;
-                rescheduledAppointment.AppointmentStatusId = (byte) Constants.AppointmentStatusId.Rescheduled;
-                _repository.Add(rescheduledAppointment);
-            }
-
-            // Update existing appointment
-            appt.ScheduledDateTime = utcDateTime;
-            appt.AppointmentStatusId = (byte)Constants.AppointmentStatusId.Scheduled;
-            appt.TwoDayConfirmation = null;
-            appt.TwoWeekConfirmation = null;
-            appt.CreatedDateTime = DateTime.UtcNow;
-
-            _repository.CommitChanges();
-
+            MoveAppointment(id, utcDateTime);
             return Json(new {success = true});
         }
 
@@ -254,6 +217,53 @@ namespace AWC.WebUI.Controllers
         {
             var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return dateTime.AddSeconds(timestamp);
+        }
+
+        private void MoveAppointment(int id, DateTime utcDateTime)
+        {
+            var appt = _repository.Single<Appointment>(a => a.AppointmentId == id);
+
+            // If not a change within the same day, create a copy with a status of Rescheduled
+            if (utcDateTime.Date != appt.ScheduledDateTime.Value.Date)
+            {
+                var rescheduledAppointment = new Appointment
+                {
+                    AppointmentStatusId = (byte)Constants.AppointmentStatusId.Scheduled,
+                    ClientId = appt.ClientId,
+                    CreatedDateTime = DateTime.UtcNow,
+                    ScheduledDateTime = utcDateTime,
+                    SentLetterOrEmail = appt.SentLetterOrEmail,
+                    TwoDayConfirmation = appt.TwoDayConfirmation,
+                    TwoWeekConfirmation = appt.TwoWeekConfirmation,
+                };
+
+                _repository.Add(rescheduledAppointment);
+                _repository.CommitChanges();
+
+                // Move Requested Items
+                var items = _repository.All<RequestedItem>().Where(r => r.AppointmentId == appt.AppointmentId).ToList();
+                if (items.Any())
+                {
+                    foreach (var requestedItem in items)
+                    {
+                        requestedItem.AppointmentId = rescheduledAppointment.AppointmentId;
+                    }
+                    _repository.CommitChanges();
+                }
+
+                // Mark the old one as Rescheduled
+                appt.AppointmentStatusId = (byte)Constants.AppointmentStatusId.Rescheduled;
+                _repository.CommitChanges();
+            }
+            else
+            {
+                // Update existing appointment
+                appt.ScheduledDateTime = utcDateTime;
+                appt.CreatedDateTime = DateTime.UtcNow;
+
+                _repository.CommitChanges();
+            }
+
         }
     }
 }

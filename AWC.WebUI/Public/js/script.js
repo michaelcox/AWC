@@ -98,13 +98,13 @@
   };
 
   editScheduledDateTime = function() {
-    var clientId;
-    clientId = $('#ClientId').val();
+    var appointmentId;
+    appointmentId = $('#appointmentId').val();
     return $.ajax({
       url: "/Schedule/Edit",
       type: "POST",
       data: {
-        id: clientId,
+        id: appointmentId,
         dateString: $('#ScheduledDateTime').val()
       },
       dataType: "json",

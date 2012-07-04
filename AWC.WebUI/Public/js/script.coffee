@@ -62,12 +62,12 @@ updateScheduledDate = ->
 	return
 
 editScheduledDateTime = ->
-	clientId = $('#ClientId').val()
+	appointmentId = $('#appointmentId').val()
 	#newDateTime = new Date($('#ScheduledDateTime').val())
 	$.ajax
 		url: "/Schedule/Edit"
 		type: "POST"
-		data: { id: clientId, dateString: $('#ScheduledDateTime').val() }
+		data: { id: appointmentId, dateString: $('#ScheduledDateTime').val() }
 		dataType: "json"
 		success: (data) ->
 			if data.success

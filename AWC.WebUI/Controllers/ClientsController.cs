@@ -486,7 +486,7 @@ namespace AWC.WebUI.Controllers
         public ActionResult AppointmentQuickView(int id)
         {
             var vm = new AppointmentQuickViewModel {ClientId = id, OldAppointments = new List<AppointmentQuickViewModel.OldAppointment>()};
-            var appts = _repository.All<Appointment>().Where(a => a.ClientId == id).OrderByDescending(a => a.ScheduledDateTime).ToList();
+            var appts = _repository.All<Appointment>().Where(a => a.ClientId == id).OrderByDescending(a => a.CreatedDateTime).ToList();
             var appt =
                 appts.FirstOrDefault(a => a.AppointmentStatusId == (byte) Constants.AppointmentStatusId.Scheduled ||
                                  a.AppointmentStatusId == (byte) Constants.AppointmentStatusId.NotScheduled);
