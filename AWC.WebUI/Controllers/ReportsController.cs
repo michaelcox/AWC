@@ -69,6 +69,10 @@ namespace AWC.WebUI.Controllers
             return View(report);
         }
 
+        public ActionResult Dashboard()
+        {
+            return View();
+        }
 
         private List<CountyDistributionReportViewModel> GetCountyDistributionReport(int month, int year, string countyCode)
         {
