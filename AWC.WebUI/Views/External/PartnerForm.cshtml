@@ -1,5 +1,8 @@
-﻿@{
+﻿@using AWC.Domain.Entities
+@model AWC.WebUI.Models.PartnerFormViewModel
+@{
     Layout = null;
+    
 }
 
 <!DOCTYPE html>
@@ -8,6 +11,8 @@
     <title>Agency Referral Form</title>
 
     <link rel="stylesheet" href="@Url.Content("~/Public/css/global.css")" />
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/redmond/jquery-ui.css" />
+
 </head>
 <body class="external-page">
     <div>
@@ -25,47 +30,69 @@
                 
                 <div class="field-block">
                     <label for="q1"><span class="req">*</span> First Name:</label>
-                    <input type="text" id="q1" name="q1" value="" />
+                    @Html.EditorFor(model => model.FirstName)
+                    @Html.ValidationMessageFor(model => model.FirstName)
                 </div>
 
                 <div class="field-block">
                     <label for="q2"><span class="req">*</span> Last Name:</label>
-                    <input type="text" id="q2" name="q2" value="" />
+                    @Html.EditorFor(model => model.LastName)
+                    @Html.ValidationMessageFor(model => model.LastName)
                 </div>
 
                 <div class="field-block radio">
                     <label class="title"><span class="req">*</span> Is the client replacing furniture?</label>
-                    <input type="radio" id="q3_yes" name="q3" value="Yes" /> <label for="q3_yes">Yes</label>
-                    <input type="radio" id="q3_no" name="q3" value="No" /> <label for="q3_no">No</label>
+                    <div class="list">
+                        @Html.EditorFor(model => model.IsReplacingFurniture)
+                    </div>
                 </div>
 
                 <div class="field-block radio">
                     <label class="title"><span class="req">*</span> Has the client received furniture from A Wider Circle before?</label>
-                    <input type="radio" id="q4_yes" name="q4" value="Yes" /> <label for="q4_yes">Yes</label>
-                    <input type="radio" id="q4_no" name="q4" value="No" /> <label for="q4_no">No</label>
+                    <div class="list">
+                        @Html.EditorFor(model => model.IsPreviousClient)
+                    </div>
+                    @Html.ValidationMessageFor(model => model.IsPreviousClient)
                 </div>
                 
                 <div class="field-block">
                     <label for="q5"><span class="req">*</span> Number of adults living in the home:<br />
-                    <em>Anyone over the age of 18</em></label>
-                    <input type="text" id="q5" name="q5" value="0" />
+                        <em>Anyone over the age of 18</em></label>
+                    @Html.EditorFor(model => model.NumberOfAdults)
+                    @Html.ValidationMessageFor(model => model.NumberOfAdults)
                 </div>
                 
                 <div class="field-block">
                     <label for="q6"><span class="req">*</span> Number of children living in the home:<br />
-                    <em>Anyone under the age of 18</em></label>
-                    <input type="text" id="q6" name="q6" value="0" />
+                        <em>Anyone under the age of 18</em></label>
+                    @Html.EditorFor(model => model.NumberOfChildren)
+                    @Html.ValidationMessageFor(model => model.NumberOfChildren)
                 </div>
                 
                 <div class="field-block">
                     <label for="q7"><span class="req">*</span> Items Requested:<br />
-                    <em>Please indicate the number of beds (twins or adult size), dining chairs, end tables, and dressers (up to 2) a client needs. Indicate whether they need a sofa, coffee table, dining table, bookshelf, desk, or armchair.</em></label>
-                    <textarea id="q7" name="q7"></textarea>
+                        <em>Please indicate the number of beds (twins or adult size), dining chairs, end tables, and dressers (up to 2) a client needs. Indicate whether they need a sofa, coffee table, dining table, bookshelf, desk, or armchair.</em></label>
+                    <table id="requesteditems" class="items">
+                        <thead>
+                            <tr>
+                                <th>Quantity</th>
+                                <th colspan="2">Item Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ Html.RenderPartial("EditRequestedItem", new RequestedItem { QuantityRequested = 1 }); }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3"><a href="#" id="add_item">Add New Item</a></td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
                 
                 <div class="field-block">
                     <label for="q8">Notes:<br />
-                    <em>Please indicate the clients current situation such as where they are sleeping now if requesting a bed, moving date, due date if pregnant, reunification issue or any other information about the client you feel is important to share.</em></label>
+                        <em>Please indicate the clients current situation such as where they are sleeping now if requesting a bed, moving date, due date if pregnant, reunification issue or any other information about the client you feel is important to share.</em></label>
                     <textarea id="q8" name="q8"></textarea>
                 </div>
             </div>
@@ -172,5 +199,46 @@
             <input type="submit" value="Submit" class="button">
         </form>
     </div>
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+
+    <script type="text/javascript">
+        // Load all unique item types to make the autocomplete faster
+        window.distinctItems = @{Html.RenderAction("DistinctItems", "Search");}
+
+        getRequestedItemTemplate = function() {
+        return $.ajax({
+            url: '/Clients/1/RequestedItemTemplate',
+            cache: false,
+            dataType: 'html',
+            success: function(data) {
+            return $('#requesteditems').find('tbody').append(data);
+            }
+        });
+        };
+
+        jQuery(function() {
+            $('#add_item').click(function(e) {
+              e.preventDefault();
+              getRequestedItemTemplate();
+            });
+            
+            $('a.deleteRow').live('click', function(e) {
+                e.preventDefault();
+                $(this).parents('tr:first').remove();
+            });
+
+            $('td.item_name > input').live('keyup.autocomplete', function() {
+              return $(this).autocomplete({
+                source: window.distinctItems,
+                delay: 0,
+                minLength: 1,
+                autoFocus: true
+              });
+            });
+        });
+    </script>
+
 </body>
 </html>

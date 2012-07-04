@@ -1,0 +1,66 @@
+﻿@model IEnumerable<AWC.WebUI.Models.CountyDistributionReportViewModel>
+@{
+    ViewBag.Title = "County Distribution Report";
+}
+
+<h2>County Distribution Report</h2>
+
+@using (Html.BeginForm("CountyDistribution", "Reports", FormMethod.Get))
+{
+    <p>
+        County: @Html.DropDownList("CountyCode", new SelectList(ViewData["Counties"] as IEnumerable, "CountyCode", "CountyName"), "Select County...")
+        Month: <select name="month">
+                   @for (int i = 1; i <= 12; i++)
+                   {
+                       var monthName = new DateTime(2012, i, 1).ToString("MMMM");
+                       var selected = (i.ToString() == Request.QueryString["month"]) ? "selected=\"true\"" : "";
+                       <option value="@i" @selected>@monthName</option>
+                   }
+               </select>
+        Year: <select name="year">
+                  @for (int i = 2012; i <= DateTime.Today.Year; i++)
+                  {
+                      var selected = (i.ToString() == Request.QueryString["year"]) ? "selected=\"true\"" : "";
+                      <option value="@i" @selected>@i</option>
+                  }
+              </select>
+              <input type="submit" value="Submit"/>
+    </p>
+}
+
+@if (Model != null && Model.Any())
+{
+    <table class="data-list">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>No. Adults</th>
+                <th>No. Children</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Items Received</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var vm in Model)
+            {
+                <tr>
+                    <td>@vm.ReceivedDateTime.ToShortDateString()</td>
+                    <td>@vm.FirstName</td>
+                    <td>@vm.LastName</td>
+                    <td>@vm.NumberOfAdults</td>
+                    <td>@vm.NumberOfChildren</td>
+                    <td>@vm.City</td>
+                    <td>@vm.StateCode</td>
+                    <td>@vm.ReceivedItems</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>There is no data for the selected criteria.</p>
+}
