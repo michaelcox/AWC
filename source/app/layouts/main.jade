@@ -1,0 +1,22 @@
+header
+	div
+		h1.logo
+			a(href='#') A Wider Circle
+		nav
+			ul.menu-primary
+				li(data-bind='clientNew')
+					a(href='#clients/new') Clients
+				li(data-bind='waitlist')
+					a(href='#waitlist') Waitlist
+				li(data-bind='schedule')
+					a(href='#schedule') Schedule
+				li(data-bind='reports')
+					a(href='#reports') Reports
+		section
+			form#searchForm.search(method='post')
+				input#search.text(type='text', name='term', value='')
+				input.btn-go(type='submit', value='go')
+section#content
+	.container
+		| Body Goes Here
+	.b
